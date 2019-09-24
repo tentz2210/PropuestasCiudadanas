@@ -200,7 +200,138 @@ For each row
     :new.created_by:= USER;
   END beforeInsertN_X_P;
   
+-----------------Triggers Country-----------------
+CREATE OR REPLACE TRIGGER pc.beforeInsertCountry
+BEFORE INSERT
+ON pc.country
+FOR EACH ROW
+BEGIN
+    :new.creation_date:=SYSDATE;
+    :new.created_by:=USER;
+END beforeInsertCountry;
 
+CREATE OR REPLACE TRIGGER pc.beforeUpdateCountry
+BEFORE UPDATE
+ON pc.country
+FOR EACH ROW
+BEGIN
+    :new.last_modify_date:=SYSDATE;
+    :new.last_modified_by:=USER;
+END beforeUpdateCountry;
+
+-----------------Triggers Canton-----------------
+CREATE OR REPLACE TRIGGER pc.beforeInsertCanton
+BEFORE INSERT
+ON pc.canton
+FOR EACH ROW
+BEGIN
+    :new.creation_date:=SYSDATE;
+    :new.created_by:=USER;
+END beforeInsertCanton;
+
+CREATE OR REPLACE TRIGGER pc.beforeUpdateCanton
+BEFORE UPDATE
+ON pc.canton
+FOR EACH ROW
+BEGIN
+    :new.last_modify_date:=SYSDATE;
+    :new.last_modified_by:=USER;
+END beforeUpdateCanton;
+
+-----------------Triggers Province-----------------
+CREATE OR REPLACE TRIGGER pc.beforeInsertProvince
+BEFORE INSERT
+ON pc.province
+FOR EACH ROW
+BEGIN
+    :new.creation_date:=SYSDATE;
+    :new.created_by:=USER;
+END beforeInsertProvince;
+
+CREATE OR REPLACE TRIGGER pc.beforeUpdateProvince
+BEFORE UPDATE
+ON pc.province
+FOR EACH ROW
+BEGIN
+    :new.last_modify_date:=SYSDATE;
+    :new.last_modified_by:=USER;
+END beforeUpdateProvince;
+
+-----------------Triggers District-----------------
+CREATE OR REPLACE TRIGGER pc.beforeInsertDistrict
+BEFORE INSERT
+ON pc.district
+FOR EACH ROW
+BEGIN
+    :new.creation_date:=SYSDATE;
+    :new.created_by:=USER;
+END beforeInsertDistrict;
+
+CREATE OR REPLACE TRIGGER pc.beforeUpdateDistrict
+BEFORE UPDATE
+ON pc.district
+FOR EACH ROW
+BEGIN
+    :new.last_modify_date:=SYSDATE;
+    :new.last_modified_by:=USER;
+END beforeUpdateDistrict;
+
+-----------------Triggers Community-----------------
+CREATE OR REPLACE TRIGGER pc.beforeInsertCommunity
+BEFORE INSERT
+ON pc.community
+FOR EACH ROW
+BEGIN
+    :new.creation_date:=SYSDATE;
+    :new.created_by:=USER;
+END beforeInsertCommunity;
+
+CREATE OR REPLACE TRIGGER pc.beforeUpdateCommunity
+BEFORE UPDATE
+ON pc.community
+FOR EACH ROW
+BEGIN
+    :new.last_modify_date:=SYSDATE;
+    :new.last_modified_by:=USER;
+END beforeUpdateCommunity;
+
+-----------------Triggers Proposal-----------------
+CREATE OR REPLACE TRIGGER pc.beforeInsertProposal
+BEFORE INSERT
+ON pc.proposal
+FOR EACH ROW
+BEGIN
+    :new.creation_date:=SYSDATE;
+    :new.created_by:=USER;
+END beforeInsertProposal;
+
+CREATE OR REPLACE TRIGGER pc.beforeUpdateProposal
+BEFORE UPDATE
+ON pc.proposal
+FOR EACH ROW
+BEGIN
+    :new.last_modify_date:=SYSDATE;
+    :new.last_modified_by:=USER;
+END beforeUpdateProposal;
+
+-----------------Triggers VotexPerson-----------------
+CREATE OR REPLACE TRIGGER pc.beforeInsertVote
+BEFORE INSERT
+ON pc.votexperson
+FOR EACH ROW
+BEGIN
+    :new.creation_date:=SYSDATE;
+    :new.created_by:=USER;
+END beforeInsertVote;
+
+CREATE OR REPLACE TRIGGER pc.beforeUpdateVote
+BEFORE UPDATE
+ON pc.votexperson
+FOR EACH ROW
+BEGIN
+    :new.last_modify_date:=SYSDATE;
+    :new.last_modified_by:=USER;
+END beforeUpdateVote;
 
 
 
