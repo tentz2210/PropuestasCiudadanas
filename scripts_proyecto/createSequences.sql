@@ -63,6 +63,60 @@ CREATE SEQUENCE s_nationality_id
     NOCACHE
     NOCYCLE;
     
+--Sequence for table country
+CREATE SEQUENCE s_country
+START WITH 0
+INCREMENT BY 1
+MINVALUE 0
+MAXVALUE 9999
+NOCACHE
+NOCYCLE;
+
+--Sequence for table canton
+CREATE SEQUENCE s_canton
+START WITH 0
+INCREMENT BY 1
+MINVALUE 0
+MAXVALUE 9999
+NOCACHE
+NOCYCLE;
+
+--Sequence for table province
+CREATE SEQUENCE s_province
+START WITH 0
+INCREMENT BY 1
+MINVALUE 0
+MAXVALUE 9999
+NOCACHE
+NOCYCLE;
+
+--Sequence for table district
+CREATE SEQUENCE s_district
+START WITH 0
+INCREMENT BY 1
+MINVALUE 0
+MAXVALUE 9999
+NOCACHE
+NOCYCLE;
+
+--Sequence for table community
+CREATE SEQUENCE s_community
+START WITH 0
+INCREMENT BY 1
+MINVALUE 0
+MAXVALUE 9999
+NOCACHE
+NOCYCLE;
+
+--Sequence for table proposal
+CREATE SEQUENCE s_proposal
+START WITH 0
+INCREMENT BY 1
+MINVALUE 0
+MAXVALUE 99999999
+NOCACHE
+NOCYCLE; 
+    
 --FROM SCHEMA PCADMIN
 
 --Sequence for table password_change
@@ -73,8 +127,6 @@ CREATE SEQUENCE s_password_change_number
     MAXVALUE 10000000
     NOCACHE
     NOCYCLE;
-    
- 
 
 
 
