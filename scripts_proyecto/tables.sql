@@ -182,7 +182,7 @@ CREATE TABLE person
         USING INDEX
         TABLESPACE pc_ind PCTFREE 20
         STORAGE (INITIAL 10K NEXT 10K PCTINCREASE 0),
-    id                NUMBER(20) CONSTRAINT person_id_nn NOT NULL,
+    id                NUMBER(20) CONSTRAINT person_id_nn NOT NULL, --cedula o pasaporte
                                  CONSTRAINT person_id_uk UNIQUE(id),
     first_name        VARCHAR2(25) CONSTRAINT person_name_nn NOT NULL,
     first_last_name   VARCHAR2(25) CONSTRAINT person_first_last_name_nn NOT NULL,
@@ -203,6 +203,8 @@ COMMENT ON TABLE person
 IS 'Contains general information about each person (users,admins).';
 COMMENT ON COLUMN person.id_number
 IS 'Identifier of the person (PK).';
+COMMENT ON COLUMN person.id
+IS 'Id number or passport number of person.';
 COMMENT ON COLUMN person.first_name
 IS 'Name of the person.';
 COMMENT ON COLUMN person.first_last_name
