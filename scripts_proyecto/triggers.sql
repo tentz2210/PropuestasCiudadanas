@@ -200,6 +200,15 @@ For each row
     :new.created_by:= USER;
   END beforeInsertN_X_P;
   
+CREATE OR REPLACE TRIGGER pc.beforeUpdateN_X_P
+BEFORE UPDATE
+ON pc.nationality_x_person
+For each row
+  BEGIN
+    :new.last_modify_date:= SYSDATE;
+    :new.last_modified_by:= USER;
+  END beforeUpdateN_X_P;
+  
 -----------------Triggers Country-----------------
 CREATE OR REPLACE TRIGGER pc.beforeInsertCountry
 BEFORE INSERT
@@ -315,25 +324,32 @@ BEGIN
 END beforeUpdateProposal;
 
 -----------------Triggers VotexPerson-----------------
-CREATE OR REPLACE TRIGGER pc.beforeInsertVote
+CREATE OR REPLACE TRIGGER pc.beforeInsertVote_X_Person
 BEFORE INSERT
-ON pc.votexperson
+ON pc.vote_x_person
 FOR EACH ROW
 BEGIN
     :new.creation_date:=SYSDATE;
     :new.created_by:=USER;
-END beforeInsertVote;
+END beforeInsertVote_X_Person;
 
-CREATE OR REPLACE TRIGGER pc.beforeUpdateVote
+CREATE OR REPLACE TRIGGER pc.beforeUpdateVote_X_Person
 BEFORE UPDATE
-ON pc.votexperson
+ON pc.vote_x_person
 FOR EACH ROW
 BEGIN
     :new.last_modify_date:=SYSDATE;
     :new.last_modified_by:=USER;
-END beforeUpdateVote;
+END beforeUpdateVote_X_Person;
 
-
+CREATE OR REPLACE TRIGGER PC.beforeUpdatePassword
+BEFORE UPDATE OF user_password
+ON person_user
+FOR EACH ROW
+  BEGIN 
+    INSERT INTO PCADMIN.password_change(change_number,id_user,date_of_change,old_password,new_password)
+    VALUES(PCADMIN.s_password_change_number.NEXTVAL,:new.id_user,SYSDATE,:old.user_password,:new.user_password);
+  END beforeUpdatePassword;
 
 --FROM SCHEMA PCADMIN
 
@@ -355,20 +371,3 @@ For each row
     :new.last_modify_date:= SYSDATE;
     :new.last_modified_by:= USER;
   END beforeUpdatePassword_Change;   
-  
-CREATE OR REPLACE TRIGGER PC.beforeUpdatePassword
-BEFORE UPDATE OF user_password
-ON person_user
-FOR EACH ROW
-  BEGIN 
-    INSERT INTO PCADMIN.password_change(change_number,id_user,date_of_change,old_password,new_password)
-    VALUES(PCADMIN.s_password_change_number.NEXTVAL,:new.id_user,SYSDATE,:old.user_password,:new.user_password);
-  END beforeUpdatePassword;
-
-
-  
-  
-  
-
-  
-  
