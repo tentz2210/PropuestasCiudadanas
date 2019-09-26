@@ -41,7 +41,7 @@ CREATE TABLE province
         TABLESPACE pc_ind PCTFREE 20
         STORAGE (INITIAL 10K NEXT 10K PCTINCREASE 0),
     province_name    VARCHAR2(30) CONSTRAINT province_name_nn NOT NULL,
-    id_country       NUMBER(4),
+    id_country       NUMBER(4) CONSTRAINT province_id_country_nn NOT NULL,
         CONSTRAINT fk_province_country FOREIGN KEY
         (id_country) REFERENCES country(id_country),
     creation_date    DATE CONSTRAINT province_creation_date_nn NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE canton
         TABLESPACE pc_ind PCTFREE 20
         STORAGE (INITIAL 10K NEXT 10K PCTINCREASE 0),
     canton_name VARCHAR2(30) CONSTRAINT canton_name_nn NOT NULL,
-    id_province      NUMBER(4),
+    id_province      NUMBER(4) CONSTRAINT canton_id_province_nn NOT NULL,
         CONSTRAINT fk_canton_province FOREIGN KEY
         (id_province) REFERENCES province(id_province),
     creation_date    DATE CONSTRAINT canton_creation_date_nn NOT NULL,
@@ -111,7 +111,7 @@ CREATE TABLE district
         TABLESPACE pc_ind PCTFREE 20
         STORAGE (INITIAL 10K NEXT 10K PCTINCREASE 0),
     district_name    VARCHAR2(30) CONSTRAINT district_name_nn NOT NULL,
-    id_canton NUMBER(4),
+    id_canton NUMBER(4) CONSTRAINT district_id_canton_nn NOT NULL,
         CONSTRAINT fk_district_canton FOREIGN KEY
         (id_canton) REFERENCES canton(id_canton),
     creation_date    DATE CONSTRAINT district_creation_date_nn NOT NULL,
@@ -147,7 +147,7 @@ CREATE TABLE community
         TABLESPACE pc_ind PCTFREE 20
         STORAGE (INITIAL 10K NEXT 10K PCTINCREASE 0),
     community_name   VARCHAR2(30) CONSTRAINT community_name_nn NOT NULL,
-    id_district      NUMBER(4),
+    id_district      NUMBER(4) CONSTRAINT commmunity_id_district_nn NOT NULL,
         CONSTRAINT fk_community_district FOREIGN KEY
         (id_district) REFERENCES district(id_district),
     creation_date    DATE CONSTRAINT community_creation_date_nn NOT NULL,
@@ -177,11 +177,13 @@ IS 'Last user that modified the row.';
 
 CREATE TABLE person
 (
-    id_number         NUMBER(20),
+    id_number         NUMBER(20), --sequence
         CONSTRAINT pk_person PRIMARY KEY (id_number)
         USING INDEX
         TABLESPACE pc_ind PCTFREE 20
         STORAGE (INITIAL 10K NEXT 10K PCTINCREASE 0),
+    id                NUMBER(20) CONSTRAINT person_id_nn NOT NULL,
+                                 CONSTRAINT person_id_uk UNIQUE(id),
     first_name        VARCHAR2(25) CONSTRAINT person_name_nn NOT NULL,
     first_last_name   VARCHAR2(25) CONSTRAINT person_first_last_name_nn NOT NULL,
     second_last_name  VARCHAR2(25) CONSTRAINT person_second_last_name_nn NOT NULL,
@@ -262,13 +264,14 @@ CREATE TABLE proposal
         USING INDEX
         TABLESPACE pc_ind PCTFREE 20
         STORAGE (INITIAL 10K NEXT 10K PCTINCREASE 0),
-    category_code      NUMBER(4),
+    category_code      NUMBER(4) CONSTRAINT proposal_category_nn NOT NULL,
         CONSTRAINT fk_proposal_category FOREIGN KEY
         (category_code) REFERENCES category(category_code),
-    id_number          NUMBER(10),
+    id_number          NUMBER(10) CONSTRAINT proposal_person_nn NOT NULL,
         CONSTRAINT fk_proposal_person FOREIGN KEY
         (id_number) REFERENCES person(id_number),
-    description        VARCHAR2(200),
+    description        VARCHAR2(200) CONSTRAINT proposal_description_nn NOT NULL,
+                                     CONSTRAINT proposal_description_uk UNIQUE(description),
     approximate_budget NUMBER(8,2)  CONSTRAINT proposal_approximate_budget_nn NOT NULL,
     title              VARCHAR2(50) CONSTRAINT proposal_title_nn NOT NULL,
                                     CONSTRAINT proposal_title_uk UNIQUE(title),
@@ -308,10 +311,10 @@ IS 'Last user that modified the row.';
 
 CREATE TABLE vote_x_person
 (
-    id_proposal      NUMBER(8),
+    id_proposal      NUMBER(8) CONSTRAINT vote_id_proposal_nn NOT NULL,
         CONSTRAINT fk_vote_proposal FOREIGN KEY
         (id_proposal) REFERENCES proposal(id_proposal),
-    id_number        NUMBER(10),
+    id_number        NUMBER(10) CONSTRAINT vote_id_number_nn NOT NULL,
         CONSTRAINT fk_vote_person FOREIGN KEY
         (id_number) REFERENCES person(id_number),
         
@@ -458,10 +461,10 @@ IS 'Last user that modified the row.';
 
 CREATE TABLE category_x_person
 (
-    id_number         NUMBER(20),
+    id_number         NUMBER(20) CONSTRAINT fav_category_id_nn NOT NULL,
         CONSTRAINT fk_category_x_person_person FOREIGN KEY
         (id_number) REFERENCES person(id_number),
-    category_code     NUMBER(6),
+    category_code     NUMBER(6) CONSTRAINT fav_category_code_nn NOT NULL,
         CONSTRAINT fk_category_x_person_category FOREIGN KEY
         (category_code) REFERENCES category(category_code),
         
@@ -636,10 +639,10 @@ IS 'Last user that modified the row.';
 
 CREATE TABLE nationality_x_person
 (
-    id_number         NUMBER(10),
+    id_number         NUMBER(10) CONSTRAINT nationality_id_person_nn NOT NULL,
         CONSTRAINT fk_nationality_x_person_person FOREIGN KEY
         (id_number) REFERENCES person(id_number),
-    id_nationality    NUMBER(4),
+    id_nationality    NUMBER(4) CONSTRAINT nxp_id_nationality_nn NOT NULL,
         CONSTRAINT fk_n_x_p_nationality FOREIGN KEY
         (id_nationality) REFERENCES nationality(id_nationality),
         
@@ -681,7 +684,7 @@ CREATE TABLE password_change
         USING INDEX
         TABLESPACE pcadmin_ind PCTFREE 20
         STORAGE (INITIAL 10K NEXT 10K PCTINCREASE 0),
-    id_user           NUMBER(10),
+    id_user           NUMBER(10) CONSTRAINT p_change_id_user_nn NOT NULL,
     date_of_change    DATE DEFAULT SYSDATE CONSTRAINT p_c_date_of_change_nn NOT NULL,
     old_password      VARCHAR2(50) CONSTRAINT p_c_old_password_nn NOT NULL,
     new_password      VARCHAR2(50) CONSTRAINT p_c_new_password_nn NOT NULL,
