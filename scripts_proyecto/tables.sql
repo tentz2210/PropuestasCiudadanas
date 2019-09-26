@@ -10,6 +10,7 @@ CREATE TABLE country
         TABLESPACE pc_ind PCTFREE 20
         STORAGE (INITIAL 10K NEXT 10K PCTINCREASE 0),
     country_name     VARCHAR2(30) CONSTRAINT country_name_nn NOT NULL,
+                                  CONSTRAINT country_name_uk UNIQUE(country_name),
     creation_date    DATE CONSTRAINT country_creation_date_nn NOT NULL,
     created_by       VARCHAR2(10) CONSTRAINT country_created_by_nn NOT NULL,
     last_modify_date DATE,
@@ -104,7 +105,7 @@ IS 'Last user that modified the row.';
 --Creation table district
 CREATE TABLE district
 (
-    id_district     NUMBER(4),
+    id_district      NUMBER(4),
         CONSTRAINT pk_district PRIMARY KEY (id_district)
         USING INDEX
         TABLESPACE pc_ind PCTFREE 20
@@ -186,7 +187,8 @@ CREATE TABLE person
     second_last_name  VARCHAR2(25) CONSTRAINT person_second_last_name_nn NOT NULL,
     date_of_birth     DATE CONSTRAINT person_date_of_birth_nn NOT NULL,
     photo             VARCHAR2(25) CONSTRAINT person_photo_nn NOT NULL,
-    id_community      NUMBER(6) CONSTRAINT person_id_community_nn NOT NULL,
+                                   CONSTRAINT person_photo_uk UNIQUE(photo),
+    id_community      NUMBER(6)    CONSTRAINT person_id_community_nn NOT NULL,
         CONSTRAINT fk_person_community FOREIGN KEY
         (id_community) REFERENCES community(id_community),
     creation_date     DATE CONSTRAINT person_creation_date_nn NOT NULL,
@@ -230,6 +232,7 @@ CREATE TABLE category
         TABLESPACE pc_ind PCTFREE 20
         STORAGE (INITIAL 10K NEXT 10K PCTINCREASE 0),
     category_name     VARCHAR2(25) CONSTRAINT category_name_nn NOT NULL,
+                                   CONSTRAINT category_name_uk UNIQUE(category_name),
     creation_date     DATE CONSTRAINT category_creation_date_nn NOT NULL,
     created_by        VARCHAR2(10) CONSTRAINT category_created_by_nn NOT NULL,
     last_modify_date  DATE,
@@ -266,8 +269,9 @@ CREATE TABLE proposal
         CONSTRAINT fk_proposal_person FOREIGN KEY
         (id_number) REFERENCES person(id_number),
     description        VARCHAR2(200),
-    approximate_budget NUMBER(8,2) CONSTRAINT proposal_approximate_budget_nn NOT NULL,
+    approximate_budget NUMBER(8,2)  CONSTRAINT proposal_approximate_budget_nn NOT NULL,
     title              VARCHAR2(50) CONSTRAINT proposal_title_nn NOT NULL,
+                                    CONSTRAINT proposal_title_uk UNIQUE(title),
     proposal_date      DATE DEFAULT SYSDATE CONSTRAINT proposal_date_nn NOT NULL,
     creation_date      DATE CONSTRAINT proposal_creation_date_nn NOT NULL,
     created_by         VARCHAR2(10) CONSTRAINT proposal_created_by_nn NOT NULL,
@@ -340,8 +344,9 @@ IS 'Last user that modified the row.';
 
 CREATE TABLE email
 (
-    mail              VARCHAR2(50) CONSTRAINT email_mail_nn NOT NULL, CONSTRAINT email_mail_uk UNIQUE(mail),
-    id_number         NUMBER(20) CONSTRAINT email_id_number_nn NOT NULL,
+    mail              VARCHAR2(50) CONSTRAINT email_mail_nn NOT NULL, 
+                                   CONSTRAINT email_mail_uk UNIQUE(mail),
+    id_number         NUMBER(20)   CONSTRAINT email_id_number_nn NOT NULL,
         CONSTRAINT fk_email_person FOREIGN KEY
         (id_number) REFERENCES person(id_number),
         
@@ -374,7 +379,8 @@ IS 'Last user that modified the row.';
 
 CREATE TABLE telephone
 (
-    phone_number      NUMBER(10) CONSTRAINT telephone_phone_number_nn NOT NULL, CONSTRAINT telephone_phone_number_uk UNIQUE(phone_number),
+    phone_number      NUMBER(10) CONSTRAINT telephone_phone_number_nn NOT NULL, 
+                                 CONSTRAINT telephone_phone_number_uk UNIQUE(phone_number),
     id_number         NUMBER(20) CONSTRAINT telephone_id_number_nn NOT NULL,
         CONSTRAINT fk_telephone_person FOREIGN KEY
         (id_number) REFERENCES person(id_number),
@@ -495,6 +501,7 @@ CREATE TABLE parameter
         STORAGE (INITIAL 10K NEXT 10K PCTINCREASE 0),
     parameter_value   NUMBER(10) CONSTRAINT parameter_value_nn NOT NULL,
     parameter_name    VARCHAR2(25) CONSTRAINT parameter_name_nn NOT NULL,
+                                   CONSTRAINT parameter_name_uk UNIQUE(parameter_name),
     creation_date     DATE CONSTRAINT parameter_creation_date_nn NOT NULL,
     created_by        VARCHAR2(10) CONSTRAINT parameter_created_by_nn NOT NULL,
     last_modify_date  DATE,
@@ -528,6 +535,7 @@ CREATE TABLE user_type
         TABLESPACE pc_ind PCTFREE 20
         STORAGE (INITIAL 10K NEXT 10K PCTINCREASE 0),
     user_type_name    VARCHAR2(25) CONSTRAINT user_type_name_nn NOT NULL,
+                                   CONSTRAINT user_type_name_uk UNIQUE(user_type_name),
     creation_date     DATE CONSTRAINT user_type_creation_date_nn NOT NULL,
     created_by        VARCHAR2(10) CONSTRAINT user_type_created_by_nn NOT NULL,
     last_modify_date  DATE,
@@ -565,6 +573,8 @@ CREATE TABLE person_user
     id_user_type      NUMBER(4) CONSTRAINT user_id_user_type_nn NOT NULL,
         CONSTRAINT fk_user_type_person FOREIGN KEY
         (id_user_type) REFERENCES user_type(id_user_type),
+    user_name         VARCHAR2(25) CONSTRAINT user_name_nn NOT NULL,
+                                   CONSTRAINT user_name_uk UNIQUE(user_name),
     creation_date     DATE CONSTRAINT user_creation_date_nn NOT NULL,
     created_by        VARCHAR2(10) CONSTRAINT user_created_by_nn NOT NULL,
     last_modify_date  DATE,
@@ -600,6 +610,7 @@ CREATE TABLE nationality
         TABLESPACE pc_ind PCTFREE 20
         STORAGE (INITIAL 10K NEXT 10K PCTINCREASE 0),
     nationality_name  VARCHAR2(50) CONSTRAINT nationality_name_nn NOT NULL,
+                                   CONSTRAINT nationality_name_uk UNIQUE(nationality_name),
     creation_date     DATE CONSTRAINT nationality_creation_date_nn NOT NULL,
     created_by        VARCHAR2(10) CONSTRAINT nationality_created_by_nn NOT NULL,
     last_modify_date  DATE,
