@@ -1,4 +1,4 @@
---Creacion usuarios
+--Creación usuarios
 
 CREATE USER PC
        IDENTIFIED BY PC
@@ -23,8 +23,8 @@ GRANT CREATE SEQUENCE TO PC;
 
 CREATE USER PCADMIN
        IDENTIFIED BY PCADMIN
-       DEFAULT TABLESPACE PC_data
-       QUOTA 10M ON PC_data
+       DEFAULT TABLESPACE PCADMIN_data
+       QUOTA 10M ON PCADMIN_data
        TEMPORARY TABLESPACE temp
        QUOTA 5M ON system;
        
