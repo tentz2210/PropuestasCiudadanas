@@ -1,81 +1,237 @@
 ----------PACKAGE COUNTRY----------
 CREATE OR REPLACE PACKAGE pkg_country IS
-
+    PROCEDURE createCountry(pNameCountry VARCHAR2);
+    PROCEDURE getCountries(p_countrylist_refcur IN OUT SYS_REFCURSOR);
 END pkg_country;
 
 CREATE OR REPLACE PACKAGE BODY pkg_country AS
     ------PROCEDURE INSERT------
+    PROCEDURE createCountry (pNameCountry VARCHAR2) IS
+    BEGIN
+        INSERT INTO pc.country(id_country, country_name)
+        VALUES(pc.s_country.nextval, pNameCountry);
+        COMMIT;
+    EXCEPTION
+        WHEN DUP_VAL_ON_INDEX THEN
+            DBMS_OUTPUT.PUT_LINE ('Country name already exists');
+            ROLLBACK;
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error inserting country');
+		    DBMS_OUTPUT.PUT_LINE(SQLERRM);
+		    DBMS_OUTPUT.PUT_LINE(SQLCODE);
+            ROLLBACK;
+    END;
     
     ------PROCEDURE UPDATE------
     
     ------PROCEDURE DELETE------
+    
+    ------PROCEDURE getCountries------
+    PROCEDURE getCountries(p_countrylist_refcur IN OUT SYS_REFCURSOR) IS
+    BEGIN
+        OPEN p_countrylist_refcur FOR
+            SELECT id_country, country_name
+            FROM pc.country
+            ORDER BY country_name;
+    EXCEPTION 
+        WHEN CURSOR_ALREADY_OPEN THEN
+            DBMS_OUTPUT.PUT_LINE('Cursor is already open');
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUTLINE('General Error');
+            DBMS_OUTPUT.PUTLINE(SQLERRM);
+            DBMS_OUTPUT.PUTLINE(SQLCODE);
+    END;
     
 END pkg_country;
 
 ----------PACKAGE PROVINCE----------
 CREATE OR REPLACE PACKAGE pkg_province IS
-
+    PROCEDURE createProvince(pNameProvince VARCHAR2, pCountryId NUMBER);
+    PROCEDURE getProvincesFromCountry(pid_country IN NUMBER, p_provincelist_refcur IN OUT SYS_REFCURSOR);
 END pkg_province;
 
 CREATE OR REPLACE PACKAGE BODY pkg_province AS
     ------PROCEDURE INSERT------
-    
+    PROCEDURE createProvince (pNameProvince VARCHAR2, pCountryId NUMBER) IS
+    BEGIN
+        INSERT INTO pc.province(id_province, province_name, id_country)
+        VALUES(pc.s_province.nextval, pNameProvince, pCountryId);
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error inserting province');
+		    DBMS_OUTPUT.PUT_LINE(SQLERRM);
+		    DBMS_OUTPUT.PUT_LINE(SQLCODE);
+            ROLLBACK;
+    END;
     ------PROCEDURE UPDATE------
     
     ------PROCEDURE DELETE------
+    
+    ------PROCEDURE getProvincesFromCountry------
+    PROCEDURE getProvincesFromCountry(pid_country IN NUMBER, p_provincelist_refcur IN OUT SYS_REFCURSOR) IS
+    BEGIN
+        OPEN p_provincelist_refcur FOR
+            SELECT id_province, province_name
+            FROM pc.province
+            WHERE id_country = pid_country
+            ORDER BY province_name;
+    EXCEPTION 
+        WHEN CURSOR_ALREADY_OPEN THEN
+            DBMS_OUTPUT.PUT_LINE('Cursor is already open');
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUTLINE('General Error');
+            DBMS_OUTPUT.PUTLINE(SQLERRM);
+            DBMS_OUTPUT.PUTLINE(SQLCODE);
+    END;
     
 END pkg_province;
 
 ----------PACKAGE CANTON----------
 CREATE OR REPLACE PACKAGE pkg_canton IS
-
+    PROCEDURE createCanton (pNameCanton VARCHAR2, pProvinceId NUMBER);
+    PROCEDURE getCantonsFromProvince(pid_province IN NUMBER, p_cantonlist_refcur IN OUT SYS_REFCURSOR);
 END pkg_canton;
 
 CREATE OR REPLACE PACKAGE BODY pkg_canton AS
     ------PROCEDURE INSERT------
-    
+    PROCEDURE createCanton (pNameCanton VARCHAR2, pProvinceId NUMBER) IS
+    BEGIN
+        INSERT INTO pc.canton(id_canton, canton_name, id_province)
+        VALUES(pc.s_canton.nextval, pNameCanton, pProvinceId);
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error inserting canton');
+		    DBMS_OUTPUT.PUT_LINE(SQLERRM);
+		    DBMS_OUTPUT.PUT_LINE(SQLCODE);
+            ROLLBACK;
+    END;
     ------PROCEDURE UPDATE------
     
     ------PROCEDURE DELETE------
+    
+    ------PROCEDURE getCantonsFromProvince------
+    PROCEDURE getCantonsFromProvince(pid_province IN NUMBER, p_cantonlist_refcur IN OUT SYS_REFCURSOR) IS
+    BEGIN
+        OPEN p_cantonlist_refcur FOR
+            SELECT id_canton, canton_name
+            FROM pc.canton
+            WHERE id_province = pid_province
+            ORDER BY canton_name;
+    EXCEPTION 
+        WHEN CURSOR_ALREADY_OPEN THEN
+            DBMS_OUTPUT.PUT_LINE('Cursor is already open');
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUTLINE('General Error');
+            DBMS_OUTPUT.PUTLINE(SQLERRM);
+            DBMS_OUTPUT.PUTLINE(SQLCODE);
+    END;
     
 END pkg_canton;
 
 ----------PACKAGE DISTRICT----------
 CREATE OR REPLACE PACKAGE pkg_district IS
-
+    PROCEDURE createDistrict (pNameDistrict VARCHAR2, pCantonId NUMBER);
+    PROCEDURE getDistrictsFromCanton(pid_canton IN NUMBER, p_districtlist_refcur IN OUT SYS_REFCURSOR);
 END pkg_district;
 
 CREATE OR REPLACE PACKAGE BODY pkg_district AS
     ------PROCEDURE INSERT------
-    
+    PROCEDURE createDistrict (pNameDistrict VARCHAR2, pCantonId NUMBER) IS
+    BEGIN
+        INSERT INTO pc.district(id_district, district_name, id_canton)
+        VALUES(pc.s_district.nextval, pNameDistrict, pCantonId);
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error inserting district');
+		    DBMS_OUTPUT.PUT_LINE(SQLERRM);
+		    DBMS_OUTPUT.PUT_LINE(SQLCODE);
+            ROLLBACK;
+    END;
     ------PROCEDURE UPDATE------
     
     ------PROCEDURE DELETE------
+    
+    ------PROCEDURE getDistrictsFromCanton------
+    PROCEDURE getDistrictsFromCanton(pid_canton IN NUMBER, p_districtlist_refcur IN OUT SYS_REFCURSOR) IS
+    BEGIN
+        OPEN p_districtlist_refcur FOR
+            SELECT id_district, district_name
+            FROM pc.district
+            WHERE id_canton = pid_canton
+            ORDER BY district_name;
+    EXCEPTION 
+        WHEN CURSOR_ALREADY_OPEN THEN
+            DBMS_OUTPUT.PUT_LINE('Cursor is already open');
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUTLINE('General Error');
+            DBMS_OUTPUT.PUTLINE(SQLERRM);
+            DBMS_OUTPUT.PUTLINE(SQLCODE);
+    END;
     
 END pkg_district;
 
 ----------PACKAGE COMMUNITY----------
 CREATE OR REPLACE PACKAGE pkg_community IS
-
+    PROCEDURE createCommunity (pNameCommunity VARCHAR2, pDistrictId NUMBER);
+    PROCEDURE getCommunitiesFromDistrict(pid_district IN NUMBER, p_communitylist_refcur IN OUT SYS_REFCURSOR);
 END pkg_community;
 
 CREATE OR REPLACE PACKAGE BODY pkg_community AS
     ------PROCEDURE INSERT------
-    
+    PROCEDURE createCommunity (pNameCommunity VARCHAR2, pDistrictId NUMBER) IS
+    BEGIN
+        INSERT INTO pc.community(id_community, community_name, id_district)
+        VALUES(pc.s_community.nextval, pNameCommunity, pDistrictId);
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error inserting community');
+		    DBMS_OUTPUT.PUT_LINE(SQLERRM);
+		    DBMS_OUTPUT.PUT_LINE(SQLCODE);
+            ROLLBACK;
+    END;
     ------PROCEDURE UPDATE------
     
     ------PROCEDURE DELETE------
+    
+    ------PROCEDURE getCommunitiesFromDistrict------
+    PROCEDURE getCommunitiesFromDistrict(pid_district IN NUMBER, p_communitylist_refcur IN OUT SYS_REFCURSOR) IS
+    BEGIN
+        OPEN p_communitylist_refcur FOR
+            SELECT id_community, community_name
+            FROM pc.community
+            WHERE id_district = pid_district
+            ORDER BY community_name;
+    EXCEPTION 
+        WHEN CURSOR_ALREADY_OPEN THEN
+            DBMS_OUTPUT.PUT_LINE('Cursor is already open');
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUTLINE('General Error');
+            DBMS_OUTPUT.PUTLINE(SQLERRM);
+            DBMS_OUTPUT.PUTLINE(SQLCODE);
+    END;
     
 END pkg_community;
 
 ----------PACKAGE PROPOSAL----------
 CREATE OR REPLACE PACKAGE pkg_proposal IS
-
+    PROCEDURE createProposal(pTitle VARCHAR2, pProposalDate VARCHAR2, pApproxBudget NUMBER,
+                             pDescription VARCHAR2, pCategoryCode NUMBER, pIdNumber NUMBER);
 END pkg_proposal;
 
 CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
     ------PROCEDURE INSERT------
-    
+    PROCEDURE createProposal(pTitle VARCHAR2, pProposalDate VARCHAR2, pApproxBudget NUMBER,
+                         pDescription VARCHAR2, pCategoryCode NUMBER, pIdNumber NUMBER) IS
+    BEGIN
+        INSERT INTO pc.proposal(id_proposal, category_code, id_number, proposal_description, approximate_budget, title, proposal_date)
+        VALUES (pc.s_proposal.nextval, pCategoryCode, pIdNumber, pDescription, pApproxBudget, pTitle, SYSDATE); 
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error inserting proposal');
+		    DBMS_OUTPUT.PUT_LINE(SQLERRM);
+		    DBMS_OUTPUT.PUT_LINE(SQLCODE);
+            ROLLBACK;
+    END;
     ------PROCEDURE UPDATE------
     
     ------PROCEDURE DELETE------
