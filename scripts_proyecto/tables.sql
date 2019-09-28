@@ -1,6 +1,6 @@
 --FROM SCHEMA PC
 
---Creation table country
+--TABLE COUNTRY
 
 CREATE TABLE country
 (
@@ -17,6 +17,9 @@ CREATE TABLE country
     last_modified_by VARCHAR2(10)
 );
 
+ALTER TABLE COUNTRY
+ADD (is_enabled NUMBER (1) DEFAULT 1 CONSTRAINT country_is_enabled_nn NOT NULL);
+
 COMMENT ON TABLE country
 IS 'Contains a catalogue of countries.';
 COMMENT ON COLUMN country.id_country
@@ -31,8 +34,10 @@ COMMENT ON COLUMN country.last_modify_date
 IS 'Last row modification date.';
 COMMENT ON COLUMN country.last_modified_by
 IS 'Last user that modified the row.';
+COMMENT ON COLUMN country.is_enabled
+IS 'To know if the country is active for citizens to use it.';
 ------------------------------------------------------------------------------------
---Creation table province
+--TABLE PROVINCE
 CREATE TABLE province
 (
     id_province      NUMBER(4),
@@ -50,6 +55,9 @@ CREATE TABLE province
     last_modified_by VARCHAR2(10)
 );
 
+ALTER TABLE PROVINCE
+ADD (is_enabled NUMBER (1) DEFAULT 1 CONSTRAINT province_is_enabled_nn NOT NULL);
+
 COMMENT ON TABLE province
 IS 'Contains a catalogue of provinces.';
 COMMENT ON COLUMN province.id_province
@@ -66,8 +74,10 @@ COMMENT ON COLUMN province.last_modify_date
 IS 'Last row modification date.';
 COMMENT ON COLUMN province.last_modified_by
 IS 'Last user that modified the row.';
+COMMENT ON COLUMN province.is_enabled
+IS 'To know if the province is active for citizens to use it.';
 -----------------------------------------------------------------------
---Creation table canton
+--TABLE CANTON
 CREATE TABLE canton
 (
     id_canton        NUMBER(4),
@@ -85,6 +95,9 @@ CREATE TABLE canton
     last_modified_by VARCHAR2(10)
 );
 
+ALTER TABLE CANTON
+ADD (is_enabled NUMBER (1) DEFAULT 1 CONSTRAINT canton_is_enabled_nn NOT NULL);
+
 COMMENT ON TABLE canton
 IS 'Contains a catalogue of cantons.';
 COMMENT ON COLUMN canton.id_canton
@@ -101,8 +114,10 @@ COMMENT ON COLUMN canton.last_modify_date
 IS 'Last row modification date.';
 COMMENT ON COLUMN canton.last_modified_by
 IS 'Last user that modified the row.';
+COMMENT ON COLUMN canton.is_enabled
+IS 'To know if the canton is active for citizens to use it.';
 -------------------------------------------------------------------
---Creation table district
+--TABLE DISTRICT
 CREATE TABLE district
 (
     id_district      NUMBER(4),
@@ -120,6 +135,9 @@ CREATE TABLE district
     last_modified_by VARCHAR2(10)
 );
 
+ALTER TABLE DISTRICT
+ADD (is_enabled NUMBER (1) DEFAULT 1 CONSTRAINT distric_is_enabled_nn NOT NULL);
+
 COMMENT ON TABLE district
 IS 'Contains a catalogue of districts.';
 COMMENT ON COLUMN district.id_district
@@ -136,8 +154,10 @@ COMMENT ON COLUMN district.last_modify_date
 IS 'Last row modification date.';
 COMMENT ON COLUMN district.last_modified_by
 IS 'Last user that modified the row.';
+COMMENT ON COLUMN district.is_enabled
+IS 'To know if the district is active for citizens to use it.';
 ----------------------------------------------------------------
---Creation table community
+--TABLE COMMUNITY
 
 CREATE TABLE community
 (
@@ -156,6 +176,9 @@ CREATE TABLE community
     last_modified_by VARCHAR2(10)
 );
 
+ALTER TABLE COMMUNITY
+ADD (is_enabled NUMBER (1) DEFAULT 1 CONSTRAINT community_is_enabled_nn NOT NULL);
+
 COMMENT ON TABLE community
 IS 'Contains a catalogue of communities.';
 COMMENT ON COLUMN community.id_community
@@ -172,8 +195,10 @@ COMMENT ON COLUMN community.last_modify_date
 IS 'Last row modification date.';
 COMMENT ON COLUMN community.last_modified_by
 IS 'Last user that modified the row.';
+COMMENT ON COLUMN community.is_enabled
+IS 'To know if the community is active for citizens to use it.';
 --------------------------------------------------------------------------
---Creation table person
+--TABLE PERSON
 
 CREATE TABLE person
 (
@@ -226,7 +251,7 @@ IS 'Last row modification date.';
 COMMENT ON COLUMN person.last_modified_by
 IS 'Last user that modified the row.';
 -------------------------------------------------------------------------
---Creation table category
+--TABLE CATEGORY
 
 CREATE TABLE category
 (
@@ -243,6 +268,9 @@ CREATE TABLE category
     last_modified_by  VARCHAR2(10)
 );
 
+ALTER TABLE CATEGORY
+ADD (is_enabled NUMBER (1) DEFAULT 1 CONSTRAINT category_is_enabled_nn NOT NULL);
+
 COMMENT ON TABLE category
 IS 'Contains every possible category that a proposal can have.';
 COMMENT ON COLUMN category.category_code
@@ -257,8 +285,10 @@ COMMENT ON COLUMN category.last_modify_date
 IS 'Last row modification date.';
 COMMENT ON COLUMN category.last_modified_by
 IS 'Last user that modified the row.'; 
+COMMENT ON COLUMN category.is_enabled
+IS 'To know if the category is active for citizens to use it.';
 -------------------------------------------------------------------------
---Creation table proposal
+--TABLE PROPOSAL
 CREATE TABLE proposal
 (
     id_proposal        NUMBER(8),
@@ -284,6 +314,9 @@ CREATE TABLE proposal
     last_modified_by   VARCHAR2(10)
 );
 
+ALTER TABLE PROPOSAL
+ADD (is_enabled NUMBER (1) DEFAULT 1 CONSTRAINT proposal_is_enabled_nn NOT NULL);
+
 COMMENT ON TABLE proposal
 IS 'Contains proposals made by citizens from a community.';
 COMMENT ON COLUMN proposal.id_proposal
@@ -308,8 +341,10 @@ COMMENT ON COLUMN proposal.last_modify_date
 IS 'Last row modification date.';
 COMMENT ON COLUMN proposal.last_modified_by
 IS 'Last user that modified the row.';
+COMMENT ON COLUMN proposal.is_enabled
+IS 'To know if the proposal is active for citizens to view it.';
 -------------------------------------------------------------------------
---Creation table vote_x_person
+--TABLE VOTE X PERSON
 
 CREATE TABLE vote_x_person
 (
@@ -345,7 +380,7 @@ IS 'Last row modification date.';
 COMMENT ON COLUMN vote_x_person.last_modified_by
 IS 'Last user that modified the row.';
 -------------------------------------------------------------------------
---Creation table email
+--TABLE EMAIL
 
 CREATE TABLE email
 (
@@ -380,7 +415,7 @@ IS 'Last row modification date.';
 COMMENT ON COLUMN email.last_modified_by
 IS 'Last user that modified the row.';
 -------------------------------------------------------------------------
---Creation table telephone
+--TABLE TELEPHONE
 
 CREATE TABLE telephone
 (
@@ -415,7 +450,7 @@ IS 'Last row modification date.';
 COMMENT ON COLUMN telephone.last_modified_by
 IS 'Last user that modified the row.';
 -------------------------------------------------------------------------
---Creation table comment
+--TABLE COMMENT
 
 CREATE TABLE proposal_comment
 (
@@ -459,7 +494,7 @@ IS 'Last row modification date.';
 COMMENT ON COLUMN proposal_comment.last_modified_by
 IS 'Last user that modified the row.';
 -------------------------------------------------------------------------
---Creation table category_x_person
+--TABLE CATEGORY X PERSON
 
 CREATE TABLE category_x_person
 (
@@ -495,7 +530,7 @@ IS 'Last row modification date.';
 COMMENT ON COLUMN category_x_person.last_modified_by
 IS 'Last user that modified the row.';
 -------------------------------------------------------------------------
---Creation table parameter
+--TABLE PARAMETER
 
 CREATE TABLE parameter
 (
@@ -530,7 +565,7 @@ IS 'Last row modification date.';
 COMMENT ON COLUMN parameter.last_modified_by
 IS 'Last user that modified the row.'; 
 -------------------------------------------------------------------------
---Creation table user_type
+--TABLE USER TYPE
 
 CREATE TABLE user_type
 (
@@ -562,7 +597,7 @@ IS 'Last row modification date.';
 COMMENT ON COLUMN user_type.last_modified_by
 IS 'Last user that modified the row.'; 
 -------------------------------------------------------------------------
---Creation table user
+--TABLE USER
 
 CREATE TABLE person_user
 (
@@ -605,7 +640,7 @@ IS 'Last row modification date.';
 COMMENT ON COLUMN person_user.last_modified_by
 IS 'Last user that modified the row.'; 
 -------------------------------------------------------------------------
---Creation table nationality
+--TABLE NATIONALITY
 
 CREATE TABLE nationality
 (
@@ -622,6 +657,9 @@ CREATE TABLE nationality
     last_modified_by  VARCHAR2(10)
 );
 
+ALTER TABLE NATIONALITY
+ADD (is_enabled NUMBER (1) DEFAULT 1 CONSTRAINT nationality_is_enabled_nn NOT NULL);
+
 COMMENT ON TABLE nationality
 IS 'Contains every possible nationality that a person can have.';
 COMMENT ON COLUMN nationality.id_nationality
@@ -636,8 +674,10 @@ COMMENT ON COLUMN nationality.last_modify_date
 IS 'Last row modification date.';
 COMMENT ON COLUMN nationality.last_modified_by
 IS 'Last user that modified the row.'; 
+COMMENT ON COLUMN nationality.is_enabled
+IS 'To know if the nationality is active for citizens to use it.';
 -------------------------------------------------------------------------
---Creation table nationality_x_person
+--TABLE NATIONALITY X PERSON
 
 CREATE TABLE nationality_x_person
 (
@@ -677,7 +717,7 @@ IS 'Last user that modified the row.';
 --FROM SCHEMA PCADMIN
 
 
---Creation table password_change
+--TABLE PASSWORD CHANGE
 
 CREATE TABLE password_change
 (
