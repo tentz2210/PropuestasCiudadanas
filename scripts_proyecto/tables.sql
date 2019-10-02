@@ -48,7 +48,7 @@ CREATE TABLE province
     province_name    VARCHAR2(30) CONSTRAINT province_name_nn NOT NULL,
     id_country       NUMBER(4) CONSTRAINT province_id_country_nn NOT NULL,
         CONSTRAINT fk_province_country FOREIGN KEY
-        (id_country) REFERENCES country(id_country),
+        (id_country) REFERENCES country(id_country) ON DELETE CASCADE,
     creation_date    DATE CONSTRAINT province_creation_date_nn NOT NULL,
     created_by       VARCHAR2(10) CONSTRAINT province_created_by_nn NOT NULL,
     last_modify_date DATE,
@@ -88,7 +88,7 @@ CREATE TABLE canton
     canton_name VARCHAR2(30) CONSTRAINT canton_name_nn NOT NULL,
     id_province      NUMBER(4) CONSTRAINT canton_id_province_nn NOT NULL,
         CONSTRAINT fk_canton_province FOREIGN KEY
-        (id_province) REFERENCES province(id_province),
+        (id_province) REFERENCES province(id_province) ON DELETE CASCADE,
     creation_date    DATE CONSTRAINT canton_creation_date_nn NOT NULL,
     created_by       VARCHAR2(10) CONSTRAINT canton_created_by_nn NOT NULL,
     last_modify_date DATE,
@@ -128,7 +128,7 @@ CREATE TABLE district
     district_name    VARCHAR2(30) CONSTRAINT district_name_nn NOT NULL,
     id_canton NUMBER(4) CONSTRAINT district_id_canton_nn NOT NULL,
         CONSTRAINT fk_district_canton FOREIGN KEY
-        (id_canton) REFERENCES canton(id_canton),
+        (id_canton) REFERENCES canton(id_canton) ON DELETE CASCADE,
     creation_date    DATE CONSTRAINT district_creation_date_nn NOT NULL,
     created_by       VARCHAR2(10) CONSTRAINT district_created_by_nn NOT NULL,
     last_modify_date DATE,
@@ -169,7 +169,7 @@ CREATE TABLE community
     community_name   VARCHAR2(30) CONSTRAINT community_name_nn NOT NULL,
     id_district      NUMBER(4) CONSTRAINT commmunity_id_district_nn NOT NULL,
         CONSTRAINT fk_community_district FOREIGN KEY
-        (id_district) REFERENCES district(id_district),
+        (id_district) REFERENCES district(id_district) ON DELETE CASCADE,
     creation_date    DATE CONSTRAINT community_creation_date_nn NOT NULL,
     created_by       VARCHAR2(10) CONSTRAINT community_created_by_nn NOT NULL,
     last_modify_date DATE,
@@ -388,7 +388,7 @@ CREATE TABLE email
                                    CONSTRAINT email_mail_uk UNIQUE(mail),
     id_number         NUMBER(20)   CONSTRAINT email_id_number_nn NOT NULL,
         CONSTRAINT fk_email_person FOREIGN KEY
-        (id_number) REFERENCES person(id_number),
+        (id_number) REFERENCES person(id_number) ON DELETE CASCADE,
         
         CONSTRAINT pk_email PRIMARY KEY (id_number,mail)
         USING INDEX
@@ -423,7 +423,7 @@ CREATE TABLE telephone
                                  CONSTRAINT telephone_phone_number_uk UNIQUE(phone_number),
     id_number         NUMBER(20) CONSTRAINT telephone_id_number_nn NOT NULL,
         CONSTRAINT fk_telephone_person FOREIGN KEY
-        (id_number) REFERENCES person(id_number),
+        (id_number) REFERENCES person(id_number) ON DELETE CASCADE,
         
         CONSTRAINT pk_telephone PRIMARY KEY (id_number,phone_number)
         USING INDEX
@@ -500,10 +500,10 @@ CREATE TABLE category_x_person
 (
     id_number         NUMBER(20) CONSTRAINT fav_category_id_nn NOT NULL,
         CONSTRAINT fk_category_x_person_person FOREIGN KEY
-        (id_number) REFERENCES person(id_number),
+        (id_number) REFERENCES person(id_number) ON DELETE CASCADE,
     category_code     NUMBER(6) CONSTRAINT fav_category_code_nn NOT NULL,
         CONSTRAINT fk_category_x_person_category FOREIGN KEY
-        (category_code) REFERENCES category(category_code),
+        (category_code) REFERENCES category(category_code) ON DELETE CASCADE,
         
         CONSTRAINT pk_category_x_person PRIMARY KEY (id_number,category_code)
         USING INDEX
@@ -609,7 +609,7 @@ CREATE TABLE person_user
     user_password     VARCHAR2(50) CONSTRAINT user_password_nn NOT NULL,
     id_number         NUMBER(20) CONSTRAINT user_id_number_nn NOT NULL,
         CONSTRAINT fk_user_person FOREIGN KEY
-        (id_number) REFERENCES person(id_number),
+        (id_number) REFERENCES person(id_number) ON DELETE CASCADE,
     id_user_type      NUMBER(4) CONSTRAINT user_id_user_type_nn NOT NULL,
         CONSTRAINT fk_user_type_person FOREIGN KEY
         (id_user_type) REFERENCES user_type(id_user_type),
@@ -683,10 +683,10 @@ CREATE TABLE nationality_x_person
 (
     id_number         NUMBER(10) CONSTRAINT nationality_id_person_nn NOT NULL,
         CONSTRAINT fk_nationality_x_person_person FOREIGN KEY
-        (id_number) REFERENCES person(id_number),
+        (id_number) REFERENCES person(id_number) ON DELETE CASCADE,
     id_nationality    NUMBER(4) CONSTRAINT nxp_id_nationality_nn NOT NULL,
         CONSTRAINT fk_n_x_p_nationality FOREIGN KEY
-        (id_nationality) REFERENCES nationality(id_nationality),
+        (id_nationality) REFERENCES nationality(id_nationality) ON DELETE CASCADE,
         
         CONSTRAINT pk_nationality_x_person PRIMARY KEY (id_number,id_nationality)
         USING INDEX
