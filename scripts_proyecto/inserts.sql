@@ -318,10 +318,152 @@ pkg_community.createCommunity('Patalillo', 120);
 pkg_community.createCommunity('San Isidro', 121);
 pkg_community.createCommunity('San Rafael', 122);
 END;
-
+--user types
 BEGIN
     pkg_user_type.createusertype('Administrator');
     pkg_user_type.createusertype('User');
+END;
+
+BEGIN
+    --CATEGORIES--
+    pkg_category.createCategory('Medio ambiente');
+    pkg_category.createCategory('Cultura');
+    pkg_category.createCategory('Deportes');
+    pkg_category.createCategory('Movilidad urbana');
+    pkg_category.createCategory('Seguridad');
+    pkg_category.createCategory('Salud y bienestar');
+    pkg_category.createCategory('Espacio público');
+    pkg_category.createCategory('Protección animal');
+    pkg_category.createCategory('Educación');
+    pkg_category.createCategory('Infancia y juventud');
+    pkg_category.createCategory('Empleo');
+
+    --NATIONALITIES--
+    pkg_nationality.createNationality('alemana');
+    pkg_nationality.createNationality('árabe');
+    pkg_nationality.createNationality('argentina');
+    pkg_nationality.createNationality('australiana');
+    pkg_nationality.createNationality('belga');
+    pkg_nationality.createNationality('boliviana');
+    pkg_nationality.createNationality('brasileña');
+    pkg_nationality.createNationality('canadiense');
+    pkg_nationality.createNationality('chilena');
+    pkg_nationality.createNationality('china');
+    pkg_nationality.createNationality('colombiana');
+    pkg_nationality.createNationality('coreana');
+    pkg_nationality.createNationality('costarricense');
+    pkg_nationality.createNationality('española');
+    pkg_nationality.createNationality('estadounidense');
+    pkg_nationality.createNationality('estonia');
+    pkg_nationality.createNationality('etiope');
+    pkg_nationality.createNationality('filipina');
+    pkg_nationality.createNationality('finlandesa');
+    pkg_nationality.createNationality('francesa');
+    pkg_nationality.createNationality('galesa');
+    pkg_nationality.createNationality('griega');
+    pkg_nationality.createNationality('guatemalteca');
+    pkg_nationality.createNationality('haitiana');
+    pkg_nationality.createNationality('holandesa');
+    pkg_nationality.createNationality('hondureña');
+    pkg_nationality.createNationality('indonesa');
+    pkg_nationality.createNationality('inglesa');
+    pkg_nationality.createNationality('iraquí');
+    pkg_nationality.createNationality('iraní');
+    pkg_nationality.createNationality('irlandesa');
+    pkg_nationality.createNationality('israelí');
+    pkg_nationality.createNationality('italiana');
+    pkg_nationality.createNationality('japonesa');
+    pkg_nationality.createNationality('mexicana');
+    pkg_nationality.createNationality('nicaragüense');
+    pkg_nationality.createNationality('noruego');
+    pkg_nationality.createNationality('neozelandesa');
+    pkg_nationality.createNationality('panameña');
+    pkg_nationality.createNationality('paraguaya');
+    pkg_nationality.createNationality('peruana');
+    pkg_nationality.createNationality('polaca');
+    pkg_nationality.createNationality('portuguesa');
+    pkg_nationality.createNationality('puertorriqueña');
+    pkg_nationality.createNationality('dominicana');
+    pkg_nationality.createNationality('rumana');
+    pkg_nationality.createNationality('rusa');
+    pkg_nationality.createNationality('sueca');
+    pkg_nationality.createNationality('suiza');
+    pkg_nationality.createNationality('tailandesa');
+    pkg_nationality.createNationality('taiwanesa');
+    pkg_nationality.createNationality('turca');
+    pkg_nationality.createNationality('ucraniana');
+    pkg_nationality.createNationality('uruguaya');
+    pkg_nationality.createNationality('venezolana');
+    pkg_nationality.createNationality('vietnamita');
+    --PERSONS--
+    pkg_person.insertPerson(305270927,'Lindsay','Morales','Bonilla','15/10/2000','fotoLin.png',2);
+    pkg_person.insertPerson(117810292,'Paula','Chaves','Alvarado','16/06/2000','fotoPau.png',3);
+    pkg_person.insertPerson(190827600,'Diana','Martínez','Sánchez','01/12/1995','fotoDiana.png',7);
+    pkg_person.insertPerson(309300576,'Gabriel','Morales','Chaves','10/03/1997','fotoGab.png',9);
+    pkg_person.insertPerson(305900567,'Harold','Arrieta','Vargas','12/09/1970','fotoHar.png',6);
+    pkg_person.insertPerson(302500999,'Luis','Meneses','Fonseca','23/08/1965','fotoLuis.png',4);
+    pkg_person.insertPerson(705270988,'Jennifer','Corrales','Aguilar','07/02/1993','fotoJen.png',1);
+    pkg_person.insertPerson(901230995,'Marta','Chacón','Gutiérrez','17/11/1969','fotoMar.png',8);
+    pkg_person.insertPerson(190872345,'Laura','Calvo','Fernández','11/02/1977','fotoLau.png',2);
+    pkg_person.insertPerson(801230965,'Jose','Estrada','Shum','12/12/1980','fotoJose.png',10);
+    pkg_person.insertPerson(902340877,'Ricardo','Víquez','Benavides','22/09/1985','fotoRich.png',15);
+    pkg_person.insertPerson(198765432,'Esteban','Cerdas','Flores','31/07/1975','fotoEst.png',2);
+    pkg_person.insertPerson(309280999,'Victoria','Smith','Sauter','29/03/2001','fotoVic.png',10);
+    pkg_person.insertPerson(802340987,'Valeria','Mesén','Zamora','02/02/1999','fotoVal.png',5);
+    pkg_person.insertPerson(304560912,'Andrey','Gallardo','Elizondo','13/11/1991','fotoAndrey.png',8);
+    pkg_person.insertPerson(190872345,'Mariana','Arce','Vega','12/12/1979','fotoMari.png',5);
+    pkg_person.insertPerson(109870222,'Verónica','Nuñez','Moya','07/08/2000','fotoVero.png',6);
+    pkg_person.insertPerson(190872345,'Leonardo','Figueroa','Torres','11/12/1983','fotoLeo.png',13);
+    pkg_person.insertPerson(902390871,'Alberto','Coto','Barrantes','16/10/1988','fotoBeto.png',3);
+    pkg_person.insertPerson(409820342,'Daniela','Hernández','Ramírez','19/05/2000','fotoDani.png',9);
+    pkg_person.insertPerson(119023874,'Douglas','Passapera','Carvajal','18/09/1989','fotoDou.png',12);
+    --USERS--
+    pkg_user.insertUser('Admin01',0,0,'lindsaymb');
+    pkg_user.insertUser('Hachu16',1,0,'mapac');
+    pkg_user.insertUser('Dicacha90',2,1,'dianachav');
+    pkg_user.insertUser('Gab03',3,1,'gabo1003');
+    pkg_user.insertUser('hav00',4,1,'haroldav');
+    pkg_user.insertUser('luis99',5,1,'luiskmen');
+    pkg_user.insertUser('jen01',6,1,'jenny_cor');
+    pkg_user.insertUser('mcg1212',7,1,'martachac');
+    pkg_user.insertUser('lauca',8,1,'laucalfons11');
+    pkg_user.insertUser('jest',9,1,'joseshum');
+    pkg_user.insertUser('ric9912',10,1,'ricardoviq');
+    pkg_user.insertUser('este00',11,1,'cerdasflores');
+    pkg_user.insertUser('victo01',12,1,'vickyss');
+    pkg_user.insertUser('vzm99',13,1,'valzam89');
+    pkg_user.insertUser('andrgall',14,1,'gallardoe');
+    pkg_user.insertUser('mav79',15,1,'marianaarc');
+    pkg_user.insertUser('vnm00',16,1,'veronuñez12');
+    pkg_user.insertUser('leo9012',17,1,'figueleo');
+    pkg_user.insertUser('Habet81',18,1,'betocoba');
+    pkg_user.insertUser('pizaju34',19,1,'danihernan');
+    pkg_user.insertUser('dou92',20,1,'89passapera');
+    --TELEPHONES--
+    pkg_telephone(84946665,0);  
+    pkg_telephone(86362856,1);
+    pkg_telephone(89326732,2);
+    pkg_telephone(67893245,3);
+    pkg_telephone(89894589,4);
+    pkg_telephone(78902345,5);
+    pkg_telephone(88674533,6);
+    pkg_telephone(88223378,7);
+    pkg_telephone(87512238,8);
+    pkg_telephone(65539012,9);
+    pkg_telephone(88231242,10);
+    pkg_telephone(75689012,11);
+    pkg_telephone(67890012,12);
+    pkg_telephone(89126732,13);
+    pkg_telephone(85639011,14);
+    pkg_telephone(73249012,15);
+    pkg_telephone(89765432,16);
+    pkg_telephone(88906672,17);
+    pkg_telephone(78902344,18);
+    pkg_telephone(81908752,19);
+    pkg_telephone(67230012,20);
+    --EMAILS--
+    
+    --CATEGORIES X PERSON--
 END;
 
 --usuarios ejemplo
