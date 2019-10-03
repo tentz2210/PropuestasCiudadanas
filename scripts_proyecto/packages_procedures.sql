@@ -269,14 +269,16 @@ END pkg_community;
 
 ----------PACKAGE PROPOSAL----------
 CREATE OR REPLACE PACKAGE pkg_proposal IS
-    PROCEDURE createProposal(pTitle VARCHAR2, pProposalDate VARCHAR2, pApproxBudget NUMBER,
+    PROCEDURE createProposal(pTitle VARCHAR2, pApproxBudget NUMBER,
                              pDescription VARCHAR2, pCategoryCode NUMBER, pIdNumber NUMBER);
     PROCEDURE deleteProposal(pid_proposal NUMBER);
+    PROCEDURE getProposals(pid_number NUMBER, p_category_filter NUMBER, p_vote_filter NUMBER, pafter_date VARCHAR2, 
+                           pbefore_date VARCHAR2, p_proposal_cursor IN OUT SYS_REFCURSOR);
 END pkg_proposal;
 
 CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
     ------PROCEDURE INSERT------
-    PROCEDURE createProposal(pTitle VARCHAR2, pProposalDate VARCHAR2, pApproxBudget NUMBER,
+    PROCEDURE createProposal(pTitle VARCHAR2, pApproxBudget NUMBER,
                          pDescription VARCHAR2, pCategoryCode NUMBER, pIdNumber NUMBER) IS
     BEGIN
         INSERT INTO pc.proposal(id_proposal, category_code, id_number, description, approximate_budget, title, proposal_date)
@@ -302,6 +304,34 @@ CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
             DBMS_OUTPUT.PUT_LINE('Error al eliminar');
             ROLLBACK;
     END;
+    
+    ------PROCEDURE getProposals------
+    PROCEDURE getProposals(pid_number NUMBER, p_category_filter NUMBER, p_vote_filter NUMBER, pafter_date VARCHAR2, 
+                           pbefore_date VARCHAR2, p_proposal_cursor IN OUT SYS_REFCURSOR) IS
+        vstart_date DATE;
+        vend_date DATE;
+    BEGIN
+        vstart_date := TO_DATE(pafter_date, 'DD/MM/YYYY');
+        vend_date := TO_DATE(pbefore_date, 'DD/MM/YYYY');
+    
+        OPEN p_proposal_cursor FOR
+            SELECT c.category_name, p.title, p.description, p.approximate_budget, p.proposal_date, p.id_number, fav
+            FROM pc.proposal p INNER JOIN pc.category c
+            ON p.category_code = c.category_code
+            FULL OUTER JOIN (SELECT category_code fav
+                             FROM pc.category_x_person cxp
+                             WHERE cxp.id_number = pid_number)
+            ON p.category_code = fav
+            WHERE p.category_code = NVL(p_category_filter, p.category_code)
+            AND (p.proposal_date BETWEEN NVL(vstart_date, p.proposal_date) AND NVL(vend_date, p.proposal_date))
+            ORDER BY fav NULLS LAST;
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error getting proposals');
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+            DBMS_OUTPUT.PUT_LINE(SQLCODE);
+    END;
+    
 END pkg_proposal;
 
 ----------PACKAGE CATEGORY----------
@@ -596,6 +626,7 @@ END pkg_vote_x_person;
 ----------PACKAGE CATEGORY X PERSON----------
 CREATE OR REPLACE PACKAGE pkg_category_x_person IS
     PROCEDURE insertFavoriteCategory(pIdNumber NUMBER, pCategoryCode NUMBER);
+    PROCEDURE deleteFavoriteCategory(pIdNumber NUMBER, pCategoryCode NUMBER);
 END pkg_category_x_person;
 
 CREATE OR REPLACE PACKAGE BODY pkg_category_x_person AS
@@ -615,6 +646,19 @@ CREATE OR REPLACE PACKAGE BODY pkg_category_x_person AS
     ------PROCEDURE UPDATE------
     
     ------PROCEDURE DELETE------
+    PROCEDURE deleteFavoriteCategory(pIdNumber NUMBER, pCategoryCode NUMBER) IS
+    BEGIN
+        DELETE FROM category_x_person
+        WHERE id_number = pidNumber
+        AND category_code = pcategoryCode;
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error deleting favorite');
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+            DBMS_OUTPUT.PUT_LINE(SQLCODE);
+            ROLLBACK;
+    END;
     
 END pkg_category_x_person;
     
