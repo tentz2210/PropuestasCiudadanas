@@ -276,6 +276,7 @@ CREATE OR REPLACE PACKAGE pkg_proposal IS
                            pbefore_date VARCHAR2, p_proposal_cursor IN OUT SYS_REFCURSOR);
     PROCEDURE getTopCommunityProposals(p_top_cursor IN OUT SYS_REFCURSOR);
     PROCEDURE getTopVotedProposals(p_top_cursor IN OUT SYS_REFCURSOR);
+    FUNCTION countVotes(pid_proposal NUMBER) RETURN NUMBER;
 END pkg_proposal;
 
 CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
@@ -307,6 +308,15 @@ CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
             ROLLBACK;
     END;
     
+    ------FUNCTION countVotes------
+    FUNCTION countVotes(pid_proposal NUMBER) RETURN NUMBER IS
+        v_vote_amount NUMBER(8);
+    BEGIN 
+        SELECT count(vxp.id_number) INTO v_vote_amount
+        FROM pc.vote_x_person vxp
+        WHERE vxp.id_proposal = NVL(pid_proposal, vxp.id_proposal);
+    END;
+    
     ------PROCEDURE getProposals------
     PROCEDURE getProposals(pid_number NUMBER, p_category_filter NUMBER, p_vote_filter NUMBER, pafter_date VARCHAR2, 
                            pbefore_date VARCHAR2, p_proposal_cursor IN OUT SYS_REFCURSOR) IS
@@ -317,8 +327,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
         vend_date := TO_DATE(pbefore_date, 'DD/MM/YYYY');
     
         OPEN p_proposal_cursor FOR
-            SELECT c.category_name, p.title, p.description, p.approximate_budget, p.proposal_date, p.id_number, fav
-            FROM pc.proposal p INNER JOIN pc.category c
+            SELECT c.category_name, p.title, p.description, p.approximate_budget, p.proposal_date, pe.first_name||' '||pe.first_last_name name,
+            fav, count(*) OVER (PARTITION BY c.category_name) AS category_count
+            FROM pc.proposal p INNER JOIN pc.person pe
+            ON p.id_number = pe.id_number
+            INNER JOIN pc.category c
             ON p.category_code = c.category_code
             FULL OUTER JOIN (SELECT category_code fav
                              FROM pc.category_x_person cxp
@@ -326,7 +339,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
             ON p.category_code = fav
             WHERE p.category_code = NVL(p_category_filter, p.category_code)
             AND (p.proposal_date BETWEEN NVL(vstart_date, p.proposal_date) AND NVL(vend_date, p.proposal_date))
-            ORDER BY fav NULLS LAST;
+            AND pkg_proposal.countVotes(p.id_proposal) >= NVL(p_vote_filter, 0)
+            ORDER BY c.category_name, fav NULLS LAST;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error getting proposals');
