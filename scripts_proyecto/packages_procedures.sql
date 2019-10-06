@@ -274,6 +274,8 @@ CREATE OR REPLACE PACKAGE pkg_proposal IS
     PROCEDURE deleteProposal(pid_proposal NUMBER);
     PROCEDURE getProposals(pid_number NUMBER, p_category_filter NUMBER, p_vote_filter NUMBER, pafter_date VARCHAR2, 
                            pbefore_date VARCHAR2, p_proposal_cursor IN OUT SYS_REFCURSOR);
+    PROCEDURE getTopCommunityProposals(p_top_cursor IN OUT SYS_REFCURSOR);
+    PROCEDURE getTopVotedProposals(p_top_cursor IN OUT SYS_REFCURSOR);
 END pkg_proposal;
 
 CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
@@ -330,6 +332,45 @@ CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
             DBMS_OUTPUT.PUT_LINE('Error getting proposals');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
+    END;
+    
+    ------PROCEDURE getTopCommunityProposals------
+    PROCEDURE getTopCommunityProposals(p_top_cursor IN OUT SYS_REFCURSOR) IS
+    
+    BEGIN
+        OPEN p_top_cursor FOR
+            WITH top_communities AS (SELECT communities, proposal_amount, RANK() OVER(ORDER BY proposal_amount DESC) proposal_rank
+            FROM (SELECT c.community_name communities, count(p.id_proposal) proposal_amount
+                  FROM pc.proposal p INNER JOIN pc.person pe
+                  ON p.id_number = pe.id_number
+                  INNER JOIN pc.community c
+                  ON pe.id_community = c.id_community
+                  GROUP BY c.community_name))
+            SELECT communities, proposal_amount, proposal_rank
+            FROM top_communities
+            WHERE proposal_rank <= 5; --Aqui va el parametro
+            
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error getting top');
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+            DBMS_OUTPUT.PUT_LINE(SQLCODE);
+            ROLLBACK;
+    END;
+    
+    ------PROCEDURE getTopCommunityProposals------
+    PROCEDURE getTopVotedProposals(p_top_cursor IN OUT SYS_REFCURSOR) IS
+    
+    BEGIN
+        OPEN p_top_cursor FOR
+        WITH top_voted AS (SELECT proposal_id, proposal_title, votes, RANK() OVER(ORDER BY votes DESC) vote_rank
+        FROM (SELECT p.id_proposal proposal_id, p.title proposal_title, COUNT(vxp.id_number) votes
+              FROM pc.proposal p INNER JOIN pc.vote_x_person vxp
+              ON p.id_proposal = vxp.id_proposal
+              GROUP BY p.id_proposal, p.title))
+        SELECT proposal_id, proposal_title, votes, vote_rank
+        FROM top_voted
+        WHERE vote_rank <= 5; --Aqui va el parametro
     END;
     
 END pkg_proposal;
