@@ -666,9 +666,10 @@ END pkg_category_x_person;
 CREATE OR REPLACE PACKAGE pkg_user IS
     PROCEDURE insertUser(pPassword VARCHAR2, pIdNumber NUMBER, pIdUserType NUMBER, pUserName VARCHAR2);
     PROCEDURE deleteUser(pid_user NUMBER);
-    PROCEDURE checkLogin(p_username IN VARCHAR2, p_password IN VARCHAR2, pid_user OUT NUMBER, p_result IN OUT NUMBER);
+    PROCEDURE checkLogin(p_username IN VARCHAR2, p_password IN VARCHAR2, pid_user OUT NUMBER, p_user_type OUT VARCHAR2, p_result IN OUT NUMBER);
     PROCEDURE registerUser(p_id NUMBER, pfirst_name VARCHAR2, pfirst_last_name VARCHAR2, psecond_last_name VARCHAR2, pdate_of_birth VARCHAR2,
-                           pphoto VARCHAR2, pid_community NUMBER, puser_name VARCHAR2, puser_password VARCHAR2, pid_user_type NUMBER);
+                           pphoto VARCHAR2, pid_community NUMBER, puser_name VARCHAR2, puser_password VARCHAR2, pid_user_type NUMBER,
+                           p_email VARCHAR2);
 END pkg_user;
 
 CREATE OR REPLACE PACKAGE BODY pkg_user AS
@@ -701,7 +702,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_user AS
     
     ------PROCEDURE registerUser------
     PROCEDURE registerUser(p_id NUMBER, pfirst_name VARCHAR2, pfirst_last_name VARCHAR2, psecond_last_name VARCHAR2, pdate_of_birth VARCHAR2,
-                           pphoto VARCHAR2, pid_community NUMBER, puser_name VARCHAR2, puser_password VARCHAR2, pid_user_type NUMBER) IS
+                           pphoto VARCHAR2, pid_community NUMBER, puser_name VARCHAR2, puser_password VARCHAR2, pid_user_type NUMBER,
+                           p_email VARCHAR2) IS
         vid_number NUMBER(20);                
     BEGIN
         vid_number := pc.s_person_id.nextval;
@@ -711,6 +713,9 @@ CREATE OR REPLACE PACKAGE BODY pkg_user AS
                 
         INSERT INTO pc.person_user(id_user, user_name, user_password, id_number, id_user_type)
         VALUES (pc.s_user_id.nextval, puser_name, puser_password, vid_number, pid_user_type);
+        
+        INSERT INTO pc.email(id_number, mail)
+        VALUES (vid_number, p_email);
         COMMIT;
     EXCEPTION
         WHEN OTHERS THEN
@@ -720,12 +725,13 @@ CREATE OR REPLACE PACKAGE BODY pkg_user AS
             ROLLBACK;
     END;
     ------PROCEDURE checkLogin------
-    PROCEDURE checkLogin(p_username IN VARCHAR2, p_password IN VARCHAR2, pid_user OUT NUMBER, p_result IN OUT NUMBER) IS
+    PROCEDURE checkLogin(p_username IN VARCHAR2, p_password IN VARCHAR2, pid_user OUT NUMBER, p_user_type OUT VARCHAR2, p_result IN OUT NUMBER) IS
     BEGIN
-        SELECT id_user INTO pid_user
-        FROM pc.person_user
-        WHERE user_name = p_username
-        AND user_password = p_password;
+        SELECT pu.id_user, ut.user_type_name INTO pid_user, p_user_type
+        FROM pc.person_user pu inner join pc.user_type ut
+        ON pu.id_user_type = ut.id_user_type
+        WHERE pu.user_name = p_username
+        AND pu.user_password = p_password;
         p_result := 1;
     EXCEPTION
         WHEN NO_DATA_FOUND THEN
