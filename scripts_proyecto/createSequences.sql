@@ -127,6 +127,15 @@ CREATE SEQUENCE s_password_change_number
     MAXVALUE 10000000
     NOCACHE
     NOCYCLE;
+    
+--Sequence for table daily_top
+CREATE SEQUENCE s_daily_top_id
+    START WITH 1
+    INCREMENT BY 1
+    MINVALUE 1
+    MAXVALUE 10000000
+    NOCACHE
+    NOCYCLE;
 
 
 

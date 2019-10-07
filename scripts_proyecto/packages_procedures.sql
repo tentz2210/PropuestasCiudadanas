@@ -315,6 +315,13 @@ CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
         SELECT count(vxp.id_number) INTO v_vote_amount
         FROM pc.vote_x_person vxp
         WHERE vxp.id_proposal = NVL(pid_proposal, vxp.id_proposal);
+        RETURN v_vote_amount;
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error counting votes');
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+            DBMS_OUTPUT.PUT_LINE(SQLCODE);
+            RETURN -1;
     END;
     
     ------PROCEDURE getProposals------
@@ -327,8 +334,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
         vend_date := TO_DATE(pbefore_date, 'DD/MM/YYYY');
     
         OPEN p_proposal_cursor FOR
-            SELECT c.category_name, p.title, p.description, p.approximate_budget, p.proposal_date, pe.first_name||' '||pe.first_last_name name,
-            fav, count(*) OVER (PARTITION BY c.category_name) AS category_count
+            SELECT c.category_name, p.title, p.description, p.approximate_budget, p.proposal_date,
+                   pe.first_name||' '||pe.first_last_name name, fav
             FROM pc.proposal p INNER JOIN pc.person pe
             ON p.id_number = pe.id_number
             INNER JOIN pc.category c
@@ -340,7 +347,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
             WHERE p.category_code = NVL(p_category_filter, p.category_code)
             AND (p.proposal_date BETWEEN NVL(vstart_date, p.proposal_date) AND NVL(vend_date, p.proposal_date))
             AND pkg_proposal.countVotes(p.id_proposal) >= NVL(p_vote_filter, 0)
-            ORDER BY c.category_name, fav NULLS LAST;
+            ORDER BY fav NULLS LAST, c.category_name;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error getting proposals');
@@ -724,7 +731,7 @@ CREATE OR REPLACE PACKAGE pkg_user IS
     PROCEDURE checkLogin(p_username IN VARCHAR2, p_password IN VARCHAR2, pid_user OUT NUMBER, p_user_type OUT VARCHAR2, p_result IN OUT NUMBER);
     PROCEDURE registerUser(p_id NUMBER, pfirst_name VARCHAR2, pfirst_last_name VARCHAR2, psecond_last_name VARCHAR2, pdate_of_birth VARCHAR2,
                            pphoto VARCHAR2, pid_community NUMBER, puser_name VARCHAR2, puser_password VARCHAR2, pid_user_type NUMBER,
-                           p_email VARCHAR2);
+                           p_email VARCHAR2, p_phone_number NUMBER, p_id_nationality NUMBER);
 END pkg_user;
 
 CREATE OR REPLACE PACKAGE BODY pkg_user AS
@@ -758,7 +765,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_user AS
     ------PROCEDURE registerUser------
     PROCEDURE registerUser(p_id NUMBER, pfirst_name VARCHAR2, pfirst_last_name VARCHAR2, psecond_last_name VARCHAR2, pdate_of_birth VARCHAR2,
                            pphoto VARCHAR2, pid_community NUMBER, puser_name VARCHAR2, puser_password VARCHAR2, pid_user_type NUMBER,
-                           p_email VARCHAR2) IS
+                           p_email VARCHAR2, p_phone_number NUMBER, p_id_nationality NUMBER) IS
         vid_number NUMBER(20);                
     BEGIN
         vid_number := pc.s_person_id.nextval;
@@ -771,6 +778,12 @@ CREATE OR REPLACE PACKAGE BODY pkg_user AS
         
         INSERT INTO pc.email(id_number, mail)
         VALUES (vid_number, p_email);
+        
+        INSERT INTO pc.telephone(id_number, phone_number)
+        VALUES (vid_number, p_phone_number);
+        
+        INSERT INTO pc.nationality_x_person(id_number, id_nationality)
+        VALUES (vid_number, p_id_nationality);
         COMMIT;
     EXCEPTION
         WHEN OTHERS THEN

@@ -760,4 +760,40 @@ IS 'Last user that modified the row.';
 ALTER TABLE password_change
 ADD (CONSTRAINT fk_password_change_user
      FOREIGN KEY (id_user)
-     REFERENCES pc.person_user(id_user)); 
+     REFERENCES pc.person_user(id_user));
+     
+--TABLE DAILY_TOP
+CREATE TABLE daily_top
+(
+    id_top NUMBER(8),
+        CONSTRAINT pk_daily_top PRIMARY KEY (id_top)
+        USING INDEX
+        TABLESPACE pcadmin_ind PCTFREE 20
+        STORAGE (INITIAL 10K NEXT 10K PCTINCREASE 0),
+    id_proposal NUMBER(8),
+        CONSTRAINT fk_daily_top_proposal
+        FOREIGN KEY (id_proposal)
+        REFERENCES pc.proposal(id_proposal),
+    top_date DATE CONSTRAINT top_date_nn NOT NULL,
+    creation_date     DATE CONSTRAINT daily_top_creation_date_nn NOT NULL,
+    created_by        VARCHAR2(10) CONSTRAINT daily_top_created_by_nn NOT NULL,
+    last_modify_date  DATE,
+    last_modified_by  VARCHAR2(10)
+);
+
+COMMENT ON TABLE daily_top
+IS 'Table that contains information about the most voted proposal of every community, which is done by a job daily.';
+COMMENT ON COLUMN daily_top.id_top
+IS 'Row primary key';
+COMMENT ON COLUMN daily_top.id_proposal
+IS 'Foreign key to the proposal with most votes for a community.';
+COMMENT ON COLUMN daily_top.top_date
+IS 'Date when the top was performed.';
+COMMENT ON COLUMN daily_top.creation_date
+IS 'Row creation date.';
+COMMENT ON COLUMN daily_top.created_by
+IS 'Row creator.';
+COMMENT ON COLUMN daily_top.last_modify_date
+IS 'Last row modification date.';
+COMMENT ON COLUMN daily_top.last_modified_by
+IS 'Last user that modified the row.'; 
