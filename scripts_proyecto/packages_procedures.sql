@@ -276,6 +276,8 @@ CREATE OR REPLACE PACKAGE pkg_proposal IS
                            pbefore_date VARCHAR2, p_proposal_cursor IN OUT SYS_REFCURSOR);
     PROCEDURE getTopCommunityProposals(p_top_cursor IN OUT SYS_REFCURSOR);
     PROCEDURE getTopVotedProposals(p_top_cursor IN OUT SYS_REFCURSOR);
+    PROCEDURE getProposalsByUser(pid_number IN NUMBER, p_proposal_cursor IN OUT SYS_REFCURSOR, ptotal_proposals OUT NUMBER);
+    --
     PROCEDURE getStatisticsPerCategory(p_proposal_cat_cursor IN OUT SYS_REFCURSOR);
     PROCEDURE getStatisticsPerCountry(p_proposal_country_cursor IN OUT SYS_REFCURSOR);
     PROCEDURE getStatisticsPerProvince(p_proposal_province_cursor IN OUT SYS_REFCURSOR);
@@ -385,7 +387,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
             ROLLBACK;
     END;
     
-    ------PROCEDURE getTopCommunityProposals------
+    ------PROCEDURE getTopVotedProposals------
     PROCEDURE getTopVotedProposals(p_top_cursor IN OUT SYS_REFCURSOR) IS
     
     BEGIN
@@ -398,6 +400,26 @@ CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
         SELECT proposal_id, proposal_title, votes, vote_rank
         FROM top_voted
         WHERE vote_rank <= 5; --Aqui va el parametro
+    END;
+    
+    ------PROCEDURE getProposalsByUser------
+    PROCEDURE getProposalsByUser(pid_number IN NUMBER, p_proposal_cursor IN OUT SYS_REFCURSOR, ptotal_proposals OUT NUMBER) IS
+    BEGIN
+        OPEN p_proposal_cursor FOR
+            SELECT p.title, p.description, p.approximate_budget, p.proposal_date, c.category_name
+            FROM pc.proposal p INNER JOIN pc.category c
+            ON p.category_code = c.category_code
+            WHERE p.id_number = pid_number;
+            
+        SELECT COUNT(p.id_proposal) INTO ptotal_proposals
+        FROM pc.proposal p
+        WHERE p.id_number = pid_number;
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error getting user proposals.');
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+            DBMS_OUTPUT.PUT_LINE(SQLCODE);
+            ptotal_proposals:= -1;
     END;
     
     ------PROCEDURE getStatisticsPerCategory------
@@ -1243,3 +1265,37 @@ CREATE OR REPLACE PACKAGE BODY pkg_parameter AS
     END;
     
 END pkg_parameter;
+		 
+		  
+--En pcadmin
+CREATE OR REPLACE PACKAGE pkg_password_log IS
+    PROCEDURE getPasswordLogReport(pfilter_name VARCHAR2, pfilter_middle_name VARCHAR2, pfilter_last_name VARCHAR2,
+                                   pfilter_username VARCHAR2, pfilter_id NUMBER, p_report_cursor IN OUT SYS_REFCURSOR);
+END pkg_password_log;
+
+CREATE OR REPLACE PACKAGE BODY pkg_password_log IS
+
+    ------PROCEDURE getPasswordReport------
+    PROCEDURE getPasswordLogReport(pfilter_name VARCHAR2, pfilter_middle_name VARCHAR2, pfilter_last_name VARCHAR2,
+                                   pfilter_username VARCHAR2, pfilter_id NUMBER, p_report_cursor IN OUT SYS_REFCURSOR) IS
+        vdate_limit DATE;
+        vcurrent_date DATE;
+    BEGIN
+        vcurrent_date := trunc(SYSDATE);
+        vdate_limit := vcurrent_date - 10;
+        OPEN p_report_cursor FOR
+            SELECT pu.user_name, pe.first_name||' '||pe.first_last_name||' '||pe.second_last_name full_name, pe.id, vcurrent_date - pwc.doc
+            FROM pc.person_user pu INNER JOIN pc.person pe
+            ON pu.id_number = pe.id_number
+            INNER JOIN (SELECT id_user, trunc(date_of_change) doc
+                        FROM pcadmin.password_change
+                        WHERE date_of_change > vdate_limit) pwc
+            ON pu.id_user = pwc.id_user
+            WHERE pu.user_name = NVL(pfilter_username, pu.user_name)
+            AND pe.first_name = NVL(pfilter_name, pe.first_name)
+            AND pe.first_last_name = NVL(pfilter_middle_name, pe.first_last_name)
+            AND pe.second_last_name = NVL(pfilter_last_name, pe.second_last_name)
+            AND pe.id = NVL(pfilter_id, pe.id);
+    END;
+END pkg_password_log;
+
