@@ -468,7 +468,12 @@ END;
 
 --usuarios ejemplo
 BEGIN
-    pkg_user.registerUser(123456, 'Hans', 'Fernandez', 'Murillo', '22/10/1998', 'TO_DO', 10, 'tentz2210', '123456', 2);
+    pkg_user.registerUser(123456, 'Hans', 'Fernandez', 'Murillo', '22/10/1998', 'fotoHan.png', 10,
+                          'tentz2210', '123456', 2, 'ejemplo3@ejm.com', 88060199, 13);
+    pkg_user.registerUser(305270927,'Lindsay','Morales','Bonilla','15/10/2000','fotoLin.png', 20, 
+                          'Admin01', 'lindsaymb', 1, 'ejemplo1@ejm.com', 84946665,13);
+    pkg_user.registerUser(117810292,'Paula','Chaves','Alvarado','16/06/2000','fotoPau.png', 21, 
+                          'Hachu16', 'mapac', 2, 'ejemplo2@ejm.com', 86362856, 13);
 END;
 
 --Prueba login
