@@ -676,6 +676,13 @@ CREATE OR REPLACE PACKAGE pkg_person IS
     PROCEDURE insertPerson(pId NUMBER, pFirstName VARCHAR2, pFirstLastName VARCHAR2, pSecondLastName VARCHAR2, 
                            pDateOfBirth DATE, pPhoto VARCHAR2,pIdCommunity NUMBER);
     PROCEDURE deletePerson(pid_number NUMBER);
+    PROCEDURE getStatisticsPerCountry(p_user_country_cursor IN OUT SYS_REFCURSOR);
+    PROCEDURE getStatisticsPerProvince(p_user_province_cursor IN OUT SYS_REFCURSOR);
+    PROCEDURE getStatisticsPerCanton(p_user_canton_cursor IN OUT SYS_REFCURSOR);
+    PROCEDURE getStatisticsPerDistrict(p_user_district_cursor IN OUT SYS_REFCURSOR);
+    PROCEDURE getStatisticsPerCommunity(p_user_community_cursor IN OUT SYS_REFCURSOR);
+    FUNCTION getAgeRank(p_date_of_birth DATE) RETURN VARCHAR2;
+    PROCEDURE getStatisticsUsersAge(p_user_age_cursor IN OUT SYS_REFCURSOR);
 END pkg_person;
 
 CREATE OR REPLACE PACKAGE BODY pkg_person AS
@@ -705,6 +712,196 @@ CREATE OR REPLACE PACKAGE BODY pkg_person AS
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error al eliminar');
             ROLLBACK;
+    END;
+    
+    ------PROCEDURE getStatisticsPerCountry------
+    PROCEDURE getStatisticsPerCountry(p_user_country_cursor IN OUT SYS_REFCURSOR) IS
+    vnTotalUsers NUMBER(10);
+    BEGIN
+        SELECT count (1)
+        INTO vnTotalUsers
+        FROM pc.person;
+
+        OPEN p_user_country_cursor FOR
+            SELECT co.country_name country, count(1) AS "Number of users", count(1)/vnTotalUsers *100 AS "Percentage"
+            FROM pc.person p INNER JOIN pc.community c
+            ON p.id_community = c.id_community
+            INNER JOIN pc.district d ON c.id_district = d.id_district
+            INNER JOIN pc.canton ca ON d.id_canton = ca.id_canton
+            INNER JOIN pc.province pr ON ca.id_province = pr.id_province
+            INNER JOIN pc.country co ON pr.id_country = co.id_country
+            GROUP BY co.country_name;
+
+        EXCEPTION 
+        WHEN CURSOR_ALREADY_OPEN THEN
+            DBMS_OUTPUT.PUT_LINE('Cursor is already open');
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('General Error');
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+            DBMS_OUTPUT.PUT_LINE(SQLCODE);
+    END;
+    
+    ------PROCEDURE getStatisticsPerProvince------
+    PROCEDURE getStatisticsPerProvince(p_user_province_cursor IN OUT SYS_REFCURSOR) IS
+    vnTotalUsers NUMBER(10);
+    BEGIN
+        SELECT count (1)
+        INTO vnTotalUsers
+        FROM pc.person;
+
+        OPEN p_user_province_cursor FOR
+            SELECT co.country_name||','||pr.province_name statIdentifier, count(1) AS "Number of users", count(1)/vnTotalUsers *100 AS "Percentage"
+            FROM pc.person p INNER JOIN pc.community c
+            ON p.id_community = c.id_community
+            INNER JOIN pc.district d ON c.id_district = d.id_district
+            INNER JOIN pc.canton ca ON d.id_canton = ca.id_canton
+            INNER JOIN pc.province pr ON ca.id_province = pr.id_province
+            INNER JOIN pc.country co ON pr.id_country = co.id_country
+            GROUP BY co.country_name||','||pr.province_name;
+
+        EXCEPTION 
+        WHEN CURSOR_ALREADY_OPEN THEN
+            DBMS_OUTPUT.PUT_LINE('Cursor is already open');
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('General Error');
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+            DBMS_OUTPUT.PUT_LINE(SQLCODE);
+    END;
+    
+    ------PROCEDURE getStatisticsPerCanton------
+    PROCEDURE getStatisticsPerCanton(p_user_canton_cursor IN OUT SYS_REFCURSOR) IS
+    vnTotalUsers NUMBER(10);
+    BEGIN
+        SELECT count (1)
+        INTO vnTotalUsers
+        FROM pc.person;
+
+        OPEN p_user_canton_cursor FOR
+            SELECT co.country_name||','||pr.province_name||','||ca.canton_name statIdentifier, count(1) AS "Number of users", count(1)/vnTotalUsers *100 AS "Percentage"
+            FROM pc.person p INNER JOIN pc.community c
+            ON p.id_community = c.id_community
+            INNER JOIN pc.district d ON c.id_district = d.id_district
+            INNER JOIN pc.canton ca ON d.id_canton = ca.id_canton
+            INNER JOIN pc.province pr ON ca.id_province = pr.id_province
+            INNER JOIN pc.country co ON pr.id_country = co.id_country
+            GROUP BY co.country_name||','||pr.province_name||','||ca.canton_name;
+
+        EXCEPTION 
+        WHEN CURSOR_ALREADY_OPEN THEN
+            DBMS_OUTPUT.PUT_LINE('Cursor is already open');
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('General Error');
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+            DBMS_OUTPUT.PUT_LINE(SQLCODE);
+    END;
+    
+    ------PROCEDURE getStatisticsPerDistrict------
+    PROCEDURE getStatisticsPerDistrict(p_user_district_cursor IN OUT SYS_REFCURSOR) IS
+    vnTotalUsers NUMBER(10);
+    BEGIN
+        SELECT count (1)
+        INTO vnTotalUsers
+        FROM pc.person;
+
+        OPEN p_user_district_cursor FOR
+            SELECT co.country_name||','||pr.province_name||','||ca.canton_name||','||d.district_name statIdentifier, count(1) AS "Number of users", count(1)/vnTotalUsers *100 AS "Percentage"
+            FROM pc.person p INNER JOIN pc.community c
+            ON p.id_community = c.id_community
+            INNER JOIN pc.district d ON c.id_district = d.id_district
+            INNER JOIN pc.canton ca ON d.id_canton = ca.id_canton
+            INNER JOIN pc.province pr ON ca.id_province = pr.id_province
+            INNER JOIN pc.country co ON pr.id_country = co.id_country
+            GROUP BY co.country_name||','||pr.province_name||','||ca.canton_name||','||d.district_name;
+
+        EXCEPTION 
+        WHEN CURSOR_ALREADY_OPEN THEN
+            DBMS_OUTPUT.PUT_LINE('Cursor is already open');
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('General Error');
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+            DBMS_OUTPUT.PUT_LINE(SQLCODE);
+    END;
+    
+    ------PROCEDURE getStatisticsPerCommunity------
+    PROCEDURE getStatisticsPerCommunity(p_user_community_cursor IN OUT SYS_REFCURSOR) IS
+    vnTotalUsers NUMBER(10);
+    BEGIN
+        SELECT count (1)
+        INTO vnTotalUsers
+        FROM pc.person;
+
+        OPEN p_user_community_cursor FOR
+            SELECT co.country_name||','||pr.province_name||','||ca.canton_name||','||d.district_name||','||c.community_name statIdentifier, count(1) AS "Number of users", count(1)/vnTotalUsers *100 AS "Percentage"
+            FROM pc.person p INNER JOIN pc.community c
+            ON p.id_community = c.id_community
+            INNER JOIN pc.district d ON c.id_district = d.id_district
+            INNER JOIN pc.canton ca ON d.id_canton = ca.id_canton
+            INNER JOIN pc.province pr ON ca.id_province = pr.id_province
+            INNER JOIN pc.country co ON pr.id_country = co.id_country
+            GROUP BY co.country_name||','||pr.province_name||','||ca.canton_name||','||d.district_name||','||c.community_name;
+
+        EXCEPTION 
+        WHEN CURSOR_ALREADY_OPEN THEN
+            DBMS_OUTPUT.PUT_LINE('Cursor is already open');
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('General Error');
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+            DBMS_OUTPUT.PUT_LINE(SQLCODE);
+    END;
+    
+    ------FUNCTION getAgeRankId------
+    FUNCTION getAgeRank(p_date_of_birth DATE) RETURN VARCHAR2 IS
+    vnAge NUMBER(3);
+    vcRank VARCHAR2(10);
+    BEGIN
+        vnAge:= FLOOR((SYSDATE - p_date_of_birth)/365.25);
+        IF (vnAge BETWEEN 0 AND 18) THEN
+            vcRank := '0 a 18';
+        ELSIF (vnAge BETWEEN 19 AND 30) THEN
+            vcRank := '19 a 30';
+        ELSIF (vnAge BETWEEN 30 AND 45) THEN
+            vcRank := '30 a 45';
+        ELSIF (vnAge BETWEEN 46 AND 55) THEN
+            vcRank := '46 a 55';
+        ELSIF (vnAge BETWEEN 55 AND 65) THEN
+            vcRank := '55 a 65';
+        ELSIF (vnAge BETWEEN 66 AND 75) THEN
+            vcRank := '66 a 75';
+        ELSIF (vnAge BETWEEN 76 AND 85) THEN
+            vcRank := '76 a 85';
+        ELSE --vnAge > 85
+            vcRank := 'mayor a 85';
+        END IF;
+        RETURN vcRank;
+        
+        EXCEPTION
+            WHEN OTHERS THEN
+                DBMS_OUTPUT.PUT_LINE('Error getting age rank');
+                DBMS_OUTPUT.PUT_LINE(SQLERRM);
+                DBMS_OUTPUT.PUT_LINE(SQLCODE);
+                RETURN '';
+    END;
+    
+    ------PROCEDURE getStatisticsUsersAge------
+    PROCEDURE getStatisticsUsersAge(p_user_age_cursor IN OUT SYS_REFCURSOR) IS
+    vnTotalUsers NUMBER(10);
+    BEGIN
+        SELECT count (1)
+        INTO vnTotalUsers
+        FROM pc.person;
+        
+        OPEN p_user_age_cursor FOR
+            SELECT age_rank, count(1) total, count(1)/vnTotalUsers * 100 percentage
+            FROM (SELECT pkg_person.getAgeRank(p.date_of_birth) age_rank FROM pc.person p)
+            GROUP BY age_rank;
+        
+        EXCEPTION 
+        WHEN CURSOR_ALREADY_OPEN THEN
+            DBMS_OUTPUT.PUT_LINE('Cursor is already open');
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('General Error');
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+            DBMS_OUTPUT.PUT_LINE(SQLCODE);        
     END;
     
 END pkg_person;
@@ -901,12 +1098,6 @@ CREATE OR REPLACE PACKAGE pkg_user IS
     PROCEDURE registerUser(p_id NUMBER, pfirst_name VARCHAR2, pfirst_last_name VARCHAR2, psecond_last_name VARCHAR2, pdate_of_birth VARCHAR2,
                            pphoto VARCHAR2, pid_community NUMBER, puser_name VARCHAR2, puser_password VARCHAR2, pid_user_type NUMBER,
                            p_email VARCHAR2, p_phone_number NUMBER, p_id_nationality NUMBER);
-    PROCEDURE getStatisticsPerCountry(p_user_country_cursor IN OUT SYS_REFCURSOR);
-    PROCEDURE getStatisticsPerProvince(p_user_province_cursor IN OUT SYS_REFCURSOR);
-    PROCEDURE getStatisticsPerCanton(p_user_canton_cursor IN OUT SYS_REFCURSOR);
-    PROCEDURE getStatisticsPerDistrict(p_user_district_cursor IN OUT SYS_REFCURSOR);
-    PROCEDURE getStatisticsPerCommunity(p_user_community_cursor IN OUT SYS_REFCURSOR);
-    
 END pkg_user;
 
 CREATE OR REPLACE PACKAGE BODY pkg_user AS
@@ -988,141 +1179,6 @@ CREATE OR REPLACE PACKAGE BODY pkg_user AS
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             p_result :=0;
-    END;
-    
-    ------PROCEDURE getStatisticsPerCountry------
-    PROCEDURE getStatisticsPerCountry(p_user_country_cursor IN OUT SYS_REFCURSOR) IS
-    vnTotalUsers NUMBER(10);
-    BEGIN
-        SELECT count (1)
-        INTO vnTotalUsers
-        FROM pc.person;
-
-        OPEN p_user_country_cursor FOR
-            SELECT co.country_name country, count(1) AS "Number of users", count(1)/vnTotalUsers *100 AS "Percentage"
-            FROM pc.person p INNER JOIN pc.community c
-            ON p.id_community = c.id_community
-            INNER JOIN pc.district d ON c.id_district = d.id_district
-            INNER JOIN pc.canton ca ON d.id_canton = ca.id_canton
-            INNER JOIN pc.province pr ON ca.id_province = pr.id_province
-            INNER JOIN pc.country co ON pr.id_country = co.id_country
-            GROUP BY co.country_name;
-
-        EXCEPTION 
-        WHEN CURSOR_ALREADY_OPEN THEN
-            DBMS_OUTPUT.PUT_LINE('Cursor is already open');
-        WHEN OTHERS THEN
-            DBMS_OUTPUT.PUT_LINE('General Error');
-            DBMS_OUTPUT.PUT_LINE(SQLERRM);
-            DBMS_OUTPUT.PUT_LINE(SQLCODE);
-    END;
-    
-    ------PROCEDURE getStatisticsPerProvince------
-    PROCEDURE getStatisticsPerProvince(p_user_province_cursor IN OUT SYS_REFCURSOR) IS
-    vnTotalUsers NUMBER(10);
-    BEGIN
-        SELECT count (1)
-        INTO vnTotalUsers
-        FROM pc.person;
-
-        OPEN p_user_province_cursor FOR
-            SELECT co.country_name||','||pr.province_name statIdentifier, count(1) AS "Number of users", count(1)/vnTotalUsers *100 AS "Percentage"
-            FROM pc.person p INNER JOIN pc.community c
-            ON p.id_community = c.id_community
-            INNER JOIN pc.district d ON c.id_district = d.id_district
-            INNER JOIN pc.canton ca ON d.id_canton = ca.id_canton
-            INNER JOIN pc.province pr ON ca.id_province = pr.id_province
-            INNER JOIN pc.country co ON pr.id_country = co.id_country
-            GROUP BY co.country_name||','||pr.province_name;
-
-        EXCEPTION 
-        WHEN CURSOR_ALREADY_OPEN THEN
-            DBMS_OUTPUT.PUT_LINE('Cursor is already open');
-        WHEN OTHERS THEN
-            DBMS_OUTPUT.PUT_LINE('General Error');
-            DBMS_OUTPUT.PUT_LINE(SQLERRM);
-            DBMS_OUTPUT.PUT_LINE(SQLCODE);
-    END;
-    
-    ------PROCEDURE getStatisticsPerCanton------
-    PROCEDURE getStatisticsPerCanton(p_user_canton_cursor IN OUT SYS_REFCURSOR) IS
-    vnTotalUsers NUMBER(10);
-    BEGIN
-        SELECT count (1)
-        INTO vnTotalUsers
-        FROM pc.person;
-
-        OPEN p_user_canton_cursor FOR
-            SELECT co.country_name||','||pr.province_name||','||ca.canton_name statIdentifier, count(1) AS "Number of users", count(1)/vnTotalUsers *100 AS "Percentage"
-            FROM pc.person p INNER JOIN pc.community c
-            ON p.id_community = c.id_community
-            INNER JOIN pc.district d ON c.id_district = d.id_district
-            INNER JOIN pc.canton ca ON d.id_canton = ca.id_canton
-            INNER JOIN pc.province pr ON ca.id_province = pr.id_province
-            INNER JOIN pc.country co ON pr.id_country = co.id_country
-            GROUP BY co.country_name||','||pr.province_name||','||ca.canton_name;
-
-        EXCEPTION 
-        WHEN CURSOR_ALREADY_OPEN THEN
-            DBMS_OUTPUT.PUT_LINE('Cursor is already open');
-        WHEN OTHERS THEN
-            DBMS_OUTPUT.PUT_LINE('General Error');
-            DBMS_OUTPUT.PUT_LINE(SQLERRM);
-            DBMS_OUTPUT.PUT_LINE(SQLCODE);
-    END;
-    
-    ------PROCEDURE getStatisticsPerDistrict------
-    PROCEDURE getStatisticsPerDistrict(p_user_district_cursor IN OUT SYS_REFCURSOR) IS
-    vnTotalUsers NUMBER(10);
-    BEGIN
-        SELECT count (1)
-        INTO vnTotalUsers
-        FROM pc.person;
-
-        OPEN p_user_district_cursor FOR
-            SELECT co.country_name||','||pr.province_name||','||ca.canton_name||','||d.district_name statIdentifier, count(1) AS "Number of users", count(1)/vnTotalUsers *100 AS "Percentage"
-            FROM pc.person p INNER JOIN pc.community c
-            ON p.id_community = c.id_community
-            INNER JOIN pc.district d ON c.id_district = d.id_district
-            INNER JOIN pc.canton ca ON d.id_canton = ca.id_canton
-            INNER JOIN pc.province pr ON ca.id_province = pr.id_province
-            INNER JOIN pc.country co ON pr.id_country = co.id_country
-            GROUP BY co.country_name||','||pr.province_name||','||ca.canton_name||','||d.district_name;
-
-        EXCEPTION 
-        WHEN CURSOR_ALREADY_OPEN THEN
-            DBMS_OUTPUT.PUT_LINE('Cursor is already open');
-        WHEN OTHERS THEN
-            DBMS_OUTPUT.PUT_LINE('General Error');
-            DBMS_OUTPUT.PUT_LINE(SQLERRM);
-            DBMS_OUTPUT.PUT_LINE(SQLCODE);
-    END;
-    
-    ------PROCEDURE getStatisticsPerCommunity------
-    PROCEDURE getStatisticsPerCommunity(p_user_community_cursor IN OUT SYS_REFCURSOR) IS
-    vnTotalUsers NUMBER(10);
-    BEGIN
-        SELECT count (1)
-        INTO vnTotalUsers
-        FROM pc.person;
-
-        OPEN p_user_community_cursor FOR
-            SELECT co.country_name||','||pr.province_name||','||ca.canton_name||','||d.district_name||','||c.community_name statIdentifier, count(1) AS "Number of users", count(1)/vnTotalUsers *100 AS "Percentage"
-            FROM pc.person p INNER JOIN pc.community c
-            ON p.id_community = c.id_community
-            INNER JOIN pc.district d ON c.id_district = d.id_district
-            INNER JOIN pc.canton ca ON d.id_canton = ca.id_canton
-            INNER JOIN pc.province pr ON ca.id_province = pr.id_province
-            INNER JOIN pc.country co ON pr.id_country = co.id_country
-            GROUP BY co.country_name||','||pr.province_name||','||ca.canton_name||','||d.district_name||','||c.community_name;
-
-        EXCEPTION 
-        WHEN CURSOR_ALREADY_OPEN THEN
-            DBMS_OUTPUT.PUT_LINE('Cursor is already open');
-        WHEN OTHERS THEN
-            DBMS_OUTPUT.PUT_LINE('General Error');
-            DBMS_OUTPUT.PUT_LINE(SQLERRM);
-            DBMS_OUTPUT.PUT_LINE(SQLCODE);
     END;
     
 END pkg_user;
