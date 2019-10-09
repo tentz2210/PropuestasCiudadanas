@@ -1268,6 +1268,8 @@ END pkg_parameter;
 		 
 		  
 --En pcadmin
+
+----------PACKAGE PASSWORD_LOG----------
 CREATE OR REPLACE PACKAGE pkg_password_log IS
     PROCEDURE getPasswordLogReport(pfilter_name VARCHAR2, pfilter_middle_name VARCHAR2, pfilter_last_name VARCHAR2,
                                    pfilter_username VARCHAR2, pfilter_id NUMBER, p_report_cursor IN OUT SYS_REFCURSOR);
@@ -1298,4 +1300,43 @@ CREATE OR REPLACE PACKAGE BODY pkg_password_log IS
             AND pe.id = NVL(pfilter_id, pe.id);
     END;
 END pkg_password_log;
+		  
+----------PACKAGE DAILY_TOP----------
+CREATE OR REPLACE PACKAGE pkg_daily_top AS
+    PROCEDURE generateDailyReport;
+END pkg_daily_top;
 
+CREATE OR REPLACE PACKAGE BODY pkg_daily_top AS
+
+    ------PROCEDURE generateDailyReport------
+    PROCEDURE generateDailyReport IS
+        vid_proposal NUMBER(8);
+        vtop_date DATE;
+        CURSOR ranking_cursor IS
+        WITH voteRanking AS (SELECT community_id, proposal_id, votes, RANK() OVER(PARTITION BY community_id ORDER BY votes DESC) vote_rank
+            FROM(SELECT c.id_community community_id, p.id_proposal proposal_id, pkg_proposal.countVotes(p.id_proposal) votes
+                FROM pc.proposal p INNER JOIN pc.person pe
+                ON p.id_number = pe.id_number
+                FULL OUTER JOIN pc.community c
+                ON pe.id_community = c.id_community))
+        SELECT proposal_id
+        FROM voteRanking
+        WHERE vote_rank = 1 AND proposal_id IS NOT NULL;
+    BEGIN
+        vtop_date := SYSDATE;
+        OPEN ranking_cursor;
+        LOOP
+            FETCH ranking_cursor INTO vid_proposal;
+            EXIT WHEN employee_cursor%NOT_FOUND;
+            INSERT INTO pcadmin.daily_top(id_top, id_proposal, top_date)
+            VALUES (s_daily_top_id.nextval, vid_proposal, vtop_date);
+        END LOOP;
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error generating job report');
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+            DBMS_OUTPUT.PUT_LINE(SQLCODE);
+            ROLLBACK;
+    END;
+END pkg_daily_top;
