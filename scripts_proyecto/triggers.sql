@@ -150,7 +150,7 @@ For each row
   BEGIN
     :new.last_modify_date:= SYSDATE;
     :new.last_modified_by:= USER;
-  END beforeUpdateUser; 
+  END beforeUpdateUser;
   
 --Trigger for table user_type
 CREATE OR REPLACE TRIGGER pc.beforeInsertUser_Type
@@ -371,3 +371,22 @@ For each row
     :new.last_modify_date:= SYSDATE;
     :new.last_modified_by:= USER;
   END beforeUpdatePassword_Change;   
+
+--Triggers for table daily_top
+CREATE OR REPLACE TRIGGER pcadmin.beforeInsertDaily_Top
+BEFORE INSERT
+ON pcadmin.daily_top
+For each row
+  BEGIN 
+    :new.creation_date:= SYSDATE;
+    :new.created_by:= USER;
+  END beforeInsertDaily_Top;
+
+CREATE OR REPLACE TRIGGER pcadmin.beforeUpdateDaily_Top
+BEFORE UPDATE
+ON pcadmin.daily_top
+For each row
+  BEGIN
+    :new.last_modify_date:= SYSDATE;
+    :new.last_modified_by:= USER;
+  END beforeUpdateDaily_Top; 
