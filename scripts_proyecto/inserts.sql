@@ -320,8 +320,8 @@ pkg_community.createCommunity('San Rafael', 122);
 END;
 --user types
 BEGIN
-    pkg_user_type.createusertype('Administrator');
-    pkg_user_type.createusertype('User');
+    pkg_user_type.createusertype('Administrador');
+    pkg_user_type.createusertype('Ciudadano');
 END;
 
 BEGIN
@@ -395,75 +395,6 @@ BEGIN
     pkg_nationality.createNationality('uruguaya');
     pkg_nationality.createNationality('venezolana');
     pkg_nationality.createNationality('vietnamita');
-    --PERSONS--
-    pkg_person.insertPerson(305270927,'Lindsay','Morales','Bonilla','15/10/2000','fotoLin.png',2);
-    pkg_person.insertPerson(117810292,'Paula','Chaves','Alvarado','16/06/2000','fotoPau.png',3);
-    pkg_person.insertPerson(190827600,'Diana','Martínez','Sánchez','01/12/1995','fotoDiana.png',7);
-    pkg_person.insertPerson(309300576,'Gabriel','Morales','Chaves','10/03/1997','fotoGab.png',9);
-    pkg_person.insertPerson(305900567,'Harold','Arrieta','Vargas','12/09/1970','fotoHar.png',6);
-    pkg_person.insertPerson(302500999,'Luis','Meneses','Fonseca','23/08/1965','fotoLuis.png',4);
-    pkg_person.insertPerson(705270988,'Jennifer','Corrales','Aguilar','07/02/1993','fotoJen.png',1);
-    pkg_person.insertPerson(901230995,'Marta','Chacón','Gutiérrez','17/11/1969','fotoMar.png',8);
-    pkg_person.insertPerson(190872345,'Laura','Calvo','Fernández','11/02/1977','fotoLau.png',2);
-    pkg_person.insertPerson(801230965,'Jose','Estrada','Shum','12/12/1980','fotoJose.png',10);
-    pkg_person.insertPerson(902340877,'Ricardo','Víquez','Benavides','22/09/1985','fotoRich.png',15);
-    pkg_person.insertPerson(198765432,'Esteban','Cerdas','Flores','31/07/1975','fotoEst.png',2);
-    pkg_person.insertPerson(309280999,'Victoria','Smith','Sauter','29/03/2001','fotoVic.png',10);
-    pkg_person.insertPerson(802340987,'Valeria','Mesén','Zamora','02/02/1999','fotoVal.png',5);
-    pkg_person.insertPerson(304560912,'Andrey','Gallardo','Elizondo','13/11/1991','fotoAndrey.png',8);
-    pkg_person.insertPerson(190872345,'Mariana','Arce','Vega','12/12/1979','fotoMari.png',5);
-    pkg_person.insertPerson(109870222,'Verónica','Nuñez','Moya','07/08/2000','fotoVero.png',6);
-    pkg_person.insertPerson(190872345,'Leonardo','Figueroa','Torres','11/12/1983','fotoLeo.png',13);
-    pkg_person.insertPerson(902390871,'Alberto','Coto','Barrantes','16/10/1988','fotoBeto.png',3);
-    pkg_person.insertPerson(409820342,'Daniela','Hernández','Ramírez','19/05/2000','fotoDani.png',9);
-    pkg_person.insertPerson(119023874,'Douglas','Passapera','Carvajal','18/09/1989','fotoDou.png',12);
-    --USERS--
-    pkg_user.insertUser('Admin01',0,0,'lindsaymb');
-    pkg_user.insertUser('Hachu16',1,0,'mapac');
-    pkg_user.insertUser('Dicacha90',2,1,'dianachav');
-    pkg_user.insertUser('Gab03',3,1,'gabo1003');
-    pkg_user.insertUser('hav00',4,1,'haroldav');
-    pkg_user.insertUser('luis99',5,1,'luiskmen');
-    pkg_user.insertUser('jen01',6,1,'jenny_cor');
-    pkg_user.insertUser('mcg1212',7,1,'martachac');
-    pkg_user.insertUser('lauca',8,1,'laucalfons11');
-    pkg_user.insertUser('jest',9,1,'joseshum');
-    pkg_user.insertUser('ric9912',10,1,'ricardoviq');
-    pkg_user.insertUser('este00',11,1,'cerdasflores');
-    pkg_user.insertUser('victo01',12,1,'vickyss');
-    pkg_user.insertUser('vzm99',13,1,'valzam89');
-    pkg_user.insertUser('andrgall',14,1,'gallardoe');
-    pkg_user.insertUser('mav79',15,1,'marianaarc');
-    pkg_user.insertUser('vnm00',16,1,'veronuñez12');
-    pkg_user.insertUser('leo9012',17,1,'figueleo');
-    pkg_user.insertUser('Habet81',18,1,'betocoba');
-    pkg_user.insertUser('pizaju34',19,1,'danihernan');
-    pkg_user.insertUser('dou92',20,1,'89passapera');
-    --TELEPHONES--
-    pkg_telephone(84946665,0);  
-    pkg_telephone(86362856,1);
-    pkg_telephone(89326732,2);
-    pkg_telephone(67893245,3);
-    pkg_telephone(89894589,4);
-    pkg_telephone(78902345,5);
-    pkg_telephone(88674533,6);
-    pkg_telephone(88223378,7);
-    pkg_telephone(87512238,8);
-    pkg_telephone(65539012,9);
-    pkg_telephone(88231242,10);
-    pkg_telephone(75689012,11);
-    pkg_telephone(67890012,12);
-    pkg_telephone(89126732,13);
-    pkg_telephone(85639011,14);
-    pkg_telephone(73249012,15);
-    pkg_telephone(89765432,16);
-    pkg_telephone(88906672,17);
-    pkg_telephone(78902344,18);
-    pkg_telephone(81908752,19);
-    pkg_telephone(67230012,20);
-    --EMAILS--
-    
-    --CATEGORIES X PERSON--
 END;
 
 --usuarios ejemplo
@@ -474,6 +405,35 @@ BEGIN
                           'Admin01', 'lindsaymb', 1, 'ejemplo1@ejm.com', 84946665,13);
     pkg_user.registerUser(117810292,'Paula','Chaves','Alvarado','16/06/2000','fotoPau.png', 21, 
                           'Hachu16', 'mapac', 2, 'ejemplo2@ejm.com', 86362856, 13);
+    pkg_user.registerUser(304780123,'Marta','Sánchez','Romero','04/09/1985','fotoMarta.png', 4, 
+                          'Mar04', 'marome', 2, 'ejemplo3@ejm.com', 87126498, 18);
+    pkg_user.registerUser(205789164,'Sergio','Elizondo','Fonseca','17/05/1995','fotoSer.png', 8, 
+                          'Seref', 'sereli', 2, 'ejemplo4@ejm.com', 61791649, 23);
+END;
+
+--
+BEGIN
+    pkg_proposal.createProposal('Más deporte y de mejor calidad.', 25000000,
+                             'Ampliación de lugares y recintos deportivos, además de un sistema de iluminación en áreas deportivas exteriores.', 
+                             3, 0);
+    pkg_proposal.createProposal('Recursos a deportistas', 2000000,
+                             'Fomento y ayuda a deportistas de la comunidad que lo necesiten.', 
+                             3, 4);
+    pkg_proposal.createProposal('Crear un albergue para animales callejeros.', 25000000,
+                             'Ayudar a los animales de la calle brindándoles alimento, un lugar donde dormir y los cuidados necesarios.', 
+                             8, 2);
+    pkg_proposal.createProposal('Educación ambiental en reciclaje.', 800000,
+                             'Talleres didácticos y prácticos en los cuales se trate el tema de separación y tratamiento de residuos.', 
+                             1, 3);
+    pkg_proposal.createProposal('Creación de parque en la comunidad', 5000000,
+                             'Crear un parque para que de esta forma la comunidad cuente con un espacio recreativo.', 
+                             7, 4);
+    pkg_proposal.createProposal('Incremento de zonas verdes', 4500000,
+                             'Se debe invertir en la mejora y creación de nuevas zonas verdes en la comunidad, además de darles un correcto mantenimiento para que los ciudadanos tengan un lugar para disfrutar sanamente.', 
+                             7, 0);
+    pkg_proposal.createProposal('Colocación de cámaras.', 4000000,
+                             'Es necesaria una mayor vigilancia en las zonas más peligrosas de la comunidad.', 
+                             5, 2);
 END;
 
 --Prueba login
