@@ -3,6 +3,8 @@ CREATE OR REPLACE PACKAGE pkg_country IS
     PROCEDURE createCountry(pNameCountry VARCHAR2);
     PROCEDURE getCountries(p_countrylist_refcur IN OUT SYS_REFCURSOR);
     PROCEDURE deleteCountry(pid_country NUMBER);
+    PROCEDURE updateCountryName(p_id_country NUMBER, p_new_name VARCHAR2);
+    PROCEDURE updateCountryIsEnabled(p_id_country NUMBER, p_enabled NUMBER);
 END pkg_country;
 
 CREATE OR REPLACE PACKAGE BODY pkg_country AS
@@ -23,8 +25,20 @@ CREATE OR REPLACE PACKAGE BODY pkg_country AS
             ROLLBACK;
     END;
     
-    ------PROCEDURE UPDATE------
+    ------PROCEDURES UPDATE------
+    PROCEDURE updateCountryName(p_id_country NUMBER, p_new_name VARCHAR2)IS
+    BEGIN
+        UPDATE country
+        SET country_name = p_new_name
+        WHERE id_country = p_id_country;
+    END;
     
+    PROCEDURE updateCountryIsEnabled(p_id_country NUMBER, p_enabled NUMBER)IS
+    BEGIN
+        UPDATE country
+        SET is_enabled = p_enabled
+        WHERE id_country = p_id_country;
+    END;
     ------PROCEDURE DELETE------
     PROCEDURE deleteCountry(pid_country NUMBER) IS
     BEGIN
@@ -60,6 +74,8 @@ CREATE OR REPLACE PACKAGE pkg_province IS
     PROCEDURE createProvince(pNameProvince VARCHAR2, pCountryId NUMBER);
     PROCEDURE getProvincesFromCountry(pid_country IN NUMBER, p_provincelist_refcur IN OUT SYS_REFCURSOR);
     PROCEDURE deleteProvince(pid_province NUMBER);
+    PROCEDURE updateProvinceName(p_id_province NUMBER, p_new_name VARCHAR2);
+    PROCEDURE updateProvinceIsEnabled(p_id_province NUMBER, p_enabled NUMBER);
 END pkg_province;
 
 CREATE OR REPLACE PACKAGE BODY pkg_province AS
@@ -76,8 +92,20 @@ CREATE OR REPLACE PACKAGE BODY pkg_province AS
 		    DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
     END;
-    ------PROCEDURE UPDATE------
+    ------PROCEDURES UPDATE------
+    PROCEDURE updateProvinceName(p_id_province NUMBER, p_new_name VARCHAR2)IS
+    BEGIN
+        UPDATE province
+        SET province_name = p_new_name
+        WHERE id_province = p_id_province;
+    END;
     
+    PROCEDURE updateProvinceIsEnabled(p_id_province NUMBER, p_enabled NUMBER)IS
+    BEGIN
+        UPDATE province
+        SET is_enabled = p_enabled
+        WHERE id_province = p_id_province;
+    END;
     ------PROCEDURE DELETE------
     PROCEDURE deleteProvince(pid_province NUMBER) IS
     BEGIN
@@ -113,6 +141,8 @@ CREATE OR REPLACE PACKAGE pkg_canton IS
     PROCEDURE createCanton (pNameCanton VARCHAR2, pProvinceId NUMBER);
     PROCEDURE getCantonsFromProvince(pid_province IN NUMBER, p_cantonlist_refcur IN OUT SYS_REFCURSOR);
     PROCEDURE deleteCanton(pid_canton NUMBER);
+    PROCEDURE updateCantonName(p_id_canton NUMBER, p_new_name VARCHAR2);
+    PROCEDURE updateCantonIsEnabled(p_id_canton NUMBER, p_enabled NUMBER);
 END pkg_canton;
 
 CREATE OR REPLACE PACKAGE BODY pkg_canton AS
@@ -129,7 +159,20 @@ CREATE OR REPLACE PACKAGE BODY pkg_canton AS
 		    DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
     END;
-    ------PROCEDURE UPDATE------
+    ------PROCEDURES UPDATE------
+    PROCEDURE updateCantonName(p_id_canton NUMBER, p_new_name VARCHAR2)IS
+    BEGIN
+        UPDATE canton
+        SET canton_name = p_new_name
+        WHERE id_canton = p_id_canton;
+    END;
+    
+    PROCEDURE updateCantonIsEnabled(p_id_canton NUMBER, p_enabled NUMBER)IS
+    BEGIN
+        UPDATE canton
+        SET is_enabled = p_enabled
+        WHERE id_canton = p_id_canton;
+    END;
     
     ------PROCEDURE DELETE------
     PROCEDURE deleteCanton(pid_canton NUMBER) IS
@@ -166,6 +209,8 @@ CREATE OR REPLACE PACKAGE pkg_district IS
     PROCEDURE createDistrict (pNameDistrict VARCHAR2, pCantonId NUMBER);
     PROCEDURE getDistrictsFromCanton(pid_canton IN NUMBER, p_districtlist_refcur IN OUT SYS_REFCURSOR);
     PROCEDURE deleteDistrict(pid_district NUMBER);
+    PROCEDURE updateDistrictName(p_id_district NUMBER, p_new_name VARCHAR2);
+    PROCEDURE updateDistrictIsEnabled(p_id_district NUMBER, p_enabled NUMBER);
 END pkg_district;
 
 CREATE OR REPLACE PACKAGE BODY pkg_district AS
@@ -182,7 +227,20 @@ CREATE OR REPLACE PACKAGE BODY pkg_district AS
 		    DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
     END;
-    ------PROCEDURE UPDATE------
+    ------PROCEDURES UPDATE------
+    PROCEDURE updateDistrictName(p_id_district NUMBER, p_new_name VARCHAR2)IS
+    BEGIN
+        UPDATE district
+        SET district_name = p_new_name
+        WHERE id_district = p_id_district;
+    END;
+    
+    PROCEDURE updateDistrictIsEnabled(p_id_district NUMBER, p_enabled NUMBER)IS
+    BEGIN
+        UPDATE district
+        SET is_enabled = p_enabled
+        WHERE id_district = p_id_district;
+    END;
     
     ------PROCEDURE DELETE------
     PROCEDURE deleteDistrict(pid_district NUMBER) IS
@@ -219,6 +277,8 @@ CREATE OR REPLACE PACKAGE pkg_community IS
     PROCEDURE createCommunity (pNameCommunity VARCHAR2, pDistrictId NUMBER);
     PROCEDURE getCommunitiesFromDistrict(pid_district IN NUMBER, p_communitylist_refcur IN OUT SYS_REFCURSOR);
     PROCEDURE deleteCommunity(pid_community NUMBER);
+    PROCEDURE updateCommunityName(p_id_community NUMBER, p_new_name VARCHAR2);
+    PROCEDURE updateCommunityIsEnabled(p_id_community NUMBER, p_enabled NUMBER);
 END pkg_community;
 
 CREATE OR REPLACE PACKAGE BODY pkg_community AS
@@ -235,7 +295,20 @@ CREATE OR REPLACE PACKAGE BODY pkg_community AS
 		    DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
     END;
-    ------PROCEDURE UPDATE------
+    ------PROCEDURES UPDATE------
+    PROCEDURE updateCommunityName(p_id_community NUMBER, p_new_name VARCHAR2)IS
+    BEGIN
+        UPDATE community
+        SET community_name = p_new_name
+        WHERE id_community = p_id_community;
+    END;
+    
+    PROCEDURE updateCommunityIsEnabled(p_id_community NUMBER, p_enabled NUMBER)IS
+    BEGIN
+        UPDATE community
+        SET is_enabled = p_enabled
+        WHERE id_community = p_id_community;
+    END;
     
     ------PROCEDURE DELETE------
     PROCEDURE deleteCommunity(pid_community NUMBER) IS
@@ -285,6 +358,10 @@ CREATE OR REPLACE PACKAGE pkg_proposal IS
     PROCEDURE getStatisticsPerDistrict(p_proposal_district_cursor IN OUT SYS_REFCURSOR);
     PROCEDURE getStatisticsPerCommunity(p_proposal_community_cursor IN OUT SYS_REFCURSOR);
     FUNCTION countVotes(pid_proposal NUMBER) RETURN NUMBER;
+    PROCEDURE updateProposalDescription(p_id_proposal NUMBER, p_new_description VARCHAR2);
+    PROCEDURE updateProposalTitle(p_id_proposal NUMBER, p_new_title VARCHAR2);
+    PROCEDURE updateProposalBudget(p_id_proposal NUMBER, p_budget NUMBER);
+    PROCEDURE updateProposalIsEnabled(p_id_proposal NUMBER, p_enabled NUMBER);
 END pkg_proposal;
 
 CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
@@ -302,7 +379,34 @@ CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
 		    DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
     END;
-    ------PROCEDURE UPDATE------
+    ------PROCEDURES UPDATE------
+    PROCEDURE updateProposalDescription(p_id_proposal NUMBER, p_new_description VARCHAR2)IS
+    BEGIN
+        UPDATE proposal
+        SET description = p_new_description
+        WHERE id_proposal = p_id_proposal;
+    END;
+    
+    PROCEDURE updateProposalTitle(p_id_proposal NUMBER, p_new_title VARCHAR2)IS
+    BEGIN
+        UPDATE proposal
+        SET title = p_new_title
+        WHERE id_proposal = p_id_proposal;
+    END;
+    
+    PROCEDURE updateProposalBudget(p_id_proposal NUMBER, p_budget NUMBER)IS
+    BEGIN
+        UPDATE proposal
+        SET approximate_budget = p_budget
+        WHERE id_proposal = p_id_proposal;
+    END;
+    
+    PROCEDURE updateProposalIsEnabled(p_id_proposal NUMBER, p_enabled NUMBER)IS
+    BEGIN
+        UPDATE proposal
+        SET is_enabled =p_enabled
+        WHERE id_proposal = p_id_proposal;
+    END;
     
     ------PROCEDURE DELETE------
     PROCEDURE deleteProposal(pid_proposal NUMBER) IS
@@ -591,6 +695,8 @@ END pkg_proposal;
 CREATE OR REPLACE PACKAGE pkg_category IS
     PROCEDURE createCategory(pCategoryName VARCHAR2);
     PROCEDURE deleteCategory(pcategory_code NUMBER);
+    PROCEDURE updateCategoryName(p_category_code NUMBER, p_new_name VARCHAR2);
+    PROCEDURE updateCategoryIsEnabled(p_category_code NUMBER,p_enabled NUMBER);
 END pkg_category;
 
 CREATE OR REPLACE PACKAGE BODY pkg_category AS
@@ -607,7 +713,21 @@ CREATE OR REPLACE PACKAGE BODY pkg_category AS
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
     END;
-    ------PROCEDURE UPDATE------
+    ------PROCEDURES UPDATE------
+    PROCEDURE updateCategoryName(p_category_code NUMBER, p_new_name VARCHAR2)IS
+    BEGIN
+        UPDATE category
+        SET category_name = p_new_name
+        WHERE category_code = p_category_code;
+    END;
+    
+    PROCEDURE updateCategoryIsEnabled(p_category_code NUMBER,p_enabled NUMBER)IS
+    BEGIN
+        UPDATE category
+        SET is_enabled = p_enabled
+        WHERE category_code = p_category_code;
+    END;
+    
     
     ------PROCEDURE DELETE------
     PROCEDURE deleteCategory(pcategory_code NUMBER) IS
@@ -626,6 +746,7 @@ END pkg_category;
 CREATE OR REPLACE PACKAGE pkg_user_type IS
     PROCEDURE createUserType(pIdUserName VARCHAR2);
     PROCEDURE deleteUserType(pid_user_type NUMBER);
+    PROCEDURE updateUserTypeName(pid_user_type NUMBER, p_new_name VARCHAR2);
 END pkg_user_type;
 
 CREATE OR REPLACE PACKAGE BODY pkg_user_type AS
@@ -643,6 +764,12 @@ CREATE OR REPLACE PACKAGE BODY pkg_user_type AS
             ROLLBACK;
     END;
     ------PROCEDURE UPDATE------
+    PROCEDURE updateUserTypeName(pid_user_type NUMBER, p_new_name VARCHAR2)IS
+    BEGIN
+        UPDATE user_type
+        SET user_type_name = p_new_name
+        WHERE id_user_type = pid_user_type;
+    END;
     
     ------PROCEDURE DELETE------
     PROCEDURE deleteUserType(pid_user_type NUMBER) IS
@@ -661,6 +788,8 @@ END pkg_user_type;
 CREATE OR REPLACE PACKAGE pkg_nationality IS
     PROCEDURE createNationality(pNationalityName VARCHAR2);
     PROCEDURE deleteNationality(pid_nationality NUMBER);
+    PROCEDURE updateNationalityName(pid_nationality NUMBER, p_new_name VARCHAR2);
+    PROCEDURE updateNationalityIsEnabled(pid_nationality NUMBER, p_enabled NUMBER);
 END pkg_nationality;
 
 CREATE OR REPLACE PACKAGE BODY pkg_nationality AS
@@ -677,7 +806,20 @@ CREATE OR REPLACE PACKAGE BODY pkg_nationality AS
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
     END;
-    ------PROCEDURE UPDATE------
+    ------PROCEDURES UPDATE------
+    PROCEDURE updateNationalityName(pid_nationality NUMBER, p_new_name VARCHAR2)IS
+    BEGIN
+        UPDATE nationality
+        SET nationality_name = p_new_name
+        WHERE id_nationality = pid_nationality;
+    END;
+    
+    PROCEDURE updateNationalityIsEnabled(pid_nationality NUMBER, p_enabled NUMBER)IS
+    BEGIN
+        UPDATE nationality
+        SET is_enabled = p_enabled
+        WHERE id_nationality = pid_nationality;
+    END;
     
     ------PROCEDURE DELETE------
     PROCEDURE deleteNationality(pid_nationality NUMBER) IS
