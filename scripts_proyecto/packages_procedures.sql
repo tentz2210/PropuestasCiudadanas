@@ -1269,41 +1269,10 @@ END pkg_parameter;
 		  
 --En pcadmin
 
-----------PACKAGE PASSWORD_LOG----------
-CREATE OR REPLACE PACKAGE pkg_password_log IS
-    PROCEDURE getPasswordLogReport(pfilter_name VARCHAR2, pfilter_middle_name VARCHAR2, pfilter_last_name VARCHAR2,
-                                   pfilter_username VARCHAR2, pfilter_id NUMBER, p_report_cursor IN OUT SYS_REFCURSOR);
-END pkg_password_log;
-
-CREATE OR REPLACE PACKAGE BODY pkg_password_log IS
-
-    ------PROCEDURE getPasswordReport------
-    PROCEDURE getPasswordLogReport(pfilter_name VARCHAR2, pfilter_middle_name VARCHAR2, pfilter_last_name VARCHAR2,
-                                   pfilter_username VARCHAR2, pfilter_id NUMBER, p_report_cursor IN OUT SYS_REFCURSOR) IS
-        vdate_limit DATE;
-        vcurrent_date DATE;
-    BEGIN
-        vcurrent_date := trunc(SYSDATE);
-        vdate_limit := vcurrent_date - 10;
-        OPEN p_report_cursor FOR
-            SELECT pu.user_name, pe.first_name||' '||pe.first_last_name||' '||pe.second_last_name full_name, pe.id, vcurrent_date - pwc.doc
-            FROM pc.person_user pu INNER JOIN pc.person pe
-            ON pu.id_number = pe.id_number
-            INNER JOIN (SELECT id_user, trunc(date_of_change) doc
-                        FROM pcadmin.password_change
-                        WHERE date_of_change > vdate_limit) pwc
-            ON pu.id_user = pwc.id_user
-            WHERE pu.user_name = NVL(pfilter_username, pu.user_name)
-            AND pe.first_name = NVL(pfilter_name, pe.first_name)
-            AND pe.first_last_name = NVL(pfilter_middle_name, pe.first_last_name)
-            AND pe.second_last_name = NVL(pfilter_last_name, pe.second_last_name)
-            AND pe.id = NVL(pfilter_id, pe.id);
-    END;
-END pkg_password_log;
-		  
 ----------PACKAGE DAILY_TOP----------
 CREATE OR REPLACE PACKAGE pkg_daily_top AS
     PROCEDURE generateDailyReport;
+    PROCEDURE getReportFromDate(pDateChar VARCHAR2, preport_cursor IN OUT SYS_REFCURSOR);
 END pkg_daily_top;
 
 CREATE OR REPLACE PACKAGE BODY pkg_daily_top AS
@@ -1331,6 +1300,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_daily_top AS
             INSERT INTO pcadmin.daily_top(id_top, id_proposal, top_date)
             VALUES (s_daily_top_id.nextval, vid_proposal, vtop_date);
         END LOOP;
+        CLOSE ranking_cursor;
         COMMIT;
     EXCEPTION
         WHEN OTHERS THEN
@@ -1338,5 +1308,25 @@ CREATE OR REPLACE PACKAGE BODY pkg_daily_top AS
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+    END;
+    
+    PROCEDURE getReportFromDate(pDateChar VARCHAR2, preport_cursor IN OUT SYS_REFCURSOR) IS
+        vDateFilter DATE;
+    BEGIN
+        vDateFilter := trunc(TO_DATE(pdatechar, 'DD/MM/YYYY'));
+        OPEN preport_cursor FOR
+            SELECT p.id_proposal, p.title, c.community_name, dt.top_date
+            FROM pcadmin.daily_top dt INNER JOIN pc.proposal p
+                ON dt.id_proposal = p.id_proposal
+                INNER JOIN pc.person pe
+                ON p.id_number = pe.id_number
+                INNER JOIN pc.community c
+                ON pe.id_community = c.id_community
+            WHERE trunc(dt.top_date) = NVL(vDateFilter, trunc(dt.top_date));
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error fetching job report');
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+            DBMS_OUTPUT.PUT_LINE(SQLCODE);
     END;
 END pkg_daily_top;
