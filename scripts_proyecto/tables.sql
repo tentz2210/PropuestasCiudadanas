@@ -317,6 +317,9 @@ CREATE TABLE proposal
 ALTER TABLE PROPOSAL
 ADD (is_enabled NUMBER (1) DEFAULT 1 CONSTRAINT proposal_is_enabled_nn NOT NULL);
 
+ALTER TABLE PROPOSAL
+MODIFY approximate_budget NUMBER(12,2);
+
 COMMENT ON TABLE proposal
 IS 'Contains proposals made by citizens from a community.';
 COMMENT ON COLUMN proposal.id_proposal
