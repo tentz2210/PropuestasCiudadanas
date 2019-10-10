@@ -705,6 +705,12 @@ CREATE OR REPLACE PACKAGE pkg_person IS
     PROCEDURE getStatisticsPerCommunity(p_user_community_cursor IN OUT SYS_REFCURSOR);
     FUNCTION getAgeRank(p_date_of_birth DATE) RETURN VARCHAR2;
     PROCEDURE getStatisticsUsersAge(p_user_age_cursor IN OUT SYS_REFCURSOR);
+    PROCEDURE updatePersonId(p_id_number NUMBER, p_new_id NUMBER);
+    PROCEDURE updatePersonFirstName(p_id_number NUMBER, p_new_first_name VARCHAR2);
+    PROCEDURE updatePersonFirstLastName(p_id_number NUMBER, p_new_first_last_name VARCHAR2);
+    PROCEDURE updatePersonSecLastName(p_id_number NUMBER, p_new_sec_last_name VARCHAR2);
+    PROCEDURE updatePersonBirthDate(p_id_number NUMBER, p_new_birth_date DATE);
+    PROCEDURE updatePersonIdCommunity(p_id_number NUMBER, p_new_id_community NUMBER);
 END pkg_person;
 
 CREATE OR REPLACE PACKAGE BODY pkg_person AS
@@ -722,8 +728,48 @@ CREATE OR REPLACE PACKAGE BODY pkg_person AS
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
     END;
-    ------PROCEDURE UPDATE------
+    ------PROCEDURES UPDATE------
+    PROCEDURE updatePersonId(p_id_number NUMBER, p_new_id NUMBER)IS
+    BEGIN
+        UPDATE person
+        SET id = p_new_id
+        WHERE id_number = p_id_number;
+    END;
     
+    PROCEDURE updatePersonFirstName(p_id_number NUMBER, p_new_first_name VARCHAR2)IS
+    BEGIN
+        UPDATE person
+        SET first_name = p_new_first_name
+        WHERE id_number = p_id_number;
+    END;
+    
+    PROCEDURE updatePersonFirstLastName(p_id_number NUMBER, p_new_first_last_name VARCHAR2)IS
+    BEGIN
+        UPDATE person
+        SET first_last_name = p_new_first_last_name
+        WHERE id_number = p_id_number;
+    END;
+    
+    PROCEDURE updatePersonSecLastName(p_id_number NUMBER, p_new_sec_last_name VARCHAR2)IS
+    BEGIN
+        UPDATE person
+        SET second_last_name = p_new_sec_last_name
+        WHERE id_number = p_id_number;
+    END;
+    
+    PROCEDURE updatePersonBirthDate(p_id_number NUMBER, p_new_birth_date DATE)IS
+    BEGIN
+        UPDATE person
+        SET date_of_birth = p_new_birth_date
+        WHERE id_number = p_id_number;
+    END;
+    
+    PROCEDURE updatePersonIdCommunity(p_id_number NUMBER, p_new_id_community NUMBER)IS
+    BEGIN
+        UPDATE person
+        SET id_community = p_new_id_community
+        WHERE id_number = p_id_number;
+    END;
     ------PROCEDURE DELETE------
     PROCEDURE deletePerson(pid_number NUMBER) IS
     BEGIN
@@ -932,6 +978,7 @@ END pkg_person;
 CREATE OR REPLACE PACKAGE pkg_email IS
     PROCEDURE insertEmail(pMail VARCHAR2, pIdNumber NUMBER);
     PROCEDURE deleteEmail(p_mail VARCHAR2);
+    PROCEDURE updateEmail(p_id_number NUMBER, p_new_email VARCHAR2);
 END pkg_email;
 
 CREATE OR REPLACE PACKAGE BODY pkg_email AS
@@ -949,7 +996,12 @@ CREATE OR REPLACE PACKAGE BODY pkg_email AS
             ROLLBACK;
     END;
     ------PROCEDURE UPDATE------
-    
+    PROCEDURE updateEmail(p_id_number NUMBER, p_new_email VARCHAR2)IS
+    BEGIN
+        UPDATE email
+        SET mail = p_new_email
+        WHERE id_number = p_id_number;
+    END;
     ------PROCEDURE DELETE------
     PROCEDURE deleteEmail(p_mail VARCHAR2) IS
     BEGIN
@@ -968,6 +1020,7 @@ END pkg_email;
 CREATE OR REPLACE PACKAGE pkg_telephone IS
     PROCEDURE insertTelephone(pTelephone NUMBER, pIdNumber NUMBER);
     PROCEDURE deleteTelephone(p_phone_number NUMBER);
+    PROCEDURE updateTelephoneNumber(p_id_number NUMBER, p_new_phone_number NUMBER);
 END pkg_telephone;
     
 CREATE OR REPLACE PACKAGE BODY pkg_telephone AS
@@ -985,7 +1038,12 @@ CREATE OR REPLACE PACKAGE BODY pkg_telephone AS
             ROLLBACK;
     END;
     ------PROCEDURE UPDATE------
-    
+    PROCEDURE updateTelephoneNumber(p_id_number NUMBER, p_new_phone_number NUMBER) IS
+    BEGIN
+        UPDATE telephone
+        SET phone_number = p_new_phone_number
+        WHERE id_number = p_id_number;
+    END;
     ------PROCEDURE DELETE------
     PROCEDURE deleteTelephone(p_phone_number NUMBER) IS
     BEGIN
@@ -1004,6 +1062,7 @@ END pkg_telephone;
 CREATE OR REPLACE PACKAGE pkg_comment IS
     PROCEDURE insertComment(pIdNumber NUMBER, pIdProposal NUMBER, pText VARCHAR2);
     PROCEDURE deleteComment(p_code_comment NUMBER);
+    PROCEDURE updateCommentText(p_code_comment NUMBER, p_new_text VARCHAR2);
 END pkg_comment;
 
 CREATE OR REPLACE PACKAGE BODY pkg_comment AS
@@ -1021,7 +1080,12 @@ CREATE OR REPLACE PACKAGE BODY pkg_comment AS
             ROLLBACK;
     END;
     ------PROCEDURE UPDATE------
-    
+    PROCEDURE updateCommentText(p_code_comment NUMBER, p_new_text VARCHAR2)IS
+    BEGIN
+        UPDATE proposal_comment
+        SET text = p_new_text
+        WHERE code_comment = p_code_comment;
+    END;
     ------PROCEDURE DELETE------
     PROCEDURE deleteComment(p_code_comment NUMBER) IS
     BEGIN
@@ -1056,7 +1120,6 @@ CREATE OR REPLACE PACKAGE BODY pkg_vote_x_person AS
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
     END;
-    ------PROCEDURE UPDATE------
     
     ------PROCEDURE DELETE------
     PROCEDURE deleteVote(pid_number NUMBER, pid_proposal NUMBER) IS
@@ -1093,7 +1156,6 @@ CREATE OR REPLACE PACKAGE BODY pkg_category_x_person AS
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
     END;
-    ------PROCEDURE UPDATE------
     
     ------PROCEDURE DELETE------
     PROCEDURE deleteFavoriteCategory(pIdNumber NUMBER, pCategoryCode NUMBER) IS
@@ -1120,6 +1182,9 @@ CREATE OR REPLACE PACKAGE pkg_user IS
     PROCEDURE registerUser(p_id NUMBER, pfirst_name VARCHAR2, pfirst_last_name VARCHAR2, psecond_last_name VARCHAR2, pdate_of_birth VARCHAR2,
                            pphoto VARCHAR2, pid_community NUMBER, puser_name VARCHAR2, puser_password VARCHAR2, pid_user_type NUMBER,
                            p_email VARCHAR2, p_phone_number NUMBER, p_id_nationality NUMBER);
+    PROCEDURE updateUserPassword(p_id_user NUMBER, p_new_password VARCHAR2);
+    PROCEDURE updateUserType(p_id_user NUMBER,p_new_type NUMBER);
+    PROCEDURE updateUserName(p_id_user NUMBER, p_new_name VARCHAR2);
 END pkg_user;
 
 CREATE OR REPLACE PACKAGE BODY pkg_user AS
@@ -1136,7 +1201,27 @@ CREATE OR REPLACE PACKAGE BODY pkg_user AS
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
     END;
-    ------PROCEDURE UPDATE------
+    ------PROCEDURES UPDATE------
+    PROCEDURE updateUserPassword(p_id_user NUMBER, p_new_password VARCHAR2)IS
+    BEGIN
+        UPDATE person_user
+        SET user_password = p_new_password
+        WHERE id_user = p_id_user;
+    END;
+    
+    PROCEDURE updateUserType(p_id_user NUMBER,p_new_type NUMBER)IS
+    BEGIN
+        UPDATE person_user
+        SET id_user_type = p_new_type
+        WHERE id_user = p_id_user;
+    END;
+    
+    PROCEDURE updateUserName(p_id_user NUMBER, p_new_name VARCHAR2)IS
+    BEGIN
+        UPDATE person_user
+        SET user_name = p_new_name
+        WHERE id_user = p_id_user;
+    END;
     
     ------PROCEDURE DELETE------
     PROCEDURE deleteUser(pid_user NUMBER) IS
@@ -1224,7 +1309,6 @@ CREATE OR REPLACE PACKAGE BODY pkg_nationality_x_person AS
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
     END;
-    ------PROCEDURE UPDATE------
     
     ------PROCEDURE DELETE------
     
@@ -1234,6 +1318,8 @@ END pkg_nationality_x_person;
 CREATE OR REPLACE PACKAGE pkg_parameter IS
     PROCEDURE insertParameter(pValue NUMBER, pName VARCHAR2);
     PROCEDURE deleteParameter(pid_parameter NUMBER);
+    PROCEDURE updateParameterValue(p_id_parameter NUMBER, p_new_value NUMBER);
+    PROCEDURE updateParameterName(p_id_parameter NUMBER, p_new_name VARCHAR2);
 END pkg_parameter;
 
 CREATE OR REPLACE PACKAGE BODY pkg_parameter AS
@@ -1251,7 +1337,19 @@ CREATE OR REPLACE PACKAGE BODY pkg_parameter AS
             ROLLBACK;
     END;
     ------PROCEDURE UPDATE------
+    PROCEDURE updateParameterValue(p_id_parameter NUMBER, p_new_value NUMBER)IS
+    BEGIN
+        UPDATE parameter
+        SET parameter_value = p_new_value
+        WHERE id_parameter = p_id_parameter;
+    END;
     
+    PROCEDURE updateParameterName(p_id_parameter NUMBER, p_new_name VARCHAR2)IS
+    BEGIN
+        UPDATE parameter
+        SET parameter_name = p_new_name
+        WHERE id_parameter = p_id_parameter;
+    END;
     ------PROCEDURE DELETE------
     PROCEDURE deleteParameter(pid_parameter NUMBER) IS
     BEGIN
