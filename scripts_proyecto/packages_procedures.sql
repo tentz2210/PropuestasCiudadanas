@@ -1327,7 +1327,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_daily_top AS
         OPEN ranking_cursor;
         LOOP
             FETCH ranking_cursor INTO vid_proposal;
-            EXIT WHEN employee_cursor%NOT_FOUND;
+            EXIT WHEN ranking_cursor%NOTFOUND;
             INSERT INTO pcadmin.daily_top(id_top, id_proposal, top_date)
             VALUES (s_daily_top_id.nextval, vid_proposal, vtop_date);
         END LOOP;
