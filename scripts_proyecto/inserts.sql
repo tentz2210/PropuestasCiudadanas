@@ -405,8 +405,6 @@ BEGIN
                           'Admin01', 'lindsaymb', 1, 'ejemplo1@ejm.com', 84946665,13);
     pkg_user.registerUser(117810292,'Paula','Chaves','Alvarado','16/06/2000','fotoPau.png', 21, 
                           'Hachu16', 'mapac', 2, 'ejemplo2@ejm.com', 86362856, 13);
-    pkg_user.registerUser(304780123,'Marta','Sánchez','Romero','04/09/1985','fotoMarta.png', 4, 
-                          'Mar04', 'marome', 2, 'ejemplo3@ejm.com', 87126498, 18);
     pkg_user.registerUser(205789164,'Sergio','Elizondo','Fonseca','17/05/1995','fotoSer.png', 8, 
                           'Seref', 'sereli', 2, 'ejemplo4@ejm.com', 61791649, 23);
 END;
@@ -424,7 +422,7 @@ BEGIN
                              8, 2);
     pkg_proposal.createProposal('Educación ambiental en reciclaje.', 800000,
                              'Talleres didácticos y prácticos en los cuales se trate el tema de separación y tratamiento de residuos.', 
-                             1, 3);
+                             1, 4);
     pkg_proposal.createProposal('Creación de parque en la comunidad', 5000000,
                              'Crear un parque para que de esta forma la comunidad cuente con un espacio recreativo.', 
                              7, 4);
