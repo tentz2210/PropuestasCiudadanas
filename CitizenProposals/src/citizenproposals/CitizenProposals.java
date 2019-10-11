@@ -5,6 +5,7 @@
  */
 package citizenproposals;
 
+
 /**
  *
  * @author lin
@@ -13,9 +14,11 @@ public class CitizenProposals {
 
     /**
      * @param args the command line arguments
+     * @throws java.sql.SQLException
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        
     }
     
 }

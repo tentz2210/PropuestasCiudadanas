@@ -6,7 +6,13 @@
 package UI;
 
 import AppPackage.AnimationClass;
+import Connect.ConnectDB;
+import Security.AES;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -181,6 +187,11 @@ public class MainWindow extends javax.swing.JFrame {
         loginButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Ingresar01.png"))); // NOI18N
         loginButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         loginButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Ingresar02.png"))); // NOI18N
+        loginButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginButtonActionPerformed(evt);
+            }
+        });
         login.add(loginButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 380, 100, 40));
 
         jButton1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -237,6 +248,34 @@ public class MainWindow extends javax.swing.JFrame {
     private void closeWindowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeWindowMouseClicked
         System.exit(0);
     }//GEN-LAST:event_closeWindowMouseClicked
+
+    private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
+        try {
+            String encryptedPassword = AES.encrypt(String.valueOf(passwordField.getPassword()));
+            ConnectDB.checkLogin(userNameField.getText(),encryptedPassword);
+            if (ConnectDB.login_result == 1)
+            {
+                if ("Administrador".equals(ConnectDB.user_type))
+                {
+                    //abrir ventana admin
+                }
+                
+                else
+                {
+                    //abrir ventana ciudadano
+                }
+            }
+            else
+            {
+                userNameField.setText("");
+                passwordField.setText("");
+                JOptionPane.showMessageDialog(this,"Usuario y/o contraseña incorrectos. Favor intentar nuevamente.",
+                                              "Inicio de sesión fallido",JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_loginButtonActionPerformed
 
     /**
      * @param args the command line arguments
