@@ -16,5 +16,7 @@ DBMS_SCHEDULER.CREATE_JOB(
 	job_type => 'PLSQL_BLOCK',
 	job_action => 'BEGIN
 	pkg_daily_top.generateDailyReport; END;',
-	schedule_name => 'INTERVAL_DAILY_2300' );
+	schedule_name => 'INTERVAL_DAILY_2300',
+    enabled => TRUE,
+    comments => 'Creates daily top for most voted proposal by community');
 END;
