@@ -1508,6 +1508,65 @@ END pkg_parameter;
 		 
 		  
 --En pcadmin
+		  
+
+----------PACKAGE PASSWORD_LOG----------
+CREATE OR REPLACE PACKAGE pkg_password_log IS
+    PROCEDURE getPasswordLogReport(pfilter_name VARCHAR2, pfilter_middle_name VARCHAR2, pfilter_last_name VARCHAR2,
+                                   pfilter_username VARCHAR2, pfilter_id NUMBER, p_report_cursor IN OUT SYS_REFCURSOR);
+    PROCEDURE getPasswordLogReportByDates(pfilter_name VARCHAR2, pfilter_middle_name VARCHAR2, pfilter_last_name VARCHAR2,
+                                   pfilter_username VARCHAR2, pfilter_id NUMBER, pfilter_start_date VARCHAR2,
+                                   pfilter_end_date VARCHAR2, p_report_cursor IN OUT SYS_REFCURSOR);
+END pkg_password_log;
+
+CREATE OR REPLACE PACKAGE BODY pkg_password_log IS
+
+    ------PROCEDURE getPasswordReport------
+    PROCEDURE getPasswordLogReport(pfilter_name VARCHAR2, pfilter_middle_name VARCHAR2, pfilter_last_name VARCHAR2,
+                                   pfilter_username VARCHAR2, pfilter_id NUMBER, p_report_cursor IN OUT SYS_REFCURSOR) IS
+        vdate_limit DATE;
+        vcurrent_date DATE;
+    BEGIN
+        vcurrent_date := trunc(SYSDATE);
+        vdate_limit := vcurrent_date - 10;
+        OPEN p_report_cursor FOR
+            SELECT pu.user_name, pe.first_name||' '||pe.first_last_name||' '||pe.second_last_name full_name, pe.id, vcurrent_date - pwc.doc
+            FROM pc.person_user pu INNER JOIN pc.person pe
+            ON pu.id_number = pe.id_number
+            INNER JOIN (SELECT id_user, trunc(date_of_change) doc
+                        FROM pcadmin.password_change
+                        WHERE date_of_change > vdate_limit) pwc
+            ON pu.id_user = pwc.id_user
+            WHERE pu.user_name = NVL(pfilter_username, pu.user_name)
+            AND pe.first_name = NVL(pfilter_name, pe.first_name)
+            AND pe.first_last_name = NVL(pfilter_middle_name, pe.first_last_name)
+            AND pe.second_last_name = NVL(pfilter_last_name, pe.second_last_name)
+            AND pe.id = NVL(pfilter_id, pe.id);
+    END;
+    
+    ------PROCEDURE getPasswordReportByDates------
+    PROCEDURE getPasswordLogReportByDates(pfilter_name VARCHAR2, pfilter_middle_name VARCHAR2, pfilter_last_name VARCHAR2,
+                                   pfilter_username VARCHAR2, pfilter_id NUMBER, pfilter_start_date VARCHAR2,
+                                   pfilter_end_date VARCHAR2, p_report_cursor IN OUT SYS_REFCURSOR) IS
+        vstart_date DATE;
+        vend_date DATE;
+    BEGIN
+        vstart_date := TO_DATE(pfilter_start_date, 'DD/MM/YYYY');
+        vend_date := TO_DATE(pfilter_end_date, 'DD/MM/YYYY');
+        OPEN p_report_cursor FOR
+            SELECT pu.user_name, pe.first_name||' '||pe.first_last_name||' '||pe.second_last_name full_name, pe.id, pwc.date_of_change
+            FROM pc.person_user pu INNER JOIN pc.person pe
+            ON pu.id_number = pe.id_number
+            INNER JOIN pcadmin.password_change pwc
+            ON pu.id_user = pwc.id_user
+            WHERE pu.user_name = NVL(pfilter_username, pu.user_name)
+            AND pe.first_name = NVL(pfilter_name, pe.first_name)
+            AND pe.first_last_name = NVL(pfilter_middle_name, pe.first_last_name)
+            AND pe.second_last_name = NVL(pfilter_last_name, pe.second_last_name)
+            AND pe.id = NVL(pfilter_id, pe.id)
+            AND pwc.date_of_change BETWEEN NVL(vstart_date, pwc.date_of_change) AND NVL(vend_date, pwc.date_of_change);
+    END;
+END pkg_password_log;
 
 ----------PACKAGE DAILY_TOP----------
 CREATE OR REPLACE PACKAGE pkg_daily_top AS
