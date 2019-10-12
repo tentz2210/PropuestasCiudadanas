@@ -5,6 +5,8 @@
  */
 package citizenproposals;
 
+import UI.loginWindow;
+
 
 /**
  *
@@ -14,11 +16,10 @@ public class CitizenProposals {
 
     /**
      * @param args the command line arguments
-     * @throws java.sql.SQLException
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        
+        loginWindow login = new loginWindow();
     }
     
 }

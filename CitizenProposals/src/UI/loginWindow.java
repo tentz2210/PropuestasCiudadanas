@@ -18,16 +18,17 @@ import javax.swing.JOptionPane;
  *
  * @author lin
  */
-public class MainWindow extends javax.swing.JFrame {
+public class loginWindow extends javax.swing.JFrame {
 
     AnimationClass AC = new AnimationClass();
     /**
      * Creates new form Login
      */
-    public MainWindow() {
+    public loginWindow() {
         initComponents();
         SlideShow();
         this.setLocationRelativeTo(null);
+        this.setVisible(true);	
         
     }
     
@@ -130,7 +131,7 @@ public class MainWindow extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
         loginButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        registerButton = new javax.swing.JButton();
         panelSlides = new javax.swing.JPanel();
         slide1 = new javax.swing.JLabel();
         slide2 = new javax.swing.JLabel();
@@ -194,12 +195,17 @@ public class MainWindow extends javax.swing.JFrame {
         });
         login.add(loginButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 380, 100, 40));
 
-        jButton1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/register01.png"))); // NOI18N
-        jButton1.setBorder(null);
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/register02.png"))); // NOI18N
-        login.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 440, 240, 40));
+        registerButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        registerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/register01.png"))); // NOI18N
+        registerButton.setBorder(null);
+        registerButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        registerButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/register02.png"))); // NOI18N
+        registerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registerButtonActionPerformed(evt);
+            }
+        });
+        login.add(registerButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 440, 240, 40));
 
         getContentPane().add(login, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 500));
 
@@ -242,7 +248,7 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void minizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minizarMouseClicked
-        this.setState(MainWindow.ICONIFIED);
+        this.setState(loginWindow.ICONIFIED);
     }//GEN-LAST:event_minizarMouseClicked
 
     private void closeWindowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeWindowMouseClicked
@@ -273,9 +279,14 @@ public class MainWindow extends javax.swing.JFrame {
                                               "Inicio de sesión fallido",JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(loginWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_loginButtonActionPerformed
+
+    private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
+        this.setVisible(false);
+        registerWindow register = new registerWindow();
+    }//GEN-LAST:event_registerButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -294,28 +305,29 @@ public class MainWindow extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(loginWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(loginWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(loginWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(loginWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainWindow().setVisible(true);
+                new loginWindow().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel closeWindow;
-    private javax.swing.JButton jButton1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel keyImg;
@@ -327,6 +339,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JPanel panelMinimizeClose;
     private javax.swing.JPanel panelSlides;
     private javax.swing.JPasswordField passwordField;
+    private javax.swing.JButton registerButton;
     private javax.swing.JLabel slide1;
     private javax.swing.JLabel slide2;
     private javax.swing.JLabel user01Img;
