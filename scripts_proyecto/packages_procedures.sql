@@ -909,6 +909,7 @@ CREATE OR REPLACE PACKAGE pkg_nationality IS
     PROCEDURE deleteNationality(pid_nationality NUMBER);
     PROCEDURE updateNationalityName(pid_nationality NUMBER, p_new_name VARCHAR2);
     PROCEDURE updateNationalityIsEnabled(pid_nationality NUMBER, p_enabled NUMBER);
+    PROCEDURE getNationalities(p_nationalities_cursor IN OUT SYS_REFCURSOR);
 END pkg_nationality;
 
 CREATE OR REPLACE PACKAGE BODY pkg_nationality AS
@@ -931,7 +932,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_nationality AS
         UPDATE nationality
         SET nationality_name = p_new_name
         WHERE id_nationality = pid_nationality;
-	COMMIT;
+      COMMIT;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
@@ -945,7 +946,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_nationality AS
         UPDATE nationality
         SET is_enabled = p_enabled
         WHERE id_nationality = pid_nationality;
-	COMMIT;
+      COMMIT;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
@@ -964,6 +965,22 @@ CREATE OR REPLACE PACKAGE BODY pkg_nationality AS
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error al eliminar');
             ROLLBACK;
+    END;
+    
+    ------PROCEDURE GET_NATIONALITIES------
+    PROCEDURE getNationalities(p_nationalities_cursor IN OUT SYS_REFCURSOR) IS
+    BEGIN
+        OPEN p_nationalities_cursor FOR
+            SELECT id_nationality, nationality_name
+            FROM pc.nationality
+            ORDER BY nationality_name;
+        EXCEPTION 
+            WHEN CURSOR_ALREADY_OPEN THEN
+                DBMS_OUTPUT.PUT_LINE('Cursor is already open');
+            WHEN OTHERS THEN
+                DBMS_OUTPUT.PUT_LINE('General Error');
+                DBMS_OUTPUT.PUT_LINE(SQLERRM);
+                DBMS_OUTPUT.PUT_LINE(SQLCODE);
     END;
     
 END pkg_nationality;
