@@ -5,28 +5,22 @@
  */
 package Connect;
 
+import Utils.Global;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import oracle.jdbc.internal.OracleTypes;
+import Utils.IConstants;
 
 
 /**
  *
  * @author lin
  */
-public class ConnectDB 
-{
-    public static final String host = "jdbc:oracle:thin:@localhost:1521:orcl";
-    public static final String uName = "PC";
-    public static final String uPass = "PC";
-       
-    public static String user_type = "";
-    public static int id_user = -1;
-    public static int login_result = -1;
-    
+public class ConnectDB implements IConstants
+{   
     public static void checkLogin(String p_user_name, String p_password) throws SQLException
     {     
        Connection con = DriverManager.getConnection(host, uName, uPass);
@@ -39,9 +33,9 @@ public class ConnectDB
        stmt.registerOutParameter(5, OracleTypes.NUMBER);
        stmt.execute();
        
-       user_type = stmt.getString(4);
-       id_user = stmt.getInt(3);
-       login_result = stmt.getInt(5);
+       Global.user_type = stmt.getString(4);
+       Global.id_user = stmt.getInt(3);
+       Global.login_result = stmt.getInt(5);
     }  
     
     public static void registerPerson(int pId_user, String p_first_name, String p_first_last_name , String p_second_last_name, String p_date_of_birth,

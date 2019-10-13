@@ -8,6 +8,7 @@ package UI;
 import AppPackage.AnimationClass;
 import Connect.ConnectDB;
 import Security.AES;
+import Utils.Global;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -259,9 +260,9 @@ public class loginWindow extends javax.swing.JFrame {
         try {
             String encryptedPassword = AES.encrypt(String.valueOf(passwordField.getPassword()));
             ConnectDB.checkLogin(userNameField.getText(),encryptedPassword);
-            if (ConnectDB.login_result == 1)
+            if (Global.login_result == 1)
             {
-                if ("Administrador".equals(ConnectDB.user_type))
+                if ("Administrador".equals(Global.user_type))
                 {
                     //abrir ventana admin
                 }
