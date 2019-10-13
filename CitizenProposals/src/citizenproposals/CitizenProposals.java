@@ -5,7 +5,9 @@
  */
 package citizenproposals;
 
+import Connect.ConnectDB;
 import UI.loginWindow;
+import java.sql.SQLException;
 
 
 /**
@@ -17,7 +19,7 @@ public class CitizenProposals {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         // TODO code application logic here
         loginWindow login = new loginWindow();
     }

@@ -8,6 +8,7 @@ package Connect;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import oracle.jdbc.internal.OracleTypes;
 
@@ -65,5 +66,94 @@ public class ConnectDB
         stmt.setInt(13,p_id_nationality);
         
         stmt.execute();
+    }
+    
+    public static void getCountries() throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_country.getCountries(?)}");
+        stmt.registerOutParameter(1, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(1);
+        
+        while (r.next())
+        {
+            System.out.println(String.valueOf(r.getInt("id_country"))+" "+r.getString("country_name"));
+        }
+        
+    }
+    
+    public static void getProvincesFromCountry(int pId_country) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_province.getProvincesFromCountry(?,?)}");
+        stmt.setInt(1,pId_country);
+        stmt.registerOutParameter(2, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(2);
+        
+        while (r.next())
+        {
+            System.out.println(String.valueOf(r.getInt("id_province"))+" "+r.getString("province_name"));
+        }
+    }
+    
+    public static void getCantonsFromProvince(int pId_province) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_canton.getCantonsFromProvince(?,?)}");
+        stmt.setInt(1,pId_province);
+        stmt.registerOutParameter(2, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(2);
+        
+        while (r.next())
+        {
+            System.out.println(String.valueOf(r.getInt("id_canton"))+" "+r.getString("canton_name"));
+        }
+    }
+    
+    public static void getDistrictsFromCanton(int pId_canton) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_district.getDistricsFromCanton(?,?)}");
+        stmt.setInt(1,pId_canton);
+        stmt.registerOutParameter(2, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(2);
+        
+        while (r.next())
+        {
+            System.out.println(String.valueOf(r.getInt("id_district"))+" "+r.getString("district_name"));
+        }
+    }
+    
+    public static void getCommunitiesFromDistrict(int pId_district) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_community.getCommunitiesFromDistrict(?,?)}");
+        stmt.setInt(1,pId_district);
+        stmt.registerOutParameter(2, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(2);
+        
+        while (r.next())
+        {
+            System.out.println(String.valueOf(r.getInt("id_community"))+" "+r.getString("community_name"));
+        }
+    }
+    
+    public static void getNationalities () throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_nationality.getNationalities(?)}");
+        stmt.registerOutParameter(1, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(1);
+        
+        while (r.next())
+        {
+            System.out.println(String.valueOf(r.getInt("id_nationality"))+" "+r.getString("nationality_name"));
+        }
     }
 }
