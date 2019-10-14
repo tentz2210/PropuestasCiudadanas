@@ -415,6 +415,9 @@ CREATE OR REPLACE PACKAGE pkg_proposal IS
     PROCEDURE createProposal(pTitle VARCHAR2, pApproxBudget NUMBER,
                              pDescription VARCHAR2, pCategoryCode NUMBER, pIdNumber NUMBER);
     PROCEDURE deleteProposal(pid_proposal NUMBER);
+    PROCEDURE getProposalInfo(pid_proposal IN NUMBER, pout_title OUT VARCHAR2, pout_category_name OUT VARCHAR2,
+                              pout_description OUT VARCHAR2, pout_approximate_budget OUT NUMBER, pout_proposed_by OUT VARCHAR2, 
+                              pout_proposal_date OUT VARCHAR2, pout_community_name OUT VARCHAR2, p_comments_cursor IN OUT SYS_REFCURSOR);
     PROCEDURE getProposals(pid_number NUMBER, p_category_filter NUMBER, p_vote_filter NUMBER, pafter_date VARCHAR2, 
                            pbefore_date VARCHAR2, p_proposal_cursor IN OUT SYS_REFCURSOR);
     PROCEDURE getTopCommunityProposals(p_top_cursor IN OUT SYS_REFCURSOR);
@@ -504,6 +507,39 @@ CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+    END;
+    
+    ------PROCEDURE getProposalInfo------
+    PROCEDURE getProposalInfo(pid_proposal IN NUMBER, pout_title OUT VARCHAR2, pout_category_name OUT VARCHAR2,
+                              pout_description OUT VARCHAR2, pout_approximate_budget OUT NUMBER, pout_proposed_by OUT VARCHAR2, 
+                              pout_proposal_date OUT VARCHAR2, pout_community_name OUT VARCHAR2, p_comments_cursor IN OUT SYS_REFCURSOR) IS
+    BEGIN
+        SELECT p.title, c.category_name, p.description, p.approximate_budget, 
+        pe.first_name||' '||pe.first_last_name||' '||pe.second_last_name full_name, TO_CHAR(p.proposal_date, 'DD/MM/YYYY') date_of_proposition,
+        co.community_name
+        INTO
+        pout_title, pout_category_name, pout_description, pout_approximate_budget, pout_proposed_by, pout_proposal_date, pout_community_name
+        FROM pc.proposal p INNER JOIN pc.category c
+        ON p.category_code = c.category_code
+        INNER JOIN pc.person pe
+        ON p.id_number = pe.id_number
+        INNER JOIN pc.community co
+        ON pe.id_community = co.id_community
+        WHERE p.id_proposal = pid_proposal;
+        
+        OPEN p_comments_cursor FOR
+        SELECT pe.first_name||' '||pe.first_last_name||' '||pe.second_last_name full_name, pcom.text, TO_CHAR(pcom.date_time, 
+               'DD/MM/YYYY HH24:MI:SS') time_of_comment
+               FROM pc.proposal_comment pcom INNER JOIN pc.person pe
+               ON pcom.id_number = pe.id_number
+               WHERE pcom.id_proposal = pid_proposal
+               ORDER BY pcom.date_time DESC;
+               
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error fetching proposal info');
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+            DBMS_OUTPUT.PUT_LINE(SQLCODE);
     END;
     
     ------PROCEDURE DELETE------
