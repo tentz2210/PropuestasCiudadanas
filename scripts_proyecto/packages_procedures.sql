@@ -909,7 +909,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_user_type AS
         OPEN p_user_types_cursor FOR
             SELECT id_user_type, user_type_name
             FROM pc.user_type
-            ORDER BY desc;
+            ORDER BY user_type_name desc;
         EXCEPTION 
             WHEN CURSOR_ALREADY_OPEN THEN
                 DBMS_OUTPUT.PUT_LINE('Cursor is already open');
