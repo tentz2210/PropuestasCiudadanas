@@ -859,6 +859,7 @@ CREATE OR REPLACE PACKAGE pkg_user_type IS
     PROCEDURE createUserType(pIdUserName VARCHAR2);
     PROCEDURE deleteUserType(pid_user_type NUMBER);
     PROCEDURE updateUserTypeName(pid_user_type NUMBER, p_new_name VARCHAR2);
+    PROCEDURE getUserTypes(p_user_types_cursor IN OUT SYS_REFCURSOR);
 END pkg_user_type;
 
 CREATE OR REPLACE PACKAGE BODY pkg_user_type AS
@@ -901,6 +902,23 @@ CREATE OR REPLACE PACKAGE BODY pkg_user_type AS
             DBMS_OUTPUT.PUT_LINE('Error al eliminar');
             ROLLBACK;
     END;
+    
+    ------PROCEDURE GET USER TYPES------
+    PROCEDURE getUserTypes(p_user_types_cursor IN OUT SYS_REFCURSOR) IS
+    BEGIN
+        OPEN p_user_types_cursor FOR
+            SELECT id_user_type, user_type_name
+            FROM pc.user_type
+            ORDER BY desc;
+        EXCEPTION 
+            WHEN CURSOR_ALREADY_OPEN THEN
+                DBMS_OUTPUT.PUT_LINE('Cursor is already open');
+            WHEN OTHERS THEN
+                DBMS_OUTPUT.PUT_LINE('General Error');
+                DBMS_OUTPUT.PUT_LINE(SQLERRM);
+                DBMS_OUTPUT.PUT_LINE(SQLCODE);
+    END;
+    
 END pkg_user_type;
 
 ----------PACKAGE NATIONALITY----------
