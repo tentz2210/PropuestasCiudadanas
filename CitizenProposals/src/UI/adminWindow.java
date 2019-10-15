@@ -34,9 +34,10 @@ public class adminWindow extends javax.swing.JFrame {
         minimize = new javax.swing.JLabel();
         menu = new javax.swing.JLabel();
         statistics = new javax.swing.JLabel();
-        settings = new javax.swing.JLabel();
         catalogues = new javax.swing.JLabel();
         query = new javax.swing.JLabel();
+        settings = new javax.swing.JLabel();
+        logout = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -81,13 +82,6 @@ public class adminWindow extends javax.swing.JFrame {
         statistics.setPreferredSize(new java.awt.Dimension(132, 32));
         jPanel1.add(statistics, new org.netbeans.lib.awtextra.AbsoluteConstraints(-185, 60, 170, -1));
 
-        settings.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        settings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/userSettings.png"))); // NOI18N
-        settings.setText("Configuración");
-        settings.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        settings.setPreferredSize(new java.awt.Dimension(132, 32));
-        jPanel1.add(settings, new org.netbeans.lib.awtextra.AbsoluteConstraints(-185, 180, -1, -1));
-
         catalogues.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         catalogues.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/catalogues.png"))); // NOI18N
         catalogues.setText("Catálogos");
@@ -99,6 +93,19 @@ public class adminWindow extends javax.swing.JFrame {
         query.setText("Consultas");
         query.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel1.add(query, new org.netbeans.lib.awtextra.AbsoluteConstraints(-185, 100, 100, -1));
+
+        settings.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        settings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/userSettings.png"))); // NOI18N
+        settings.setText("Configuración");
+        settings.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        settings.setPreferredSize(new java.awt.Dimension(132, 32));
+        jPanel1.add(settings, new org.netbeans.lib.awtextra.AbsoluteConstraints(-185, 180, -1, -1));
+
+        logout.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        logout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/logout.png"))); // NOI18N
+        logout.setText("Cerrar sesión");
+        logout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel1.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(-185, 220, -1, -1));
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -123,6 +130,8 @@ public class adminWindow extends javax.swing.JFrame {
         cataloguesR.jLabelXRight(-185, 10, 10, 5, catalogues);
         AnimationClass queriesR = new AnimationClass();
         queriesR.jLabelXRight(-185, 10, 10, 5, query);
+        AnimationClass logoutR = new AnimationClass();
+        logoutR.jLabelXRight(-185, 10, 10, 5, logout);
         
         //<--
         AnimationClass statisticsL = new AnimationClass();
@@ -133,6 +142,8 @@ public class adminWindow extends javax.swing.JFrame {
         cataloguesL.jLabelXLeft(10,-185,10,5,catalogues);
         AnimationClass queriesL = new AnimationClass();
         queriesL.jLabelXLeft(10,-185,10,5,query);
+        AnimationClass logoutL = new AnimationClass();
+        logoutL.jLabelXLeft(10,-185,10,5,logout);
     }//GEN-LAST:event_menuMouseClicked
 
     /**
@@ -174,6 +185,7 @@ public class adminWindow extends javax.swing.JFrame {
     private javax.swing.JLabel catalogues;
     private javax.swing.JLabel closeWindow;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel logout;
     private javax.swing.JLabel menu;
     private javax.swing.JLabel minimize;
     private javax.swing.JLabel query;

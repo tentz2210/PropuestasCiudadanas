@@ -38,6 +38,7 @@ public class citizenWindow extends javax.swing.JFrame {
         favorites = new javax.swing.JLabel();
         query = new javax.swing.JLabel();
         setting = new javax.swing.JLabel();
+        logout = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -106,6 +107,11 @@ public class citizenWindow extends javax.swing.JFrame {
         });
         jPanel1.add(setting, new org.netbeans.lib.awtextra.AbsoluteConstraints(-140, 180, 130, -1));
 
+        logout.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        logout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/logout.png"))); // NOI18N
+        logout.setText("Cerrar sesión");
+        jPanel1.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(-140, 220, -1, -1));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 730));
 
         pack();
@@ -129,6 +135,8 @@ public class citizenWindow extends javax.swing.JFrame {
         queryR.jLabelXRight(-140, 10, 10, 5, query);
         AnimationClass settingR = new AnimationClass();
         settingR.jLabelXRight(-140, 10, 10, 5, setting);
+        AnimationClass logoutR = new AnimationClass();
+        logoutR.jLabelXRight(-140, 10, 10, 5, logout);
         //<--
         AnimationClass myProposalsL = new AnimationClass();
         myProposalsL.jLabelXLeft(10, -140, 10, 5, myProposals);
@@ -138,6 +146,8 @@ public class citizenWindow extends javax.swing.JFrame {
         queryL.jLabelXLeft(10, -140, 10, 5, query);
         AnimationClass settingL = new AnimationClass();
         settingL.jLabelXLeft(10, -140, 10, 5, setting);
+        AnimationClass logoutL = new AnimationClass();
+        logoutL.jLabelXLeft(10, -140, 10, 5, logout);
     }//GEN-LAST:event_menuMouseClicked
 
     private void settingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingMouseClicked
@@ -184,6 +194,7 @@ public class citizenWindow extends javax.swing.JFrame {
     private javax.swing.JLabel closeWindow;
     private javax.swing.JLabel favorites;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel logout;
     private javax.swing.JLabel menu;
     private javax.swing.JLabel minimize;
     private javax.swing.JLabel myProposals;

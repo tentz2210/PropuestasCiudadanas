@@ -24,7 +24,7 @@ public class Global {
     public static List<CatalogueContainer> districtsInfo = new ArrayList<>();
     public static List<CatalogueContainer> communitiesInfo = new ArrayList<>();
     public static List<CatalogueContainer> userTypesInfo = new ArrayList<>();
-    public static JFileChooser photoChooser = new JFileChooser("C:\\Users\\lin\\OneDrive - Estudiantes ITCR\\TEC\\2019 - II\\BD I\\Proyectos\\P1\\Imágenes Usuarios");
+    public static JFileChooser photoChooser = new JFileChooser("C:\\Users\\mapac\\OneDrive - Estudiantes ITCR\\Documentos\\TEC\\2019 II Semestre\\Bases de Datos I\\ProyectoI\\Imágenes Usuarios");
     
         public static boolean isNumeric(String s) {
 
