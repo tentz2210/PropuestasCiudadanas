@@ -5,6 +5,14 @@
  */
 package UI;
 
+import Connect.ConnectDB;
+import Security.AES;
+import Utils.Global;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author mapac
@@ -35,10 +43,13 @@ public class passwordWindow extends javax.swing.JFrame {
         actualPasswordField = new javax.swing.JPasswordField();
         newPasswordLabel = new javax.swing.JLabel();
         newPasswordField = new javax.swing.JPasswordField();
+        usernameLabel = new javax.swing.JLabel();
+        modifyUsernameButton = new javax.swing.JButton();
         cNewPasswordLabel = new javax.swing.JLabel();
         cNewPasswordField = new javax.swing.JPasswordField();
-        acceptButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
+        modifyPasswordButton = new javax.swing.JButton();
+        userNameField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -63,19 +74,28 @@ public class passwordWindow extends javax.swing.JFrame {
         newPasswordField.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jPanel1.add(newPasswordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(155, 62, 120, -1));
 
+        usernameLabel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        usernameLabel.setText("Nuevo usuario");
+        jPanel1.add(usernameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, -1, -1));
+
+        modifyUsernameButton.setBackground(new java.awt.Color(0, 0, 102));
+        modifyUsernameButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        modifyUsernameButton.setForeground(new java.awt.Color(255, 255, 255));
+        modifyUsernameButton.setText("Modificar");
+        modifyUsernameButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        modifyUsernameButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                modifyUsernameButtonMouseClicked(evt);
+            }
+        });
+        jPanel1.add(modifyUsernameButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 230, -1, -1));
+
         cNewPasswordLabel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         cNewPasswordLabel.setText("Confirmar contraseña");
         jPanel1.add(cNewPasswordLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 106, -1, -1));
 
         cNewPasswordField.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jPanel1.add(cNewPasswordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(155, 105, 120, -1));
-
-        acceptButton.setBackground(new java.awt.Color(16, 123, 16));
-        acceptButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        acceptButton.setForeground(new java.awt.Color(255, 255, 255));
-        acceptButton.setText("Aceptar");
-        acceptButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel1.add(acceptButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 140, 90, -1));
 
         cancelButton.setBackground(new java.awt.Color(222, 4, 11));
         cancelButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -87,16 +107,67 @@ public class passwordWindow extends javax.swing.JFrame {
                 cancelButtonMouseClicked(evt);
             }
         });
-        jPanel1.add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 140, -1, -1));
+        jPanel1.add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 280, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 180));
+        modifyPasswordButton.setBackground(new java.awt.Color(0, 0, 102));
+        modifyPasswordButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        modifyPasswordButton.setForeground(new java.awt.Color(255, 255, 255));
+        modifyPasswordButton.setText("Modificar");
+        modifyPasswordButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        modifyPasswordButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                modifyPasswordButtonMouseClicked(evt);
+            }
+        });
+        jPanel1.add(modifyPasswordButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 150, -1, -1));
+
+        userNameField.setPreferredSize(new java.awt.Dimension(6, 21));
+        jPanel1.add(userNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(155, 190, 120, -1));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 320));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void modifyUsernameButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyUsernameButtonMouseClicked
+       String newUserName = userNameField.getText();
+       if (!Global.hasNumbers(newUserName) && !"".equals(newUserName))
+       {
+           try {
+               ConnectDB.modifyUserName(Global.id_person,newUserName);
+               if (Global.update_result == 1) JOptionPane.showMessageDialog(this,"Se ha modificado el nombre de usuario","Modificación exitosa",JOptionPane.INFORMATION_MESSAGE);
+               else JOptionPane.showMessageDialog(this,"No se ha podido modificar el nombre de usuario","Error de modificación",JOptionPane.ERROR_MESSAGE);
+           } catch (SQLException ex) {
+               Logger.getLogger(passwordWindow.class.getName()).log(Level.SEVERE, null, ex);
+           }
+       }
+       else JOptionPane.showMessageDialog(this,"No se ha podido modificar el nombre de usuario","Error de modificación",JOptionPane.ERROR_MESSAGE);
+    }//GEN-LAST:event_modifyUsernameButtonMouseClicked
+
     private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
         this.setVisible(false);
     }//GEN-LAST:event_cancelButtonMouseClicked
+
+    private void modifyPasswordButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyPasswordButtonMouseClicked
+        String oldPassword = String.valueOf(actualPasswordField.getPassword());
+        String newPassword = String.valueOf(newPasswordField.getPassword());
+        String newPasswordConfirmed = String.valueOf(cNewPasswordField.getPassword());
+        
+        if (!"".equals(oldPassword) && !"".equals(newPassword) && !"".equals(newPasswordConfirmed) && newPassword.equals(newPasswordConfirmed))
+        {
+            try {
+                String encryptedOldPass = AES.encrypt(oldPassword);
+                String encryptedPass = AES.encrypt(newPassword);
+                ConnectDB.updatePersonPassword(Global.id_person,encryptedOldPass,encryptedPass);
+                if (Global.update_result == 1) JOptionPane.showMessageDialog(this,"Contraseña actualizada correctamente","Modificación exitosa",JOptionPane.INFORMATION_MESSAGE);
+                else JOptionPane.showMessageDialog(this,"Error al modificar la contraseña","Error de modificación",JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                Logger.getLogger(passwordWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else JOptionPane.showMessageDialog(this,"Error al modificar la contraseña","Error de modificación",JOptionPane.ERROR_MESSAGE);
+        
+    }//GEN-LAST:event_modifyPasswordButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -134,7 +205,6 @@ public class passwordWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton acceptButton;
     private javax.swing.JPasswordField actualPasswordField;
     private javax.swing.JLabel actualPasswordLabel;
     private javax.swing.JPasswordField cNewPasswordField;
@@ -142,7 +212,11 @@ public class passwordWindow extends javax.swing.JFrame {
     private javax.swing.JButton cancelButton;
     private javax.swing.JLabel iconPassword;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton modifyPasswordButton;
+    private javax.swing.JButton modifyUsernameButton;
     private javax.swing.JPasswordField newPasswordField;
     private javax.swing.JLabel newPasswordLabel;
+    private javax.swing.JTextField userNameField;
+    private javax.swing.JLabel usernameLabel;
     // End of variables declaration//GEN-END:variables
 }

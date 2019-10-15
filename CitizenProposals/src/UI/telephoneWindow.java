@@ -51,7 +51,6 @@ public class telephoneWindow extends javax.swing.JFrame {
         actualPhoneLabel = new javax.swing.JLabel();
         actualPhoneField = new javax.swing.JTextField();
         modifyButton = new javax.swing.JButton();
-        acceptButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -145,13 +144,6 @@ public class telephoneWindow extends javax.swing.JFrame {
         });
         jPanel1.add(modifyButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 340, -1, -1));
 
-        acceptButton.setBackground(new java.awt.Color(16, 123, 16));
-        acceptButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        acceptButton.setForeground(new java.awt.Color(255, 255, 255));
-        acceptButton.setText("Aceptar");
-        acceptButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel1.add(acceptButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 390, 90, -1));
-
         cancelButton.setBackground(new java.awt.Color(222, 4, 11));
         cancelButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         cancelButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -162,7 +154,7 @@ public class telephoneWindow extends javax.swing.JFrame {
                 cancelButtonMouseClicked(evt);
             }
         });
-        jPanel1.add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 390, -1, -1));
+        jPanel1.add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 390, -1, -1));
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -253,7 +245,6 @@ public class telephoneWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton acceptButton;
     private javax.swing.JTextField actualPhoneField;
     private javax.swing.JLabel actualPhoneLabel;
     private javax.swing.JButton addButton;

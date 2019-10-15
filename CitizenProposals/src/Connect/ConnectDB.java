@@ -331,20 +331,20 @@ public class ConnectDB implements IConstants
     
     public static void updatePersonProfilePicture(int p_id_number,String p_new_photo) throws SQLException
     {
-        Connection con = DriverManager.getConnection(host, uName, uPass);
-        CallableStatement stmt = con.prepareCall("{call pkg_.updatePersonIdCommunity(?,?,?)}");
+        
     }
     
-    public static void updatePersonPassword(int p_id_number,String p_new_password) throws SQLException
+    public static void updatePersonPassword(int p_id_number,String p_old_password,String p_new_password) throws SQLException
     {
         Connection con = DriverManager.getConnection(host, uName, uPass);
-        CallableStatement stmt = con.prepareCall("{call pkg_user.updatePersonPhoto(?,?,?)}");
+        CallableStatement stmt = con.prepareCall("{call pkg_user.updateUserPassword(?,?,?,?)}");
         stmt.setInt(1,p_id_number);
-        stmt.setString(2,p_new_password);
-        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        stmt.setString(2,p_old_password);
+        stmt.setString(3,p_new_password);
+        stmt.registerOutParameter(4,OracleTypes.INTEGER);
         stmt.execute();
         
-        Global.update_result = stmt.getInt(3);
+        Global.update_result = stmt.getInt(4);
     }
     
     public static void insertEmail(String newMail, int idNumber)  throws SQLException
@@ -423,6 +423,18 @@ public class ConnectDB implements IConstants
         stmt.execute();
         
         Global.update_result = stmt.getInt(4);
+    }
+    
+    public static void modifyUserName(int pIdNumber, String newUserName) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_user.updateUserName(?,?,?)}");
+        stmt.setInt(1,pIdNumber);
+        stmt.setString(2,newUserName);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.update_result = stmt.getInt(3);
     }
 }
 
