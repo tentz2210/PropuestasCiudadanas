@@ -1696,7 +1696,7 @@ CREATE OR REPLACE PACKAGE pkg_user IS
     PROCEDURE registerUser(p_id NUMBER, pfirst_name VARCHAR2, pfirst_last_name VARCHAR2, psecond_last_name VARCHAR2, pdate_of_birth VARCHAR2,
                            pphoto VARCHAR2, pid_community NUMBER, puser_name VARCHAR2, puser_password VARCHAR2, pid_user_type NUMBER,
                            p_email VARCHAR2, p_phone_number NUMBER, p_id_nationality NUMBER, p_register_result OUT NUMBER);
-    PROCEDURE updateUserPassword(p_id_user NUMBER, p_new_password VARCHAR2, p_result OUT NUMBER);
+    PROCEDURE updateUserPassword(p_id_user NUMBER, p_old_password NUMBER,p_new_password VARCHAR2, p_result OUT NUMBER);
     PROCEDURE updateUserType(p_id_user NUMBER,p_new_type NUMBER,p_result OUT NUMBER);
     PROCEDURE updateUserName(p_id_user NUMBER, p_new_name VARCHAR2,p_result OUT NUMBER);
     FUNCTION getPersonsIdCommunity(pid_user IN NUMBER) RETURN NUMBER;
@@ -1734,11 +1734,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_user AS
             ROLLBACK;
     END;
     ------PROCEDURES UPDATE------
-    PROCEDURE updateUserPassword(p_id_user NUMBER, p_new_password VARCHAR2, p_result OUT NUMBER)IS
+    PROCEDURE updateUserPassword(p_id_user NUMBER, p_old_password NUMBER,p_new_password VARCHAR2, p_result OUT NUMBER)IS
     BEGIN
         UPDATE person_user
         SET user_password = p_new_password
-        WHERE id_user = p_id_user;
+        WHERE id_user = p_id_user AND user_password = p_old_password;
 	COMMIT;
     p_result:=1;
     EXCEPTION
