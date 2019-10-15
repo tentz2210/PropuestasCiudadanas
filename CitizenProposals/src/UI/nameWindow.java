@@ -5,6 +5,13 @@
  */
 package UI;
 
+import Connect.ConnectDB;
+import Utils.Global;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author mapac
@@ -32,9 +39,9 @@ public class nameWindow extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         iconName = new javax.swing.JLabel();
         nameLabel = new javax.swing.JLabel();
-        nameField = new javax.swing.JTextField();
+        fLastNameField = new javax.swing.JTextField();
         fLastName = new javax.swing.JLabel();
-        nameField1 = new javax.swing.JTextField();
+        nameField = new javax.swing.JTextField();
         sLastName = new javax.swing.JLabel();
         sLastNameField = new javax.swing.JTextField();
         acceptButton = new javax.swing.JButton();
@@ -54,22 +61,21 @@ public class nameWindow extends javax.swing.JFrame {
         nameLabel.setText("Cambiar nombre");
         jPanel1.add(nameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
 
-        nameField.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jPanel1.add(nameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 60, 120, -1));
+        fLastNameField.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jPanel1.add(fLastNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 60, 120, -1));
 
         fLastName.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         fLastName.setText("Cambiar primer apellido");
         jPanel1.add(fLastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, 20));
 
-        nameField1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jPanel1.add(nameField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 17, 120, -1));
+        nameField.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jPanel1.add(nameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 17, 120, -1));
 
         sLastName.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         sLastName.setText("Cambiar segundo apellido");
         jPanel1.add(sLastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 103, -1, -1));
 
         sLastNameField.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        sLastNameField.setPreferredSize(new java.awt.Dimension(6, 27));
         jPanel1.add(sLastNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 100, 120, -1));
 
         acceptButton.setBackground(new java.awt.Color(16, 123, 16));
@@ -77,6 +83,11 @@ public class nameWindow extends javax.swing.JFrame {
         acceptButton.setForeground(new java.awt.Color(255, 255, 255));
         acceptButton.setText("Aceptar");
         acceptButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        acceptButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                acceptButtonMouseClicked(evt);
+            }
+        });
         jPanel1.add(acceptButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 150, 90, -1));
 
         cancelButton.setBackground(new java.awt.Color(222, 4, 11));
@@ -99,6 +110,43 @@ public class nameWindow extends javax.swing.JFrame {
     private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
         this.setVisible(false);
     }//GEN-LAST:event_cancelButtonMouseClicked
+
+    private void acceptButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_acceptButtonMouseClicked
+       String name = nameField.getText();
+       String firstLName = fLastNameField.getText();
+       String secLName = sLastNameField.getText();
+       if(!"".equals(name) && !Global.hasNumbers(name)){
+           try {
+               ConnectDB.updatePersonName(Global.id_person,name);
+               JOptionPane.showMessageDialog(this, "El nombre ha sido actualizado","Actualización exitosa", JOptionPane.INFORMATION_MESSAGE);
+           } catch (SQLException ex) {
+               Logger.getLogger(nameWindow.class.getName()).log(Level.SEVERE, null, ex);
+           }
+       }
+       else JOptionPane.showMessageDialog(this, "No es posible modificar el nombre","Error de cambio", JOptionPane.ERROR_MESSAGE);
+       if (!"".equals(firstLName) && !Global.hasNumbers(firstLName)){
+           try {
+               ConnectDB.updatePersonFirstLastName(Global.id_person,firstLName);
+               JOptionPane.showMessageDialog(this, "El primer apellido ha sido actualizado","Actualización exitosa", JOptionPane.INFORMATION_MESSAGE);
+           } catch (SQLException ex) {
+               Logger.getLogger(nameWindow.class.getName()).log(Level.SEVERE, null, ex);
+           }
+       }
+       else JOptionPane.showMessageDialog(this, "No es posible modificar el primer apellido","Error de cambio", JOptionPane.ERROR_MESSAGE);
+       if (!"".equals(secLName) && !Global.hasNumbers(secLName)){
+           try {
+               ConnectDB.updatePersonSecLastName(Global.id_person,secLName);
+               JOptionPane.showMessageDialog(this, "El segundo apellido ha sido actualizado","Actualización exitosa", JOptionPane.INFORMATION_MESSAGE);
+           } catch (SQLException ex) {
+               Logger.getLogger(nameWindow.class.getName()).log(Level.SEVERE, null, ex);
+           }
+       }
+       else JOptionPane.showMessageDialog(this, "No es posible modificar el segundo apellido","Error de cambio", JOptionPane.ERROR_MESSAGE);
+       nameField.setText("");
+       fLastNameField.setText("");
+       sLastNameField.setText("");
+       this.setVisible(false);
+    }//GEN-LAST:event_acceptButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -139,10 +187,10 @@ public class nameWindow extends javax.swing.JFrame {
     private javax.swing.JButton acceptButton;
     private javax.swing.JButton cancelButton;
     private javax.swing.JLabel fLastName;
+    private javax.swing.JTextField fLastNameField;
     private javax.swing.JLabel iconName;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField nameField;
-    private javax.swing.JTextField nameField1;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JLabel sLastName;
     private javax.swing.JTextField sLastNameField;

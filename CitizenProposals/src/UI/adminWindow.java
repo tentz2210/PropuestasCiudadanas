@@ -19,6 +19,7 @@ public class adminWindow extends javax.swing.JFrame {
      */
     public adminWindow() {
         initComponents();
+        this.setVisible(true);
     }
 
     /**

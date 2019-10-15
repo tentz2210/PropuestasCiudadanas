@@ -258,7 +258,7 @@ public class ConnectDB implements IConstants
     public static void updatePersonSecLastName(int p_id_number,String p_new_sec_last_name) throws SQLException
     {
         Connection con = DriverManager.getConnection(host, uName, uPass);
-        CallableStatement stmt = con.prepareCall("{call pkg_person.updatePersonSecondLastName(?,?,?)}");
+        CallableStatement stmt = con.prepareCall("{call pkg_person.updatePersonSecLastName(?,?,?)}");
         stmt.setInt(1,p_id_number);
         stmt.setString(2,p_new_sec_last_name);
         stmt.registerOutParameter(3,OracleTypes.INTEGER);
