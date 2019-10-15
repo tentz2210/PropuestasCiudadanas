@@ -91,6 +91,11 @@ public class editProfile extends javax.swing.JFrame {
         passwordButton.setBackground(new java.awt.Color(255, 255, 255));
         passwordButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/password.png"))); // NOI18N
         passwordButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        passwordButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                passwordButtonMouseClicked(evt);
+            }
+        });
         jPanel2.add(passwordButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 280, 130, 130));
 
         idNumberButton.setBackground(new java.awt.Color(255, 255, 255));
@@ -204,6 +209,10 @@ public class editProfile extends javax.swing.JFrame {
     private void idNumberButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_idNumberButtonMouseClicked
         idNumberWindow idNumber = new idNumberWindow();
     }//GEN-LAST:event_idNumberButtonMouseClicked
+
+    private void passwordButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_passwordButtonMouseClicked
+        passwordWindow password = new passwordWindow();
+    }//GEN-LAST:event_passwordButtonMouseClicked
 
     /**
      * @param args the command line arguments

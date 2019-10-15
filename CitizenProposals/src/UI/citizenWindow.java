@@ -111,6 +111,7 @@ public class citizenWindow extends javax.swing.JFrame {
         logout.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         logout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/logout.png"))); // NOI18N
         logout.setText("Cerrar sesión");
+        logout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         logout.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 logoutMouseClicked(evt);
