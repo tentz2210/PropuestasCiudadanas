@@ -1101,11 +1101,28 @@ CREATE OR REPLACE PACKAGE pkg_person IS
     PROCEDURE updatePersonSecLastName(p_id_number NUMBER, p_new_sec_last_name VARCHAR2, p_result OUT NUMBER);
     PROCEDURE updatePersonBirthDate(p_id_number NUMBER, p_new_birth_date DATE,p_result OUT NUMBER);
     PROCEDURE updatePersonIdCommunity(p_id_number NUMBER, p_new_id_community NUMBER, p_result OUT NUMBER);
+    PROCEDURE updatePersonPhoto(p_id_number NUMBER,p_new_photo NUMBER, p_result OUT NUMBER);
     FUNCTION getPersonIdNumber(p_id_user NUMBER) RETURN NUMBER;
 END pkg_person;
 
 CREATE OR REPLACE PACKAGE BODY pkg_person AS
-
+    ------UPDATE PHOTO------
+    PROCEDURE updatePersonPhoto(p_id_number NUMBER,p_new_photo NUMBER, p_result OUT NUMBER) IS
+    BEGIN
+        UPDATE person
+            SET photo = p_new_photo
+            WHERE id_number = p_id_number;
+	COMMIT;
+    p_result := 1;
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error updating');
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+            DBMS_OUTPUT.PUT_LINE(SQLCODE);
+	    ROLLBACK;
+        p_result := 0;
+    END;
+    
     ------FUNCTION GET ID NUMBER------
     FUNCTION getPersonIdNumber(p_id_user NUMBER) RETURN NUMBER IS
     vn_id_number NUMBER(20);
@@ -1438,31 +1455,33 @@ END pkg_person;
 
 ----------PACKAGE EMAIL----------
 CREATE OR REPLACE PACKAGE pkg_email IS
-    PROCEDURE insertEmail(pMail VARCHAR2, pIdNumber NUMBER);
-    PROCEDURE deleteEmail(p_mail VARCHAR2);
-    PROCEDURE updateEmail(p_id_number NUMBER, p_new_email VARCHAR2,p_result OUT NUMBER);
+    PROCEDURE insertEmail(pMail VARCHAR2, pIdNumber NUMBER, p_result OUT NUMBER);
+    PROCEDURE deleteEmail(p_mail VARCHAR2, pIdNumber NUMBER, p_result OUT NUMBER);
+    PROCEDURE updateEmail(p_id_number NUMBER,p_old_email VARCHAR2 ,p_new_email VARCHAR2,p_result OUT NUMBER);
 END pkg_email;
 
 CREATE OR REPLACE PACKAGE BODY pkg_email AS
     ------PROCEDURE INSERT------
-    PROCEDURE insertEmail(pMail VARCHAR2, pIdNumber NUMBER) IS
+    PROCEDURE insertEmail(pMail VARCHAR2, pIdNumber NUMBER, p_result OUT NUMBER) IS
     BEGIN
         INSERT INTO pc.email(mail,id_number)
         VALUES(pMail,pIdNumber);
         COMMIT;
+        p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error inserting email');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+        p_result:=0;
     END;
     ------PROCEDURE UPDATE------
-    PROCEDURE updateEmail(p_id_number NUMBER, p_new_email VARCHAR2, p_result OUT NUMBER)IS
+    PROCEDURE updateEmail(p_id_number NUMBER,p_old_email VARCHAR2 ,p_new_email VARCHAR2,p_result OUT NUMBER) IS
     BEGIN
         UPDATE email
         SET mail = p_new_email
-        WHERE id_number = p_id_number;
+        WHERE id_number = p_id_number AND mail = p_old_email;
 	COMMIT;
     p_result := 1;
     EXCEPTION
@@ -1474,46 +1493,50 @@ CREATE OR REPLACE PACKAGE BODY pkg_email AS
         p_result:=0;
     END;
     ------PROCEDURE DELETE------
-    PROCEDURE deleteEmail(p_mail VARCHAR2) IS
+    PROCEDURE deleteEmail(p_mail VARCHAR2, pIdNumber NUMBER, p_result OUT NUMBER) IS
     BEGIN
         DELETE FROM email
-        WHERE mail = p_mail;
+        WHERE mail = p_mail AND id_number = pIdNumber;
         COMMIT;
+        p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error al eliminar');
             ROLLBACK;
+            p_result:=0;
     END;
     
 END pkg_email;
 
 ----------PACKAGE TELEPHONE----------
 CREATE OR REPLACE PACKAGE pkg_telephone IS
-    PROCEDURE insertTelephone(pTelephone NUMBER, pIdNumber NUMBER);
-    PROCEDURE deleteTelephone(p_phone_number NUMBER);
-    PROCEDURE updateTelephoneNumber(p_id_number NUMBER, p_new_phone_number NUMBER,p_result OUT NUMBER);
+    PROCEDURE insertTelephone(pTelephone NUMBER, pIdNumber NUMBER, p_result OUT NUMBER);
+    PROCEDURE deleteTelephone(p_phone_number NUMBER, pIdNumber NUMBER, p_result OUT NUMBER);
+    PROCEDURE updateTelephoneNumber(p_id_number NUMBER,p_old_phone NUMBER ,p_new_phone_number NUMBER,p_result OUT NUMBER);
 END pkg_telephone;
     
 CREATE OR REPLACE PACKAGE BODY pkg_telephone AS
     ------PROCEDURE INSERT------
-    PROCEDURE insertTelephone(pTelephone NUMBER, pIdNumber NUMBER) IS
+    PROCEDURE insertTelephone(pTelephone NUMBER, pIdNumber NUMBER, p_result OUT NUMBER) IS
     BEGIN
         INSERT INTO pc.telephone(phone_number,id_number)
         VALUES(pTelephone,pIdNumber);
         COMMIT;
+        p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error inserting telephone');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
         	DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     ------PROCEDURE UPDATE------
-    PROCEDURE updateTelephoneNumber(p_id_number NUMBER, p_new_phone_number NUMBER,p_result OUT NUMBER) IS
+    PROCEDURE updateTelephoneNumber(p_id_number NUMBER,p_old_phone NUMBER ,p_new_phone_number NUMBER,p_result OUT NUMBER) IS
     BEGIN
         UPDATE telephone
         SET phone_number = p_new_phone_number
-        WHERE id_number = p_id_number;
+        WHERE id_number = p_id_number AND phone_number = p_old_phone;
 	COMMIT;
     p_result:=1;
     EXCEPTION
@@ -1525,15 +1548,17 @@ CREATE OR REPLACE PACKAGE BODY pkg_telephone AS
         p_result:=0;
     END;
     ------PROCEDURE DELETE------
-    PROCEDURE deleteTelephone(p_phone_number NUMBER) IS
+    PROCEDURE deleteTelephone(p_phone_number NUMBER, pIdNumber NUMBER, p_result OUT NUMBER)IS
     BEGIN
         DELETE FROM telephone
-        WHERE phone_number = p_phone_number;
+        WHERE phone_number = p_phone_number AND id_number = pIdNumber;
         COMMIT;
+        p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error al eliminar');
             ROLLBACK;
+            p_result:=0;
     END;
 
 END pkg_telephone;
@@ -1829,9 +1854,26 @@ END pkg_user;
 ----------PACKAGE NATIONALITY X PERSON----------
 CREATE OR REPLACE PACKAGE pkg_nationality_x_person IS
     PROCEDURE insertNationalityXPerson(pIdNumber NUMBER, pIdNationality NUMBER);
+    PROCEDURE updateNationalityXPerson(pIdNumber NUMBER,pIdNationality NUMBER, p_result OUT NUMBER);
 END pkg_nationality_x_person;
 
 CREATE OR REPLACE PACKAGE BODY pkg_nationality_x_person AS
+PROCEDURE updateNationalityXPerson(pIdNumber NUMBER,pIdNationality NUMBER, p_result OUT NUMBER)IS
+    BEGIN
+        UPDATE nationality_x_person
+            SET id_nationality = pIdNationality
+            WHERE id_number = pIdNumber;
+	COMMIT;
+    p_result := 1;
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error updating');
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+            DBMS_OUTPUT.PUT_LINE(SQLCODE);
+	    ROLLBACK;
+        p_result := 0;
+    END;
+    
     ------PROCEDURE INSERT------
     PROCEDURE insertNationalityXPerson(pIdNumber NUMBER, pIdNationality NUMBER) IS
     BEGIN
