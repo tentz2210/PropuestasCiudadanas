@@ -6,9 +6,9 @@
 package UI;
 
 import Connect.ConnectDB;
+import Security.AES;
 import Utils.Global;
 import com.placeholder.PlaceHolder;
-import java.io.File;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -157,7 +157,7 @@ public class registerWindow extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel1.add(panelMinimizeClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 939, -1));
+        jPanel1.add(panelMinimizeClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 939, 40));
 
         appName.setFont(new java.awt.Font("Arial", 0, 40)); // NOI18N
         appName.setText("Nombre app");
@@ -166,9 +166,9 @@ public class registerWindow extends javax.swing.JFrame {
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/user01.png"))); // NOI18N
         jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(162, 144, 248, 246));
 
-        createAccount.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
+        createAccount.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         createAccount.setText("Crea una cuenta");
-        jPanel1.add(createAccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 30, 239, 54));
+        jPanel1.add(createAccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 40, 239, 40));
 
         fLastNameField.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jPanel1.add(fLastNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 80, 173, 35));
@@ -338,6 +338,11 @@ public class registerWindow extends javax.swing.JFrame {
         register.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         register.setForeground(new java.awt.Color(255, 255, 255));
         register.setText("Registrarse");
+        register.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registerActionPerformed(evt);
+            }
+        });
         jPanel1.add(register, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 580, 110, -1));
 
         photoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/camera.png"))); // NOI18N
@@ -360,8 +365,6 @@ public class registerWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_closeWndowMouseClicked
 
     private void userTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userTypeComboBoxActionPerformed
-        System.out.println(userTypeComboBox.getSelectedItem());
-        
         if ("Administrador".equals(Global.userTypesInfo.get(userTypeComboBox.getSelectedIndex()).getName()))
         {   
             String code = JOptionPane.showInputDialog(this,"Digite el código para registrar administrador","Código de acceso",JOptionPane.QUESTION_MESSAGE);
@@ -410,16 +413,49 @@ public class registerWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_districtComboBoxActionPerformed
 
     private void photoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_photoButtonActionPerformed
-        JFileChooser photoChooser = new JFileChooser("C:\\Users\\lin\\OneDrive - Estudiantes ITCR\\TEC\\2019 - II\\BD I\\Proyectos\\P1\\Imágenes Usuarios");
-        photoChooser.setDialogTitle("Seleccionar foto de perfil");
-        photoChooser.setFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "png"));
-        if (photoChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+        Global.photoChooser.setDialogTitle("Seleccionar foto de perfil");
+        Global.photoChooser.setFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "png"));
+        if (Global.photoChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
         {
-            System.out.println(photoChooser.getSelectedFile().toString());
-            
-            photoLabel.setIcon(new ImageIcon(photoChooser.getSelectedFile().toString())); 
+            photoLabel.setIcon(new ImageIcon(Global.photoChooser.getSelectedFile().toString())); 
         }
     }//GEN-LAST:event_photoButtonActionPerformed
+
+    private void registerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerActionPerformed
+        try {
+            String name = nameField.getText();
+            String first_ln = fLastNameField.getText();
+            String sec_ln = sLastNameField.getText();
+            int monthNumber = monthComboBox.getSelectedIndex()+1;
+            String birth_date = dayComboBox.getSelectedItem().toString() +"/" +monthNumber+"/" + yearComboBox.getSelectedItem().toString();
+            String userName = userNameField.getText();
+            String password = String.valueOf(passwordField.getPassword());
+            String confirmedPass = String.valueOf(cPasswordField.getPassword());
+            String email = emailField.getText();
+            int id_community = Global.communitiesInfo.get(communityComboBox.getSelectedIndex()).getId();
+            int id_userType = Global.userTypesInfo.get(userTypeComboBox.getSelectedIndex()).getId();
+            int id_nationality = Global.nationalitiesInfo.get(nationalityComboBox.getSelectedIndex()).getId();
+            String photo = "";
+            if (!"Nombre".equals(name) && !Global.hasNumbers(name) && !"Primer Apellido".equals(first_ln) && !Global.hasNumbers(first_ln) && !"Segundo Apellido".equals(sec_ln) && !Global.hasNumbers(sec_ln) && !"Nombre de usuario".equals(userName) && !"Contraseña".equals(password) && password.equals(confirmedPass) && !"Correo electrónico".equals(email))
+            {
+                if (Global.isNumeric(identificationField.getText()) && Global.isNumeric(phoneField.getText()))
+                {
+                    int id = Integer.valueOf(identificationField.getText());
+                    int phoneNumber = Integer.valueOf(phoneField.getText());
+                    if (Global.photoChooser.getSelectedFile() == null) photo = "userDefault.png";
+                    else photo = Global.photoChooser.getSelectedFile().getName();
+                    String encryptedPassword = AES.encrypt(password);
+                    ConnectDB.registerPerson(id,name,first_ln,sec_ln,birth_date,photo,id_community,userName,encryptedPassword,id_userType,email,phoneNumber,id_nationality);
+                    if (Global.insert_result == 1) JOptionPane.showMessageDialog(this,"Usuario registrado con éxito.","Registro exitoso",JOptionPane.INFORMATION_MESSAGE);
+                    else JOptionPane.showMessageDialog(this,"El usuario no ha sido registrado. Favor intentar nuevamente.","Error al registrar.",JOptionPane.ERROR_MESSAGE);
+                }
+                else JOptionPane.showMessageDialog(this,"El usuario no ha sido registrado. Favor intentar nuevamente.","Error al registrar.",JOptionPane.ERROR_MESSAGE);
+            }
+            else JOptionPane.showMessageDialog(this,"El usuario no ha sido registrado. Favor intentar nuevamente.","Error al registrar.",JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException ex) {
+            Logger.getLogger(registerWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_registerActionPerformed
 
     private void fillNationalitiesComboBox() throws SQLException
     {

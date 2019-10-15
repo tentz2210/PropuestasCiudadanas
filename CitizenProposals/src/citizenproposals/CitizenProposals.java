@@ -5,7 +5,6 @@
  */
 package citizenproposals;
 
-import Connect.ConnectDB;
 import UI.loginWindow;
 import java.sql.SQLException;
 
@@ -22,6 +21,7 @@ public class CitizenProposals {
     public static void main(String[] args) throws SQLException {
         // TODO code application logic here
         loginWindow login = new loginWindow();
+        
     }
     
 }
