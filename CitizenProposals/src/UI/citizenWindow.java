@@ -9,6 +9,7 @@ package UI;
  *
  * @author mapac
  */
+import AppPackage.AnimationClass;
 public class citizenWindow extends javax.swing.JFrame {
 
     /**
@@ -16,6 +17,8 @@ public class citizenWindow extends javax.swing.JFrame {
      */
     public citizenWindow() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);	
     }
 
     /**
@@ -30,6 +33,9 @@ public class citizenWindow extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         closeWindow = new javax.swing.JLabel();
         minimize = new javax.swing.JLabel();
+        menu = new javax.swing.JLabel();
+        setting = new javax.swing.JLabel();
+        myProposals = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -59,6 +65,33 @@ public class citizenWindow extends javax.swing.JFrame {
         });
         jPanel1.add(minimize, new org.netbeans.lib.awtextra.AbsoluteConstraints(1300, 10, -1, -1));
 
+        menu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/menu.png"))); // NOI18N
+        menu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        menu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuMouseClicked(evt);
+            }
+        });
+        jPanel1.add(menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+
+        setting.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        setting.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/userSettings.png"))); // NOI18N
+        setting.setText("Configuración");
+        setting.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        setting.setPreferredSize(new java.awt.Dimension(132, 32));
+        setting.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                settingMouseClicked(evt);
+            }
+        });
+        jPanel1.add(setting, new org.netbeans.lib.awtextra.AbsoluteConstraints(-140, 100, 130, -1));
+
+        myProposals.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        myProposals.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/myProposals.png"))); // NOI18N
+        myProposals.setText("Mis propuestas");
+        myProposals.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel1.add(myProposals, new org.netbeans.lib.awtextra.AbsoluteConstraints(-140, 60, -1, -1));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 730));
 
         pack();
@@ -72,6 +105,24 @@ public class citizenWindow extends javax.swing.JFrame {
         this.setVisible(false);
         loginWindow login = new loginWindow();
     }//GEN-LAST:event_closeWindowMouseClicked
+
+    private void menuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMouseClicked
+        AnimationClass myProposalsR = new AnimationClass();
+        myProposalsR.jLabelXRight(-140, 10, 10, 5, myProposals);
+        AnimationClass settingR = new AnimationClass();
+        settingR.jLabelXRight(-140, 10, 10, 5, setting);
+        
+        //<--
+        AnimationClass myProposalsL = new AnimationClass();
+        myProposalsL.jLabelXLeft(10, -140, 10, 5, myProposals);
+        AnimationClass settingL = new AnimationClass();
+        settingL.jLabelXLeft(10, -140, 10, 5, setting);
+    }//GEN-LAST:event_menuMouseClicked
+
+    private void settingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingMouseClicked
+        this.setVisible(false);
+        editProfile edit = new editProfile();
+    }//GEN-LAST:event_settingMouseClicked
 
     /**
      * @param args the command line arguments
@@ -111,6 +162,9 @@ public class citizenWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel closeWindow;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel menu;
     private javax.swing.JLabel minimize;
+    private javax.swing.JLabel myProposals;
+    private javax.swing.JLabel setting;
     // End of variables declaration//GEN-END:variables
 }

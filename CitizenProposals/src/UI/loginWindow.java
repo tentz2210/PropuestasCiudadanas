@@ -254,6 +254,7 @@ public class loginWindow extends javax.swing.JFrame {
 
     private void closeWindowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeWindowMouseClicked
         System.exit(0);
+        //loginButton
     }//GEN-LAST:event_closeWindowMouseClicked
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
