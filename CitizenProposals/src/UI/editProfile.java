@@ -111,6 +111,11 @@ public class editProfile extends javax.swing.JFrame {
         phoneButton.setBackground(new java.awt.Color(255, 255, 255));
         phoneButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/phone.png"))); // NOI18N
         phoneButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        phoneButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                phoneButtonMouseClicked(evt);
+            }
+        });
         jPanel2.add(phoneButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 80, 130, 130));
 
         emailButton.setBackground(new java.awt.Color(255, 255, 255));
@@ -213,6 +218,10 @@ public class editProfile extends javax.swing.JFrame {
     private void passwordButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_passwordButtonMouseClicked
         passwordWindow password = new passwordWindow();
     }//GEN-LAST:event_passwordButtonMouseClicked
+
+    private void phoneButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_phoneButtonMouseClicked
+        telephoneWindow telephone = new telephoneWindow();
+    }//GEN-LAST:event_phoneButtonMouseClicked
 
     /**
      * @param args the command line arguments
