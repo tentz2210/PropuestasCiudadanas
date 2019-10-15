@@ -5,6 +5,8 @@
  */
 package UI;
 
+import AppPackage.AnimationClass;
+
 /**
  *
  * @author mapac
@@ -30,7 +32,11 @@ public class adminWindow extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         closeWindow = new javax.swing.JLabel();
         minimize = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        menu = new javax.swing.JLabel();
+        statistics = new javax.swing.JLabel();
+        settings = new javax.swing.JLabel();
+        catalogues = new javax.swing.JLabel();
+        query = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -59,8 +65,40 @@ public class adminWindow extends javax.swing.JFrame {
         });
         jPanel1.add(minimize, new org.netbeans.lib.awtextra.AbsoluteConstraints(1300, 10, 30, 30));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/menu.png"))); // NOI18N
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 110, 50, 50));
+        menu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/menu.png"))); // NOI18N
+        menu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        menu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuMouseClicked(evt);
+            }
+        });
+        jPanel1.add(menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+
+        statistics.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        statistics.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/statistics.png"))); // NOI18N
+        statistics.setText("Módulo Estadísticas");
+        statistics.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        statistics.setPreferredSize(new java.awt.Dimension(132, 32));
+        jPanel1.add(statistics, new org.netbeans.lib.awtextra.AbsoluteConstraints(-185, 60, 170, -1));
+
+        settings.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        settings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/userSettings.png"))); // NOI18N
+        settings.setText("Configuración");
+        settings.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        settings.setPreferredSize(new java.awt.Dimension(132, 32));
+        jPanel1.add(settings, new org.netbeans.lib.awtextra.AbsoluteConstraints(-185, 180, -1, -1));
+
+        catalogues.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        catalogues.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/catalogues.png"))); // NOI18N
+        catalogues.setText("Catálogos");
+        catalogues.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel1.add(catalogues, new org.netbeans.lib.awtextra.AbsoluteConstraints(-185, 140, -1, -1));
+
+        query.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        query.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/query.png"))); // NOI18N
+        query.setText("Consultas");
+        query.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel1.add(query, new org.netbeans.lib.awtextra.AbsoluteConstraints(-185, 100, 100, -1));
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -75,6 +113,27 @@ public class adminWindow extends javax.swing.JFrame {
     private void minimizeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeMouseClicked
         this.setState(loginWindow.ICONIFIED);
     }//GEN-LAST:event_minimizeMouseClicked
+
+    private void menuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMouseClicked
+        AnimationClass statisticsR = new AnimationClass();
+        statisticsR.jLabelXRight(-185, 10, 10, 5, statistics);
+        AnimationClass settingR = new AnimationClass();
+        settingR.jLabelXRight(-185, 10, 10, 5, settings);
+        AnimationClass cataloguesR = new AnimationClass();
+        cataloguesR.jLabelXRight(-185, 10, 10, 5, catalogues);
+        AnimationClass queriesR = new AnimationClass();
+        queriesR.jLabelXRight(-185, 10, 10, 5, query);
+        
+        //<--
+        AnimationClass statisticsL = new AnimationClass();
+        statisticsL.jLabelXLeft(10, -185, 10, 5, statistics);
+        AnimationClass settingL = new AnimationClass();
+        settingL.jLabelXLeft(10, -185, 10, 5, settings);
+        AnimationClass cataloguesL = new AnimationClass();
+        cataloguesL.jLabelXLeft(10,-185,10,5,catalogues);
+        AnimationClass queriesL = new AnimationClass();
+        queriesL.jLabelXLeft(10,-185,10,5,query);
+    }//GEN-LAST:event_menuMouseClicked
 
     /**
      * @param args the command line arguments
@@ -112,9 +171,13 @@ public class adminWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel catalogues;
     private javax.swing.JLabel closeWindow;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel menu;
     private javax.swing.JLabel minimize;
+    private javax.swing.JLabel query;
+    private javax.swing.JLabel settings;
+    private javax.swing.JLabel statistics;
     // End of variables declaration//GEN-END:variables
 }
