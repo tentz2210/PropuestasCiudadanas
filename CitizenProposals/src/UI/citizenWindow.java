@@ -34,8 +34,10 @@ public class citizenWindow extends javax.swing.JFrame {
         closeWindow = new javax.swing.JLabel();
         minimize = new javax.swing.JLabel();
         menu = new javax.swing.JLabel();
-        setting = new javax.swing.JLabel();
         myProposals = new javax.swing.JLabel();
+        favorites = new javax.swing.JLabel();
+        query = new javax.swing.JLabel();
+        setting = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -74,6 +76,24 @@ public class citizenWindow extends javax.swing.JFrame {
         });
         jPanel1.add(menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
+        myProposals.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        myProposals.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/myProposals.png"))); // NOI18N
+        myProposals.setText("Mis propuestas");
+        myProposals.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel1.add(myProposals, new org.netbeans.lib.awtextra.AbsoluteConstraints(-140, 60, -1, -1));
+
+        favorites.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        favorites.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/star.png"))); // NOI18N
+        favorites.setText("Favoritos");
+        favorites.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel1.add(favorites, new org.netbeans.lib.awtextra.AbsoluteConstraints(-140, 100, -1, -1));
+
+        query.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        query.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/query.png"))); // NOI18N
+        query.setText("Consultas");
+        query.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel1.add(query, new org.netbeans.lib.awtextra.AbsoluteConstraints(-140, 140, -1, -1));
+
         setting.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         setting.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/userSettings.png"))); // NOI18N
         setting.setText("Configuración");
@@ -84,13 +104,7 @@ public class citizenWindow extends javax.swing.JFrame {
                 settingMouseClicked(evt);
             }
         });
-        jPanel1.add(setting, new org.netbeans.lib.awtextra.AbsoluteConstraints(-140, 100, 130, -1));
-
-        myProposals.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        myProposals.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/myProposals.png"))); // NOI18N
-        myProposals.setText("Mis propuestas");
-        myProposals.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel1.add(myProposals, new org.netbeans.lib.awtextra.AbsoluteConstraints(-140, 60, -1, -1));
+        jPanel1.add(setting, new org.netbeans.lib.awtextra.AbsoluteConstraints(-140, 180, 130, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 730));
 
@@ -109,12 +123,19 @@ public class citizenWindow extends javax.swing.JFrame {
     private void menuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMouseClicked
         AnimationClass myProposalsR = new AnimationClass();
         myProposalsR.jLabelXRight(-140, 10, 10, 5, myProposals);
+        AnimationClass favoritesR = new AnimationClass();
+        favoritesR.jLabelXRight(-140, 10, 10, 5, favorites);
+        AnimationClass queryR = new AnimationClass();
+        queryR.jLabelXRight(-140, 10, 10, 5, query);
         AnimationClass settingR = new AnimationClass();
         settingR.jLabelXRight(-140, 10, 10, 5, setting);
-        
         //<--
         AnimationClass myProposalsL = new AnimationClass();
         myProposalsL.jLabelXLeft(10, -140, 10, 5, myProposals);
+        AnimationClass favoritesL = new AnimationClass();
+        favoritesL.jLabelXLeft(10, -140, 10, 5, favorites);
+        AnimationClass queryL = new AnimationClass();
+        queryL.jLabelXLeft(10, -140, 10, 5, query);
         AnimationClass settingL = new AnimationClass();
         settingL.jLabelXLeft(10, -140, 10, 5, setting);
     }//GEN-LAST:event_menuMouseClicked
@@ -161,10 +182,12 @@ public class citizenWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel closeWindow;
+    private javax.swing.JLabel favorites;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel menu;
     private javax.swing.JLabel minimize;
     private javax.swing.JLabel myProposals;
+    private javax.swing.JLabel query;
     private javax.swing.JLabel setting;
     // End of variables declaration//GEN-END:variables
 }

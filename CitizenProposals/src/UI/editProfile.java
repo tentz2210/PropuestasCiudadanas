@@ -33,12 +33,26 @@ public class editProfile extends javax.swing.JFrame {
         updateInformation = new javax.swing.JLabel();
         closeWindow = new javax.swing.JLabel();
         minimize = new javax.swing.JLabel();
-        name = new javax.swing.JLabel();
-        sLastNameField = new javax.swing.JTextField();
-        sLastName = new javax.swing.JLabel();
-        fLastName = new javax.swing.JLabel();
-        nameField1 = new javax.swing.JTextField();
-        fLastNameField = new javax.swing.JTextField();
+        dateOfBithButton = new javax.swing.JButton();
+        passwordButton = new javax.swing.JButton();
+        idNumberButton = new javax.swing.JButton();
+        phoneButton = new javax.swing.JButton();
+        emailButton = new javax.swing.JButton();
+        nameLabel = new javax.swing.JLabel();
+        idNumberLabel = new javax.swing.JLabel();
+        phoneLabel = new javax.swing.JLabel();
+        emailLabel = new javax.swing.JLabel();
+        dateOfBirth = new javax.swing.JLabel();
+        nameButton = new javax.swing.JButton();
+        usersButton = new javax.swing.JButton();
+        nationalityButton = new javax.swing.JButton();
+        locationButton = new javax.swing.JButton();
+        photoButton = new javax.swing.JButton();
+        userTypeLabel = new javax.swing.JLabel();
+        nationalityLabel = new javax.swing.JLabel();
+        locationLabel = new javax.swing.JLabel();
+        photoLabel = new javax.swing.JLabel();
+        passwordLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -58,7 +72,7 @@ public class editProfile extends javax.swing.JFrame {
                 closeWindowMouseClicked(evt);
             }
         });
-        jPanel2.add(closeWindow, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 10, -1, -1));
+        jPanel2.add(closeWindow, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 10, -1, -1));
 
         minimize.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/minimize.png"))); // NOI18N
         minimize.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -67,30 +81,99 @@ public class editProfile extends javax.swing.JFrame {
                 minimizeMouseClicked(evt);
             }
         });
-        jPanel2.add(minimize, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 10, -1, -1));
+        jPanel2.add(minimize, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 10, -1, -1));
 
-        name.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        name.setText("Cambiar nombre");
-        jPanel2.add(name, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, -1));
+        dateOfBithButton.setBackground(new java.awt.Color(255, 255, 255));
+        dateOfBithButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/dateofbirth.png"))); // NOI18N
+        dateOfBithButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel2.add(dateOfBithButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 80, 130, 130));
 
-        sLastNameField.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jPanel2.add(sLastNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 120, 150, -1));
+        passwordButton.setBackground(new java.awt.Color(255, 255, 255));
+        passwordButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/password.png"))); // NOI18N
+        passwordButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel2.add(passwordButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 280, 130, 130));
 
-        sLastName.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        sLastName.setText("Cambiar segundo apellido");
-        jPanel2.add(sLastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, -1, -1));
+        idNumberButton.setBackground(new java.awt.Color(255, 255, 255));
+        idNumberButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/idNumber.png"))); // NOI18N
+        idNumberButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel2.add(idNumberButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 80, 130, 130));
 
-        fLastName.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        fLastName.setText("Cambiar primer apellido");
-        jPanel2.add(fLastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, -1));
+        phoneButton.setBackground(new java.awt.Color(255, 255, 255));
+        phoneButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/phone.png"))); // NOI18N
+        phoneButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel2.add(phoneButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 80, 130, 130));
 
-        nameField1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jPanel2.add(nameField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 60, 150, -1));
+        emailButton.setBackground(new java.awt.Color(255, 255, 255));
+        emailButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/email.png"))); // NOI18N
+        emailButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel2.add(emailButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 80, 130, 130));
 
-        fLastNameField.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jPanel2.add(fLastNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 90, 150, -1));
+        nameLabel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        nameLabel.setText("Nombre");
+        jPanel2.add(nameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 220, -1, -1));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 640, 470));
+        idNumberLabel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        idNumberLabel.setText("Cédula o pasaporte");
+        jPanel2.add(idNumberLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(213, 220, -1, -1));
+
+        phoneLabel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        phoneLabel.setText("Teléfono");
+        jPanel2.add(phoneLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(427, 220, -1, -1));
+
+        emailLabel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        emailLabel.setText("Email");
+        jPanel2.add(emailLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(618, 220, -1, -1));
+
+        dateOfBirth.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        dateOfBirth.setText("Fecha de nacimiento");
+        jPanel2.add(dateOfBirth, new org.netbeans.lib.awtextra.AbsoluteConstraints(749, 220, -1, -1));
+
+        nameButton.setBackground(new java.awt.Color(255, 255, 255));
+        nameButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/name.png"))); // NOI18N
+        nameButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel2.add(nameButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 130, 130));
+
+        usersButton.setBackground(new java.awt.Color(255, 255, 255));
+        usersButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/users.png"))); // NOI18N
+        usersButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel2.add(usersButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, 130, 130));
+
+        nationalityButton.setBackground(new java.awt.Color(255, 255, 255));
+        nationalityButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/nationality.png"))); // NOI18N
+        nationalityButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel2.add(nationalityButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 280, 130, 130));
+
+        locationButton.setBackground(new java.awt.Color(255, 255, 255));
+        locationButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/location.png"))); // NOI18N
+        locationButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel2.add(locationButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 280, 130, 130));
+
+        photoButton.setBackground(new java.awt.Color(255, 255, 255));
+        photoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/photo.png"))); // NOI18N
+        photoButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel2.add(photoButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 280, 130, 130));
+
+        userTypeLabel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        userTypeLabel.setText("Tipo de usuario");
+        jPanel2.add(userTypeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(43, 420, -1, -1));
+
+        nationalityLabel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        nationalityLabel.setText("Nacionalidad");
+        jPanel2.add(nationalityLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(234, 420, -1, -1));
+
+        locationLabel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        locationLabel.setText("Localización");
+        jPanel2.add(locationLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(416, 420, -1, -1));
+
+        photoLabel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        photoLabel.setText("Foto");
+        jPanel2.add(photoLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(619, 420, -1, -1));
+
+        passwordLabel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        passwordLabel.setText("Contraseña");
+        jPanel2.add(passwordLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(779, 420, -1, -1));
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 910, 480));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -141,14 +224,28 @@ public class editProfile extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel closeWindow;
-    private javax.swing.JLabel fLastName;
-    private javax.swing.JTextField fLastNameField;
+    private javax.swing.JLabel dateOfBirth;
+    private javax.swing.JButton dateOfBithButton;
+    private javax.swing.JButton emailButton;
+    private javax.swing.JLabel emailLabel;
+    private javax.swing.JButton idNumberButton;
+    private javax.swing.JLabel idNumberLabel;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JButton locationButton;
+    private javax.swing.JLabel locationLabel;
     private javax.swing.JLabel minimize;
-    private javax.swing.JLabel name;
-    private javax.swing.JTextField nameField1;
-    private javax.swing.JLabel sLastName;
-    private javax.swing.JTextField sLastNameField;
+    private javax.swing.JButton nameButton;
+    private javax.swing.JLabel nameLabel;
+    private javax.swing.JButton nationalityButton;
+    private javax.swing.JLabel nationalityLabel;
+    private javax.swing.JButton passwordButton;
+    private javax.swing.JLabel passwordLabel;
+    private javax.swing.JButton phoneButton;
+    private javax.swing.JLabel phoneLabel;
+    private javax.swing.JButton photoButton;
+    private javax.swing.JLabel photoLabel;
     private javax.swing.JLabel updateInformation;
+    private javax.swing.JLabel userTypeLabel;
+    private javax.swing.JButton usersButton;
     // End of variables declaration//GEN-END:variables
 }
