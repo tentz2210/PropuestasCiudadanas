@@ -575,9 +575,14 @@ CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
                            pbefore_date VARCHAR2, p_proposal_cursor IN OUT SYS_REFCURSOR) IS
         vstart_date DATE;
         vend_date DATE;
+	vid_community NUMBER(8);
     BEGIN
         vstart_date := TO_DATE(pafter_date, 'DD/MM/YYYY');
         vend_date := TO_DATE(pbefore_date, 'DD/MM/YYYY');
+	
+	SELECT id_community INTO vid_community
+	FROM pc.person
+	WHERE id_number = pid_number;
     
         OPEN p_proposal_cursor FOR
             SELECT c.category_name, p.title, p.description, p.approximate_budget, p.proposal_date,
@@ -593,6 +598,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
             WHERE p.category_code = NVL(p_category_filter, p.category_code)
             AND (p.proposal_date BETWEEN NVL(vstart_date, p.proposal_date) AND NVL(vend_date, p.proposal_date))
             AND pkg_proposal.countVotes(p.id_proposal) >= NVL(p_vote_filter, 0)
+	    AND pe.id_community = vid_community
             ORDER BY fav NULLS LAST, c.category_name;
     EXCEPTION
         WHEN OTHERS THEN
