@@ -96,6 +96,11 @@ public class editProfile extends javax.swing.JFrame {
         idNumberButton.setBackground(new java.awt.Color(255, 255, 255));
         idNumberButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/idNumber.png"))); // NOI18N
         idNumberButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        idNumberButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                idNumberButtonMouseClicked(evt);
+            }
+        });
         jPanel2.add(idNumberButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 80, 130, 130));
 
         phoneButton.setBackground(new java.awt.Color(255, 255, 255));
@@ -195,6 +200,10 @@ public class editProfile extends javax.swing.JFrame {
     private void nameButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nameButtonMouseClicked
         nameWindow name = new nameWindow();
     }//GEN-LAST:event_nameButtonMouseClicked
+
+    private void idNumberButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_idNumberButtonMouseClicked
+        idNumberWindow idNumber = new idNumberWindow();
+    }//GEN-LAST:event_idNumberButtonMouseClicked
 
     /**
      * @param args the command line arguments
