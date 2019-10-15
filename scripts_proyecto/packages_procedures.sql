@@ -1063,9 +1063,27 @@ CREATE OR REPLACE PACKAGE pkg_person IS
     PROCEDURE updatePersonSecLastName(p_id_number NUMBER, p_new_sec_last_name VARCHAR2);
     PROCEDURE updatePersonBirthDate(p_id_number NUMBER, p_new_birth_date DATE);
     PROCEDURE updatePersonIdCommunity(p_id_number NUMBER, p_new_id_community NUMBER);
+    FUNCTION getPersonIdNumber(p_id_user NUMBER) RETURN NUMBER;
 END pkg_person;
 
 CREATE OR REPLACE PACKAGE BODY pkg_person AS
+
+    ------FUNCTION GET ID NUMBER------
+    FUNCTION getPersonIdNumber(p_id_user NUMBER) RETURN NUMBER IS
+    vn_id_number NUMBER(20);
+    BEGIN 
+        SELECT u.id_number into vn_id_number
+        FROM pc.person_user u
+        WHERE u.id_user = p_id_user;
+        RETURN vn_id_number;
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error getting id person');
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+            DBMS_OUTPUT.PUT_LINE(SQLCODE);
+            RETURN -1;
+    END;
+    
     ------PROCEDURE INSERT------
     PROCEDURE insertPerson(pId NUMBER, pFirstName VARCHAR2, pFirstLastName VARCHAR2,
                            pSecondLastName VARCHAR2, pDateOfBirth DATE, pPhoto VARCHAR2,pIdCommunity NUMBER) IS
@@ -1463,7 +1481,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_telephone AS
             DBMS_OUTPUT.PUT_LINE('Error al eliminar');
             ROLLBACK;
     END;
-    
+
 END pkg_telephone;
     
 ----------PACKAGE COMMENT----------
@@ -1600,9 +1618,27 @@ CREATE OR REPLACE PACKAGE pkg_user IS
     PROCEDURE updateUserPassword(p_id_user NUMBER, p_new_password VARCHAR2);
     PROCEDURE updateUserType(p_id_user NUMBER,p_new_type NUMBER);
     PROCEDURE updateUserName(p_id_user NUMBER, p_new_name VARCHAR2);
+    FUNCTION getPersonsIdCommunity(pid_user IN NUMBER) RETURN NUMBER;
 END pkg_user;
 
 CREATE OR REPLACE PACKAGE BODY pkg_user AS
+    ------FUNCTION GET ID COMMUNITY-------
+    FUNCTION getPersonsIdCommunity(pid_user IN NUMBER) RETURN NUMBER IS
+    vn_id_community NUMBER(6);
+    BEGIN
+        SELECT p.id_community INTO vn_id_community
+        FROM pc.person p
+        INNER JOIN pc.person_user u
+        ON p.id_number = u.id_number
+        WHERE u.id_user = pid_user;
+        RETURN vn_id_community;
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error getting community id');
+            DBMS_OUTPUT.PUT_LINE(SQLERRM);
+            DBMS_OUTPUT.PUT_LINE(SQLCODE);
+            RETURN -1;
+    END;
     ------PROCEDURE INSERT------
     PROCEDURE insertUser(pPassword VARCHAR2, pIdNumber NUMBER, pIdUserType NUMBER, pUserName VARCHAR2) IS
     BEGIN
