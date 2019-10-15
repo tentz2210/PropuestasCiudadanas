@@ -250,6 +250,8 @@ COMMENT ON COLUMN person.last_modify_date
 IS 'Last row modification date.';
 COMMENT ON COLUMN person.last_modified_by
 IS 'Last user that modified the row.';
+
+ALTER TABLE Person DROP CONSTRAINT PERSON_PHOTO_UK;
 -------------------------------------------------------------------------
 --TABLE CATEGORY
 
