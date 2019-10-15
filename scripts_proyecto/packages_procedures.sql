@@ -1,28 +1,31 @@
 ----------PACKAGE COUNTRY----------
 CREATE OR REPLACE PACKAGE pkg_country IS
-    PROCEDURE createCountry(pNameCountry VARCHAR2);
+    PROCEDURE createCountry(pNameCountry VARCHAR2, p_result OUT NUMBER);
     PROCEDURE getCountries(p_countrylist_refcur IN OUT SYS_REFCURSOR);
-    PROCEDURE deleteCountry(pid_country NUMBER);
+    PROCEDURE deleteCountry(pid_country NUMBER, p_result OUT NUMBER);
     PROCEDURE updateCountryName(p_id_country NUMBER, p_new_name VARCHAR2,p_result OUT NUMBER);
     PROCEDURE updateCountryIsEnabled(p_id_country NUMBER, p_enabled NUMBER,p_result OUT NUMBER);
 END pkg_country;
 
 CREATE OR REPLACE PACKAGE BODY pkg_country AS
     ------PROCEDURE INSERT------
-    PROCEDURE createCountry (pNameCountry VARCHAR2) IS
+    PROCEDURE createCountry (pNameCountry VARCHAR2, p_result OUT NUMBER) IS
     BEGIN
         INSERT INTO pc.country(id_country, country_name)
         VALUES(pc.s_country.nextval, pNameCountry);
         COMMIT;
+        p_result:=1;
     EXCEPTION
         WHEN DUP_VAL_ON_INDEX THEN
             DBMS_OUTPUT.PUT_LINE ('Country name already exists');
             ROLLBACK;
+            p_result:=0;
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error inserting country');
 		    DBMS_OUTPUT.PUT_LINE(SQLERRM);
 		    DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;    
     END;
     
     ------PROCEDURES UPDATE------
@@ -58,7 +61,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_country AS
             p_result:=0;
     END;
     ------PROCEDURE DELETE------
-    PROCEDURE deleteCountry(pid_country NUMBER) IS
+    PROCEDURE deleteCountry(pid_country NUMBER,p_result OUT NUMBER) IS
     BEGIN
         DELETE FROM country
         WHERE id_country = pid_country;
@@ -89,26 +92,28 @@ END pkg_country;
 
 ----------PACKAGE PROVINCE----------
 CREATE OR REPLACE PACKAGE pkg_province IS
-    PROCEDURE createProvince(pNameProvince VARCHAR2, pCountryId NUMBER);
+    PROCEDURE createProvince(pNameProvince VARCHAR2, pCountryId NUMBER, p_result OUT NUMBER);
     PROCEDURE getProvincesFromCountry(pid_country IN NUMBER, p_provincelist_refcur IN OUT SYS_REFCURSOR);
-    PROCEDURE deleteProvince(pid_province NUMBER);
+    PROCEDURE deleteProvince(pid_province NUMBER, p_result OUT NUMBER);
     PROCEDURE updateProvinceName(p_id_province NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER);
     PROCEDURE updateProvinceIsEnabled(p_id_province NUMBER, p_enabled NUMBER, p_result OUT NUMBER);
 END pkg_province;
 
 CREATE OR REPLACE PACKAGE BODY pkg_province AS
     ------PROCEDURE INSERT------
-    PROCEDURE createProvince (pNameProvince VARCHAR2, pCountryId NUMBER) IS
+    PROCEDURE createProvince (pNameProvince VARCHAR2, pCountryId NUMBER,p_result OUT NUMBER) IS
     BEGIN
         INSERT INTO pc.province(id_province, province_name, id_country)
         VALUES(pc.s_province.nextval, pNameProvince, pCountryId);
         COMMIT;
+        p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error inserting province');
 		    DBMS_OUTPUT.PUT_LINE(SQLERRM);
 		    DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     ------PROCEDURES UPDATE------
     PROCEDURE updateProvinceName(p_id_province NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER)IS
@@ -143,15 +148,17 @@ CREATE OR REPLACE PACKAGE BODY pkg_province AS
             p_result:=0;
     END;
     ------PROCEDURE DELETE------
-    PROCEDURE deleteProvince(pid_province NUMBER) IS
+    PROCEDURE deleteProvince(pid_province NUMBER, p_result OUT NUMBER) IS
     BEGIN
         DELETE FROM province
         WHERE id_province = pid_province;
         COMMIT;
+        p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error al eliminar');
             ROLLBACK;
+            p_result:=0;
     END;
     ------PROCEDURE getProvincesFromCountry------
     PROCEDURE getProvincesFromCountry(pid_country IN NUMBER, p_provincelist_refcur IN OUT SYS_REFCURSOR) IS
@@ -174,26 +181,28 @@ END pkg_province;
 
 ----------PACKAGE CANTON----------
 CREATE OR REPLACE PACKAGE pkg_canton IS
-    PROCEDURE createCanton (pNameCanton VARCHAR2, pProvinceId NUMBER);
+    PROCEDURE createCanton (pNameCanton VARCHAR2, pProvinceId NUMBER, p_result OUT NUMBER);
     PROCEDURE getCantonsFromProvince(pid_province IN NUMBER, p_cantonlist_refcur IN OUT SYS_REFCURSOR);
-    PROCEDURE deleteCanton(pid_canton NUMBER);
+    PROCEDURE deleteCanton(pid_canton NUMBER, p_result OUT NUMBER);
     PROCEDURE updateCantonName(p_id_canton NUMBER, p_new_name VARCHAR2,p_result OUT NUMBER);
     PROCEDURE updateCantonIsEnabled(p_id_canton NUMBER, p_enabled NUMBER, p_result OUT NUMBER);
 END pkg_canton;
 
 CREATE OR REPLACE PACKAGE BODY pkg_canton AS
     ------PROCEDURE INSERT------
-    PROCEDURE createCanton (pNameCanton VARCHAR2, pProvinceId NUMBER) IS
+    PROCEDURE createCanton (pNameCanton VARCHAR2, pProvinceId NUMBER,p_result OUT NUMBER) IS
     BEGIN
         INSERT INTO pc.canton(id_canton, canton_name, id_province)
         VALUES(pc.s_canton.nextval, pNameCanton, pProvinceId);
         COMMIT;
+        p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error inserting canton');
 		    DBMS_OUTPUT.PUT_LINE(SQLERRM);
 		    DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     ------PROCEDURES UPDATE------
     PROCEDURE updateCantonName(p_id_canton NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER)IS
@@ -229,15 +238,17 @@ CREATE OR REPLACE PACKAGE BODY pkg_canton AS
     END;
     
     ------PROCEDURE DELETE------
-    PROCEDURE deleteCanton(pid_canton NUMBER) IS
+    PROCEDURE deleteCanton(pid_canton NUMBER,p_result OUT NUMBER) IS
     BEGIN
         DELETE FROM canton
         WHERE id_canton = pid_canton;
         COMMIT;
+        p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error al eliminar');
             ROLLBACK;
+            p_result:=0;
     END;
     ------PROCEDURE getCantonsFromProvince------
     PROCEDURE getCantonsFromProvince(pid_province IN NUMBER, p_cantonlist_refcur IN OUT SYS_REFCURSOR) IS
@@ -260,26 +271,28 @@ END pkg_canton;
 
 ----------PACKAGE DISTRICT----------
 CREATE OR REPLACE PACKAGE pkg_district IS
-    PROCEDURE createDistrict (pNameDistrict VARCHAR2, pCantonId NUMBER);
+    PROCEDURE createDistrict (pNameDistrict VARCHAR2, pCantonId NUMBER, p_result OUT NUMBER);
     PROCEDURE getDistrictsFromCanton(pid_canton IN NUMBER, p_districtlist_refcur IN OUT SYS_REFCURSOR);
-    PROCEDURE deleteDistrict(pid_district NUMBER);
+    PROCEDURE deleteDistrict(pid_district NUMBER,p_result OUT NUMBER);
     PROCEDURE updateDistrictName(p_id_district NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER);
     PROCEDURE updateDistrictIsEnabled(p_id_district NUMBER, p_enabled NUMBER, p_result OUT NUMBER);
 END pkg_district;
 
 CREATE OR REPLACE PACKAGE BODY pkg_district AS
     ------PROCEDURE INSERT------
-    PROCEDURE createDistrict (pNameDistrict VARCHAR2, pCantonId NUMBER) IS
+    PROCEDURE createDistrict (pNameDistrict VARCHAR2, pCantonId NUMBER,p_result OUT NUMBER) IS
     BEGIN
         INSERT INTO pc.district(id_district, district_name, id_canton)
         VALUES(pc.s_district.nextval, pNameDistrict, pCantonId);
         COMMIT;
+        p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error inserting district');
 		    DBMS_OUTPUT.PUT_LINE(SQLERRM);
 		    DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     ------PROCEDURES UPDATE------
     PROCEDURE updateDistrictName(p_id_district NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER)IS
@@ -315,15 +328,17 @@ CREATE OR REPLACE PACKAGE BODY pkg_district AS
     END;
     
     ------PROCEDURE DELETE------
-    PROCEDURE deleteDistrict(pid_district NUMBER) IS
+    PROCEDURE deleteDistrict(pid_district NUMBER,p_result OUT NUMBER) IS
     BEGIN
         DELETE FROM district
         WHERE id_district = pid_district;
         COMMIT;
+        p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error al eliminar');
             ROLLBACK;
+            p_result:=0;
     END;
     ------PROCEDURE getDistrictsFromCanton------
     PROCEDURE getDistrictsFromCanton(pid_canton IN NUMBER, p_districtlist_refcur IN OUT SYS_REFCURSOR) IS
@@ -346,26 +361,28 @@ END pkg_district;
 
 ----------PACKAGE COMMUNITY----------
 CREATE OR REPLACE PACKAGE pkg_community IS
-    PROCEDURE createCommunity (pNameCommunity VARCHAR2, pDistrictId NUMBER);
+    PROCEDURE createCommunity (pNameCommunity VARCHAR2, pDistrictId NUMBER,p_result OUT NUMBER);
     PROCEDURE getCommunitiesFromDistrict(pid_district IN NUMBER, p_communitylist_refcur IN OUT SYS_REFCURSOR);
-    PROCEDURE deleteCommunity(pid_community NUMBER);
+    PROCEDURE deleteCommunity(pid_community NUMBER,p_result OUT NUMBER);
     PROCEDURE updateCommunityName(p_id_community NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER);
     PROCEDURE updateCommunityIsEnabled(p_id_community NUMBER, p_enabled NUMBER, p_result OUT NUMBER);
 END pkg_community;
 
 CREATE OR REPLACE PACKAGE BODY pkg_community AS
     ------PROCEDURE INSERT------
-    PROCEDURE createCommunity (pNameCommunity VARCHAR2, pDistrictId NUMBER) IS
+    PROCEDURE createCommunity (pNameCommunity VARCHAR2, pDistrictId NUMBER,p_result OUT NUMBER) IS
     BEGIN
         INSERT INTO pc.community(id_community, community_name, id_district)
         VALUES(pc.s_community.nextval, pNameCommunity, pDistrictId);
         COMMIT;
+        p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error inserting community');
 		    DBMS_OUTPUT.PUT_LINE(SQLERRM);
 		    DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     ------PROCEDURES UPDATE------
     PROCEDURE updateCommunityName(p_id_community NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER)IS
@@ -401,15 +418,17 @@ CREATE OR REPLACE PACKAGE BODY pkg_community AS
     END;
     
     ------PROCEDURE DELETE------
-    PROCEDURE deleteCommunity(pid_community NUMBER) IS
+    PROCEDURE deleteCommunity(pid_community NUMBER,p_result OUT NUMBER) IS
     BEGIN
         DELETE FROM community
         WHERE id_community = pid_community;
         COMMIT;
+        p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error al eliminar');
             ROLLBACK;
+            p_result:=0;
     END;
     ------PROCEDURE getCommunitiesFromDistrict------
     PROCEDURE getCommunitiesFromDistrict(pid_district IN NUMBER, p_communitylist_refcur IN OUT SYS_REFCURSOR) IS
@@ -861,25 +880,27 @@ END pkg_proposal;
 
 ----------PACKAGE CATEGORY----------
 CREATE OR REPLACE PACKAGE pkg_category IS
-    PROCEDURE createCategory(pCategoryName VARCHAR2);
-    PROCEDURE deleteCategory(pcategory_code NUMBER);
+    PROCEDURE createCategory(pCategoryName VARCHAR2,p_result OUT NUMBER);
+    PROCEDURE deleteCategory(pcategory_code NUMBER,p_result OUT NUMBER);
     PROCEDURE updateCategoryName(p_category_code NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER);
     PROCEDURE updateCategoryIsEnabled(p_category_code NUMBER,p_enabled NUMBER,p_result OUT NUMBER);
 END pkg_category;
 
 CREATE OR REPLACE PACKAGE BODY pkg_category AS
     ------PROCEDURE INSERT------
-    PROCEDURE createCategory(pCategoryName VARCHAR2) IS
+    PROCEDURE createCategory(pCategoryName VARCHAR2,p_result OUT NUMBER) IS
     BEGIN
         INSERT INTO pc.category(category_code, category_name)
         VALUES (s_category_code.NEXTVAL, pCategoryName);
         COMMIT;
+        p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error inserting category');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     ------PROCEDURES UPDATE------
     PROCEDURE updateCategoryName(p_category_code NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER)IS
@@ -916,39 +937,43 @@ CREATE OR REPLACE PACKAGE BODY pkg_category AS
     
     
     ------PROCEDURE DELETE------
-    PROCEDURE deleteCategory(pcategory_code NUMBER) IS
+    PROCEDURE deleteCategory(pcategory_code NUMBER, p_result OUT NUMBER) IS
     BEGIN
         DELETE FROM pc.category
         WHERE category_code = pcategory_code;
         COMMIT;
+        p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error al eliminar');
             ROLLBACK;
+            p_result:=0;
     END;
 END pkg_category;
 
 ----------PACKAGE USER TYPE----------
 CREATE OR REPLACE PACKAGE pkg_user_type IS
-    PROCEDURE createUserType(pIdUserName VARCHAR2);
-    PROCEDURE deleteUserType(pid_user_type NUMBER);
+    PROCEDURE createUserType(pIdUserName VARCHAR2,p_result OUT NUMBER);
+    PROCEDURE deleteUserType(pid_user_type NUMBER,p_result OUT NUMBER);
     PROCEDURE updateUserTypeName(pid_user_type NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER);
     PROCEDURE getUserTypes(p_user_types_cursor IN OUT SYS_REFCURSOR);
 END pkg_user_type;
 
 CREATE OR REPLACE PACKAGE BODY pkg_user_type AS
     ------PROCEDURE INSERT------
-    PROCEDURE createUserType(pIdUserName VARCHAR2) IS
+    PROCEDURE createUserType(pIdUserName VARCHAR2,p_result OUT NUMBER) IS
     BEGIN
         INSERT INTO pc.user_type(id_user_type,user_type_name)
         VALUES(s_user_type_id.NEXTVAL,pIdUserName);
         COMMIT;
+        p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error inserting user type');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     ------PROCEDURE UPDATE------
     PROCEDURE updateUserTypeName(pid_user_type NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER)IS
@@ -968,15 +993,17 @@ CREATE OR REPLACE PACKAGE BODY pkg_user_type AS
     END;
     
     ------PROCEDURE DELETE------
-    PROCEDURE deleteUserType(pid_user_type NUMBER) IS
+    PROCEDURE deleteUserType(pid_user_type NUMBER,p_result OUT NUMBER) IS
     BEGIN
         DELETE FROM user_type
         WHERE id_user_type = pid_user_type;
         COMMIT;
+        p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error al eliminar');
             ROLLBACK;
+            p_result:=0;
     END;
     
     ------PROCEDURE GET USER TYPES------
@@ -999,8 +1026,8 @@ END pkg_user_type;
 
 ----------PACKAGE NATIONALITY----------
 CREATE OR REPLACE PACKAGE pkg_nationality IS
-    PROCEDURE createNationality(pNationalityName VARCHAR2);
-    PROCEDURE deleteNationality(pid_nationality NUMBER);
+    PROCEDURE createNationality(pNationalityName VARCHAR2,p_result OUT NUMBER);
+    PROCEDURE deleteNationality(pid_nationality NUMBER,p_result OUT NUMBER);
     PROCEDURE updateNationalityName(pid_nationality NUMBER, p_new_name VARCHAR2,p_result OUT NUMBER);
     PROCEDURE updateNationalityIsEnabled(pid_nationality NUMBER, p_enabled NUMBER, p_result OUT NUMBER);
     PROCEDURE getNationalities(p_nationalities_cursor IN OUT SYS_REFCURSOR);
@@ -1008,17 +1035,19 @@ END pkg_nationality;
 
 CREATE OR REPLACE PACKAGE BODY pkg_nationality AS
     ------PROCEDURE INSERT------
-    PROCEDURE createNationality(pNationalityName VARCHAR2) IS
+    PROCEDURE createNationality(pNationalityName VARCHAR2,p_result OUT NUMBER) IS
     BEGIN
         INSERT INTO pc.nationality(id_nationality, nationality_name)
         VALUES(s_nationality_id.NEXTVAL, pNationalityName);
         COMMIT;
+        p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error inserting nationality');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     ------PROCEDURES UPDATE------
     PROCEDURE updateNationalityName(pid_nationality NUMBER, p_new_name VARCHAR2,p_result OUT NUMBER)IS
@@ -1054,15 +1083,17 @@ CREATE OR REPLACE PACKAGE BODY pkg_nationality AS
     END;
     
     ------PROCEDURE DELETE------
-    PROCEDURE deleteNationality(pid_nationality NUMBER) IS
+    PROCEDURE deleteNationality(pid_nationality NUMBER,p_result OUT NUMBER) IS
     BEGIN
         DELETE FROM nationality
         WHERE id_nationality = pid_nationality;
         COMMIT;
+        p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error al eliminar');
             ROLLBACK;
+            p_result:=0;
     END;
     
     ------PROCEDURE GET_NATIONALITIES------
@@ -1696,7 +1727,7 @@ CREATE OR REPLACE PACKAGE pkg_user IS
     PROCEDURE registerUser(p_id NUMBER, pfirst_name VARCHAR2, pfirst_last_name VARCHAR2, psecond_last_name VARCHAR2, pdate_of_birth VARCHAR2,
                            pphoto VARCHAR2, pid_community NUMBER, puser_name VARCHAR2, puser_password VARCHAR2, pid_user_type NUMBER,
                            p_email VARCHAR2, p_phone_number NUMBER, p_id_nationality NUMBER, p_register_result OUT NUMBER);
-    PROCEDURE updateUserPassword(p_id_user NUMBER, p_new_password VARCHAR2, p_result OUT NUMBER);
+    PROCEDURE updateUserPassword(p_id_user NUMBER, p_old_password NUMBER,p_new_password VARCHAR2, p_result OUT NUMBER);
     PROCEDURE updateUserType(p_id_user NUMBER,p_new_type NUMBER,p_result OUT NUMBER);
     PROCEDURE updateUserName(p_id_user NUMBER, p_new_name VARCHAR2,p_result OUT NUMBER);
     FUNCTION getPersonsIdCommunity(pid_user IN NUMBER) RETURN NUMBER;
@@ -1734,11 +1765,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_user AS
             ROLLBACK;
     END;
     ------PROCEDURES UPDATE------
-    PROCEDURE updateUserPassword(p_id_user NUMBER, p_new_password VARCHAR2, p_result OUT NUMBER)IS
+    PROCEDURE updateUserPassword(p_id_user NUMBER, p_old_password NUMBER,p_new_password VARCHAR2, p_result OUT NUMBER)IS
     BEGIN
         UPDATE person_user
         SET user_password = p_new_password
-        WHERE id_user = p_id_user;
+        WHERE id_user = p_id_user AND user_password = p_old_password;
 	COMMIT;
     p_result:=1;
     EXCEPTION
