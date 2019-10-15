@@ -3,8 +3,8 @@ CREATE OR REPLACE PACKAGE pkg_country IS
     PROCEDURE createCountry(pNameCountry VARCHAR2);
     PROCEDURE getCountries(p_countrylist_refcur IN OUT SYS_REFCURSOR);
     PROCEDURE deleteCountry(pid_country NUMBER);
-    PROCEDURE updateCountryName(p_id_country NUMBER, p_new_name VARCHAR2);
-    PROCEDURE updateCountryIsEnabled(p_id_country NUMBER, p_enabled NUMBER);
+    PROCEDURE updateCountryName(p_id_country NUMBER, p_new_name VARCHAR2,p_result OUT NUMBER);
+    PROCEDURE updateCountryIsEnabled(p_id_country NUMBER, p_enabled NUMBER,p_result OUT NUMBER);
 END pkg_country;
 
 CREATE OR REPLACE PACKAGE BODY pkg_country AS
@@ -26,32 +26,36 @@ CREATE OR REPLACE PACKAGE BODY pkg_country AS
     END;
     
     ------PROCEDURES UPDATE------
-    PROCEDURE updateCountryName(p_id_country NUMBER, p_new_name VARCHAR2)IS
+    PROCEDURE updateCountryName(p_id_country NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER)IS
     BEGIN
         UPDATE country
         SET country_name = p_new_name
         WHERE id_country = p_id_country;
 	COMMIT;
+    p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     
-    PROCEDURE updateCountryIsEnabled(p_id_country NUMBER, p_enabled NUMBER)IS
+    PROCEDURE updateCountryIsEnabled(p_id_country NUMBER, p_enabled NUMBER,p_result OUT NUMBER)IS
     BEGIN
         UPDATE country
         SET is_enabled = p_enabled
         WHERE id_country = p_id_country;
 	COMMIT;
+    p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     ------PROCEDURE DELETE------
     PROCEDURE deleteCountry(pid_country NUMBER) IS
@@ -88,8 +92,8 @@ CREATE OR REPLACE PACKAGE pkg_province IS
     PROCEDURE createProvince(pNameProvince VARCHAR2, pCountryId NUMBER);
     PROCEDURE getProvincesFromCountry(pid_country IN NUMBER, p_provincelist_refcur IN OUT SYS_REFCURSOR);
     PROCEDURE deleteProvince(pid_province NUMBER);
-    PROCEDURE updateProvinceName(p_id_province NUMBER, p_new_name VARCHAR2);
-    PROCEDURE updateProvinceIsEnabled(p_id_province NUMBER, p_enabled NUMBER);
+    PROCEDURE updateProvinceName(p_id_province NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER);
+    PROCEDURE updateProvinceIsEnabled(p_id_province NUMBER, p_enabled NUMBER, p_result OUT NUMBER);
 END pkg_province;
 
 CREATE OR REPLACE PACKAGE BODY pkg_province AS
@@ -107,32 +111,36 @@ CREATE OR REPLACE PACKAGE BODY pkg_province AS
             ROLLBACK;
     END;
     ------PROCEDURES UPDATE------
-    PROCEDURE updateProvinceName(p_id_province NUMBER, p_new_name VARCHAR2)IS
+    PROCEDURE updateProvinceName(p_id_province NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER)IS
     BEGIN
         UPDATE province
         SET province_name = p_new_name
         WHERE id_province = p_id_province;
 	COMMIT;
+    p_result := 1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     
-    PROCEDURE updateProvinceIsEnabled(p_id_province NUMBER, p_enabled NUMBER)IS
+    PROCEDURE updateProvinceIsEnabled(p_id_province NUMBER, p_enabled NUMBER, p_result OUT NUMBER)IS
     BEGIN
         UPDATE province
         SET is_enabled = p_enabled
         WHERE id_province = p_id_province;
 	COMMIT;
+    p_result := 1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     ------PROCEDURE DELETE------
     PROCEDURE deleteProvince(pid_province NUMBER) IS
@@ -169,8 +177,8 @@ CREATE OR REPLACE PACKAGE pkg_canton IS
     PROCEDURE createCanton (pNameCanton VARCHAR2, pProvinceId NUMBER);
     PROCEDURE getCantonsFromProvince(pid_province IN NUMBER, p_cantonlist_refcur IN OUT SYS_REFCURSOR);
     PROCEDURE deleteCanton(pid_canton NUMBER);
-    PROCEDURE updateCantonName(p_id_canton NUMBER, p_new_name VARCHAR2);
-    PROCEDURE updateCantonIsEnabled(p_id_canton NUMBER, p_enabled NUMBER);
+    PROCEDURE updateCantonName(p_id_canton NUMBER, p_new_name VARCHAR2,p_result OUT NUMBER);
+    PROCEDURE updateCantonIsEnabled(p_id_canton NUMBER, p_enabled NUMBER, p_result OUT NUMBER);
 END pkg_canton;
 
 CREATE OR REPLACE PACKAGE BODY pkg_canton AS
@@ -188,32 +196,36 @@ CREATE OR REPLACE PACKAGE BODY pkg_canton AS
             ROLLBACK;
     END;
     ------PROCEDURES UPDATE------
-    PROCEDURE updateCantonName(p_id_canton NUMBER, p_new_name VARCHAR2)IS
+    PROCEDURE updateCantonName(p_id_canton NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER)IS
     BEGIN
         UPDATE canton
         SET canton_name = p_new_name
         WHERE id_canton = p_id_canton;
 	COMMIT;
+    p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     
-    PROCEDURE updateCantonIsEnabled(p_id_canton NUMBER, p_enabled NUMBER)IS
+    PROCEDURE updateCantonIsEnabled(p_id_canton NUMBER, p_enabled NUMBER,p_result OUT NUMBER)IS
     BEGIN
         UPDATE canton
         SET is_enabled = p_enabled
         WHERE id_canton = p_id_canton;
 	COMMIT;
+    p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     
     ------PROCEDURE DELETE------
@@ -251,8 +263,8 @@ CREATE OR REPLACE PACKAGE pkg_district IS
     PROCEDURE createDistrict (pNameDistrict VARCHAR2, pCantonId NUMBER);
     PROCEDURE getDistrictsFromCanton(pid_canton IN NUMBER, p_districtlist_refcur IN OUT SYS_REFCURSOR);
     PROCEDURE deleteDistrict(pid_district NUMBER);
-    PROCEDURE updateDistrictName(p_id_district NUMBER, p_new_name VARCHAR2);
-    PROCEDURE updateDistrictIsEnabled(p_id_district NUMBER, p_enabled NUMBER);
+    PROCEDURE updateDistrictName(p_id_district NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER);
+    PROCEDURE updateDistrictIsEnabled(p_id_district NUMBER, p_enabled NUMBER, p_result OUT NUMBER);
 END pkg_district;
 
 CREATE OR REPLACE PACKAGE BODY pkg_district AS
@@ -270,32 +282,36 @@ CREATE OR REPLACE PACKAGE BODY pkg_district AS
             ROLLBACK;
     END;
     ------PROCEDURES UPDATE------
-    PROCEDURE updateDistrictName(p_id_district NUMBER, p_new_name VARCHAR2)IS
+    PROCEDURE updateDistrictName(p_id_district NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER)IS
     BEGIN
         UPDATE district
         SET district_name = p_new_name
         WHERE id_district = p_id_district;
 	COMMIT;
+    p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     
-    PROCEDURE updateDistrictIsEnabled(p_id_district NUMBER, p_enabled NUMBER)IS
+    PROCEDURE updateDistrictIsEnabled(p_id_district NUMBER, p_enabled NUMBER,p_result OUT NUMBER)IS
     BEGIN
         UPDATE district
         SET is_enabled = p_enabled
         WHERE id_district = p_id_district;
 	COMMIT;
+    p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     
     ------PROCEDURE DELETE------
@@ -333,8 +349,8 @@ CREATE OR REPLACE PACKAGE pkg_community IS
     PROCEDURE createCommunity (pNameCommunity VARCHAR2, pDistrictId NUMBER);
     PROCEDURE getCommunitiesFromDistrict(pid_district IN NUMBER, p_communitylist_refcur IN OUT SYS_REFCURSOR);
     PROCEDURE deleteCommunity(pid_community NUMBER);
-    PROCEDURE updateCommunityName(p_id_community NUMBER, p_new_name VARCHAR2);
-    PROCEDURE updateCommunityIsEnabled(p_id_community NUMBER, p_enabled NUMBER);
+    PROCEDURE updateCommunityName(p_id_community NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER);
+    PROCEDURE updateCommunityIsEnabled(p_id_community NUMBER, p_enabled NUMBER, p_result OUT NUMBER);
 END pkg_community;
 
 CREATE OR REPLACE PACKAGE BODY pkg_community AS
@@ -352,32 +368,36 @@ CREATE OR REPLACE PACKAGE BODY pkg_community AS
             ROLLBACK;
     END;
     ------PROCEDURES UPDATE------
-    PROCEDURE updateCommunityName(p_id_community NUMBER, p_new_name VARCHAR2)IS
+    PROCEDURE updateCommunityName(p_id_community NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER)IS
     BEGIN
         UPDATE community
         SET community_name = p_new_name
         WHERE id_community = p_id_community;
 	COMMIT;
+    p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     
-    PROCEDURE updateCommunityIsEnabled(p_id_community NUMBER, p_enabled NUMBER)IS
+    PROCEDURE updateCommunityIsEnabled(p_id_community NUMBER, p_enabled NUMBER, p_result OUT NUMBER)IS
     BEGIN
         UPDATE community
         SET is_enabled = p_enabled
         WHERE id_community = p_id_community;
 	COMMIT;
+    p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     
     ------PROCEDURE DELETE------
@@ -431,10 +451,10 @@ CREATE OR REPLACE PACKAGE pkg_proposal IS
     PROCEDURE getStatisticsPerDistrict(p_proposal_district_cursor IN OUT SYS_REFCURSOR);
     PROCEDURE getStatisticsPerCommunity(p_proposal_community_cursor IN OUT SYS_REFCURSOR);
     FUNCTION countVotes(pid_proposal NUMBER) RETURN NUMBER;
-    PROCEDURE updateProposalDescription(p_id_proposal NUMBER, p_new_description VARCHAR2);
-    PROCEDURE updateProposalTitle(p_id_proposal NUMBER, p_new_title VARCHAR2);
-    PROCEDURE updateProposalBudget(p_id_proposal NUMBER, p_budget NUMBER);
-    PROCEDURE updateProposalIsEnabled(p_id_proposal NUMBER, p_enabled NUMBER);
+    PROCEDURE updateProposalDescription(p_id_proposal NUMBER, p_new_description VARCHAR2, p_result OUT NUMBER);
+    PROCEDURE updateProposalTitle(p_id_proposal NUMBER, p_new_title VARCHAR2, p_result OUT NUMBER);
+    PROCEDURE updateProposalBudget(p_id_proposal NUMBER, p_budget NUMBER,p_result OUT NUMBER);
+    PROCEDURE updateProposalIsEnabled(p_id_proposal NUMBER, p_enabled NUMBER,p_result OUT NUMBER);
 END pkg_proposal;
 
 CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
@@ -453,60 +473,68 @@ CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
             ROLLBACK;
     END;
     ------PROCEDURES UPDATE------
-    PROCEDURE updateProposalDescription(p_id_proposal NUMBER, p_new_description VARCHAR2)IS
+    PROCEDURE updateProposalDescription(p_id_proposal NUMBER, p_new_description VARCHAR2, p_result OUT NUMBER)IS
     BEGIN
         UPDATE proposal
         SET description = p_new_description
         WHERE id_proposal = p_id_proposal;
 	COMMIT;
+    p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     
-    PROCEDURE updateProposalTitle(p_id_proposal NUMBER, p_new_title VARCHAR2)IS
+    PROCEDURE updateProposalTitle(p_id_proposal NUMBER, p_new_title VARCHAR2, p_result OUT NUMBER)IS
     BEGIN
         UPDATE proposal
         SET title = p_new_title
         WHERE id_proposal = p_id_proposal;
 	COMMIT;
+    p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     
-    PROCEDURE updateProposalBudget(p_id_proposal NUMBER, p_budget NUMBER)IS
+    PROCEDURE updateProposalBudget(p_id_proposal NUMBER, p_budget NUMBER, p_result OUT NUMBER)IS
     BEGIN
         UPDATE proposal
         SET approximate_budget = p_budget
         WHERE id_proposal = p_id_proposal;
 	COMMIT;
+    p_result := 1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     
-    PROCEDURE updateProposalIsEnabled(p_id_proposal NUMBER, p_enabled NUMBER)IS
+    PROCEDURE updateProposalIsEnabled(p_id_proposal NUMBER, p_enabled NUMBER, p_result OUT NUMBER)IS
     BEGIN
         UPDATE proposal
         SET is_enabled =p_enabled
         WHERE id_proposal = p_id_proposal;
 	COMMIT;
+    p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     
     ------PROCEDURE getProposalInfo------
@@ -835,8 +863,8 @@ END pkg_proposal;
 CREATE OR REPLACE PACKAGE pkg_category IS
     PROCEDURE createCategory(pCategoryName VARCHAR2);
     PROCEDURE deleteCategory(pcategory_code NUMBER);
-    PROCEDURE updateCategoryName(p_category_code NUMBER, p_new_name VARCHAR2);
-    PROCEDURE updateCategoryIsEnabled(p_category_code NUMBER,p_enabled NUMBER);
+    PROCEDURE updateCategoryName(p_category_code NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER);
+    PROCEDURE updateCategoryIsEnabled(p_category_code NUMBER,p_enabled NUMBER,p_result OUT NUMBER);
 END pkg_category;
 
 CREATE OR REPLACE PACKAGE BODY pkg_category AS
@@ -854,32 +882,36 @@ CREATE OR REPLACE PACKAGE BODY pkg_category AS
             ROLLBACK;
     END;
     ------PROCEDURES UPDATE------
-    PROCEDURE updateCategoryName(p_category_code NUMBER, p_new_name VARCHAR2)IS
+    PROCEDURE updateCategoryName(p_category_code NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER)IS
     BEGIN
         UPDATE category
         SET category_name = p_new_name
         WHERE category_code = p_category_code;
 	COMMIT;
+    p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+        p_result:=0;
     END;
     
-    PROCEDURE updateCategoryIsEnabled(p_category_code NUMBER,p_enabled NUMBER)IS
+    PROCEDURE updateCategoryIsEnabled(p_category_code NUMBER,p_enabled NUMBER, p_result OUT NUMBER)IS
     BEGIN
         UPDATE category
         SET is_enabled = p_enabled
         WHERE category_code = p_category_code;
 	COMMIT;
+    p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     
     
@@ -900,7 +932,7 @@ END pkg_category;
 CREATE OR REPLACE PACKAGE pkg_user_type IS
     PROCEDURE createUserType(pIdUserName VARCHAR2);
     PROCEDURE deleteUserType(pid_user_type NUMBER);
-    PROCEDURE updateUserTypeName(pid_user_type NUMBER, p_new_name VARCHAR2);
+    PROCEDURE updateUserTypeName(pid_user_type NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER);
     PROCEDURE getUserTypes(p_user_types_cursor IN OUT SYS_REFCURSOR);
 END pkg_user_type;
 
@@ -919,18 +951,20 @@ CREATE OR REPLACE PACKAGE BODY pkg_user_type AS
             ROLLBACK;
     END;
     ------PROCEDURE UPDATE------
-    PROCEDURE updateUserTypeName(pid_user_type NUMBER, p_new_name VARCHAR2)IS
+    PROCEDURE updateUserTypeName(pid_user_type NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER)IS
     BEGIN
         UPDATE user_type
         SET user_type_name = p_new_name
         WHERE id_user_type = pid_user_type;
 	COMMIT;
+    p_result := 1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     
     ------PROCEDURE DELETE------
@@ -967,8 +1001,8 @@ END pkg_user_type;
 CREATE OR REPLACE PACKAGE pkg_nationality IS
     PROCEDURE createNationality(pNationalityName VARCHAR2);
     PROCEDURE deleteNationality(pid_nationality NUMBER);
-    PROCEDURE updateNationalityName(pid_nationality NUMBER, p_new_name VARCHAR2);
-    PROCEDURE updateNationalityIsEnabled(pid_nationality NUMBER, p_enabled NUMBER);
+    PROCEDURE updateNationalityName(pid_nationality NUMBER, p_new_name VARCHAR2,p_result OUT NUMBER);
+    PROCEDURE updateNationalityIsEnabled(pid_nationality NUMBER, p_enabled NUMBER, p_result OUT NUMBER);
     PROCEDURE getNationalities(p_nationalities_cursor IN OUT SYS_REFCURSOR);
 END pkg_nationality;
 
@@ -987,32 +1021,36 @@ CREATE OR REPLACE PACKAGE BODY pkg_nationality AS
             ROLLBACK;
     END;
     ------PROCEDURES UPDATE------
-    PROCEDURE updateNationalityName(pid_nationality NUMBER, p_new_name VARCHAR2)IS
+    PROCEDURE updateNationalityName(pid_nationality NUMBER, p_new_name VARCHAR2,p_result OUT NUMBER)IS
     BEGIN
         UPDATE nationality
         SET nationality_name = p_new_name
         WHERE id_nationality = pid_nationality;
       COMMIT;
+      p_result :=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
 	    ROLLBACK;
+        p_result:=0;
     END;
     
-    PROCEDURE updateNationalityIsEnabled(pid_nationality NUMBER, p_enabled NUMBER)IS
+    PROCEDURE updateNationalityIsEnabled(pid_nationality NUMBER, p_enabled NUMBER, p_result OUT NUMBER)IS
     BEGIN
         UPDATE nationality
         SET is_enabled = p_enabled
         WHERE id_nationality = pid_nationality;
       COMMIT;
+      p_result :=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
 	    ROLLBACK;
+        p_result:=0;
     END;
     
     ------PROCEDURE DELETE------
@@ -1057,12 +1095,12 @@ CREATE OR REPLACE PACKAGE pkg_person IS
     PROCEDURE getStatisticsPerCommunity(p_user_community_cursor IN OUT SYS_REFCURSOR);
     FUNCTION getAgeRank(p_date_of_birth DATE) RETURN VARCHAR2;
     PROCEDURE getStatisticsUsersAge(p_user_age_cursor IN OUT SYS_REFCURSOR);
-    PROCEDURE updatePersonId(p_id_number NUMBER, p_new_id NUMBER);
-    PROCEDURE updatePersonFirstName(p_id_number NUMBER, p_new_first_name VARCHAR2);
-    PROCEDURE updatePersonFirstLastName(p_id_number NUMBER, p_new_first_last_name VARCHAR2);
-    PROCEDURE updatePersonSecLastName(p_id_number NUMBER, p_new_sec_last_name VARCHAR2);
-    PROCEDURE updatePersonBirthDate(p_id_number NUMBER, p_new_birth_date DATE);
-    PROCEDURE updatePersonIdCommunity(p_id_number NUMBER, p_new_id_community NUMBER);
+    PROCEDURE updatePersonId(p_id_number NUMBER, p_new_id NUMBER,p_result OUT NUMBER);
+    PROCEDURE updatePersonFirstName(p_id_number NUMBER, p_new_first_name VARCHAR2,p_result OUT NUMBER);
+    PROCEDURE updatePersonFirstLastName(p_id_number NUMBER, p_new_first_last_name VARCHAR2, p_result OUT NUMBER);
+    PROCEDURE updatePersonSecLastName(p_id_number NUMBER, p_new_sec_last_name VARCHAR2, p_result OUT NUMBER);
+    PROCEDURE updatePersonBirthDate(p_id_number NUMBER, p_new_birth_date DATE,p_result OUT NUMBER);
+    PROCEDURE updatePersonIdCommunity(p_id_number NUMBER, p_new_id_community NUMBER, p_result OUT NUMBER);
     FUNCTION getPersonIdNumber(p_id_user NUMBER) RETURN NUMBER;
 END pkg_person;
 
@@ -1099,88 +1137,100 @@ CREATE OR REPLACE PACKAGE BODY pkg_person AS
             ROLLBACK;
     END;
     ------PROCEDURES UPDATE------
-    PROCEDURE updatePersonId(p_id_number NUMBER, p_new_id NUMBER)IS
+    PROCEDURE updatePersonId(p_id_number NUMBER, p_new_id NUMBER, p_result OUT NUMBER)IS
     BEGIN
         UPDATE person
         SET id = p_new_id
         WHERE id_number = p_id_number;
 	COMMIT;
+    p_result:= 1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
 	    ROLLBACK;
+        p_result:=0;
     END;
     
-    PROCEDURE updatePersonFirstName(p_id_number NUMBER, p_new_first_name VARCHAR2)IS
+    PROCEDURE updatePersonFirstName(p_id_number NUMBER, p_new_first_name VARCHAR2, p_result OUT NUMBER)IS
     BEGIN
         UPDATE person
         SET first_name = p_new_first_name
         WHERE id_number = p_id_number;
 	COMMIT;
+    p_result := 1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
 	    ROLLBACK;
+        p_result:=0;
     END;
     
-    PROCEDURE updatePersonFirstLastName(p_id_number NUMBER, p_new_first_last_name VARCHAR2)IS
+    PROCEDURE updatePersonFirstLastName(p_id_number NUMBER, p_new_first_last_name VARCHAR2, p_result OUT NUMBER)IS
     BEGIN
         UPDATE person
         SET first_last_name = p_new_first_last_name
         WHERE id_number = p_id_number;
 	COMMIT;
+    p_result := 1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
 	    ROLLBACK;
+        p_result:=0;
     END;
     
-    PROCEDURE updatePersonSecLastName(p_id_number NUMBER, p_new_sec_last_name VARCHAR2)IS
+    PROCEDURE updatePersonSecLastName(p_id_number NUMBER, p_new_sec_last_name VARCHAR2, p_result OUT NUMBER)IS
     BEGIN
         UPDATE person
         SET second_last_name = p_new_sec_last_name
         WHERE id_number = p_id_number;
 	COMMIT;
+    p_result:= 1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
 	    ROLLBACK;
+        p_result:=0;
     END;
     
-    PROCEDURE updatePersonBirthDate(p_id_number NUMBER, p_new_birth_date DATE)IS
+    PROCEDURE updatePersonBirthDate(p_id_number NUMBER, p_new_birth_date DATE, p_result OUT NUMBER)IS
     BEGIN
         UPDATE person
         SET date_of_birth = p_new_birth_date
         WHERE id_number = p_id_number;
 	COMMIT;
+    p_result := 1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
 	    ROLLBACK;
+        p_result:=0;
     END;
     
-    PROCEDURE updatePersonIdCommunity(p_id_number NUMBER, p_new_id_community NUMBER)IS
+    PROCEDURE updatePersonIdCommunity(p_id_number NUMBER, p_new_id_community NUMBER, p_result OUT NUMBER)IS
     BEGIN
         UPDATE person
         SET id_community = p_new_id_community
         WHERE id_number = p_id_number;
 	COMMIT;
+    p_result := 1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
 	    ROLLBACK;
+        p_result := 0;
     END;
     ------PROCEDURE DELETE------
     PROCEDURE deletePerson(pid_number NUMBER) IS
@@ -1390,7 +1440,7 @@ END pkg_person;
 CREATE OR REPLACE PACKAGE pkg_email IS
     PROCEDURE insertEmail(pMail VARCHAR2, pIdNumber NUMBER);
     PROCEDURE deleteEmail(p_mail VARCHAR2);
-    PROCEDURE updateEmail(p_id_number NUMBER, p_new_email VARCHAR2);
+    PROCEDURE updateEmail(p_id_number NUMBER, p_new_email VARCHAR2,p_result OUT NUMBER);
 END pkg_email;
 
 CREATE OR REPLACE PACKAGE BODY pkg_email AS
@@ -1408,18 +1458,20 @@ CREATE OR REPLACE PACKAGE BODY pkg_email AS
             ROLLBACK;
     END;
     ------PROCEDURE UPDATE------
-    PROCEDURE updateEmail(p_id_number NUMBER, p_new_email VARCHAR2)IS
+    PROCEDURE updateEmail(p_id_number NUMBER, p_new_email VARCHAR2, p_result OUT NUMBER)IS
     BEGIN
         UPDATE email
         SET mail = p_new_email
         WHERE id_number = p_id_number;
 	COMMIT;
+    p_result := 1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
 	    ROLLBACK;
+        p_result:=0;
     END;
     ------PROCEDURE DELETE------
     PROCEDURE deleteEmail(p_mail VARCHAR2) IS
@@ -1439,7 +1491,7 @@ END pkg_email;
 CREATE OR REPLACE PACKAGE pkg_telephone IS
     PROCEDURE insertTelephone(pTelephone NUMBER, pIdNumber NUMBER);
     PROCEDURE deleteTelephone(p_phone_number NUMBER);
-    PROCEDURE updateTelephoneNumber(p_id_number NUMBER, p_new_phone_number NUMBER);
+    PROCEDURE updateTelephoneNumber(p_id_number NUMBER, p_new_phone_number NUMBER,p_result OUT NUMBER);
 END pkg_telephone;
     
 CREATE OR REPLACE PACKAGE BODY pkg_telephone AS
@@ -1457,18 +1509,20 @@ CREATE OR REPLACE PACKAGE BODY pkg_telephone AS
             ROLLBACK;
     END;
     ------PROCEDURE UPDATE------
-    PROCEDURE updateTelephoneNumber(p_id_number NUMBER, p_new_phone_number NUMBER) IS
+    PROCEDURE updateTelephoneNumber(p_id_number NUMBER, p_new_phone_number NUMBER,p_result OUT NUMBER) IS
     BEGIN
         UPDATE telephone
         SET phone_number = p_new_phone_number
         WHERE id_number = p_id_number;
 	COMMIT;
+    p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
 	    ROLLBACK;
+        p_result:=0;
     END;
     ------PROCEDURE DELETE------
     PROCEDURE deleteTelephone(p_phone_number NUMBER) IS
@@ -1488,7 +1542,7 @@ END pkg_telephone;
 CREATE OR REPLACE PACKAGE pkg_comment IS
     PROCEDURE insertComment(pIdNumber NUMBER, pIdProposal NUMBER, pText VARCHAR2);
     PROCEDURE deleteComment(p_code_comment NUMBER);
-    PROCEDURE updateCommentText(p_code_comment NUMBER, p_new_text VARCHAR2);
+    PROCEDURE updateCommentText(p_code_comment NUMBER, p_new_text VARCHAR2,p_result OUT NUMBER);
 END pkg_comment;
 
 CREATE OR REPLACE PACKAGE BODY pkg_comment AS
@@ -1506,18 +1560,20 @@ CREATE OR REPLACE PACKAGE BODY pkg_comment AS
             ROLLBACK;
     END;
     ------PROCEDURE UPDATE------
-    PROCEDURE updateCommentText(p_code_comment NUMBER, p_new_text VARCHAR2)IS
+    PROCEDURE updateCommentText(p_code_comment NUMBER, p_new_text VARCHAR2,p_result OUT NUMBER)IS
     BEGIN
         UPDATE proposal_comment
         SET text = p_new_text
         WHERE code_comment = p_code_comment;
 	COMMIT;
+    p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     ------PROCEDURE DELETE------
     PROCEDURE deleteComment(p_code_comment NUMBER) IS
@@ -1615,9 +1671,9 @@ CREATE OR REPLACE PACKAGE pkg_user IS
     PROCEDURE registerUser(p_id NUMBER, pfirst_name VARCHAR2, pfirst_last_name VARCHAR2, psecond_last_name VARCHAR2, pdate_of_birth VARCHAR2,
                            pphoto VARCHAR2, pid_community NUMBER, puser_name VARCHAR2, puser_password VARCHAR2, pid_user_type NUMBER,
                            p_email VARCHAR2, p_phone_number NUMBER, p_id_nationality NUMBER, p_register_result OUT NUMBER);
-    PROCEDURE updateUserPassword(p_id_user NUMBER, p_new_password VARCHAR2);
-    PROCEDURE updateUserType(p_id_user NUMBER,p_new_type NUMBER);
-    PROCEDURE updateUserName(p_id_user NUMBER, p_new_name VARCHAR2);
+    PROCEDURE updateUserPassword(p_id_user NUMBER, p_new_password VARCHAR2, p_result OUT NUMBER);
+    PROCEDURE updateUserType(p_id_user NUMBER,p_new_type NUMBER,p_result OUT NUMBER);
+    PROCEDURE updateUserName(p_id_user NUMBER, p_new_name VARCHAR2,p_result OUT NUMBER);
     FUNCTION getPersonsIdCommunity(pid_user IN NUMBER) RETURN NUMBER;
 END pkg_user;
 
@@ -1653,46 +1709,52 @@ CREATE OR REPLACE PACKAGE BODY pkg_user AS
             ROLLBACK;
     END;
     ------PROCEDURES UPDATE------
-    PROCEDURE updateUserPassword(p_id_user NUMBER, p_new_password VARCHAR2)IS
+    PROCEDURE updateUserPassword(p_id_user NUMBER, p_new_password VARCHAR2, p_result OUT NUMBER)IS
     BEGIN
         UPDATE person_user
         SET user_password = p_new_password
         WHERE id_user = p_id_user;
 	COMMIT;
+    p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
   	    ROLLBACK;
+        p_result:=0;
     END;
     
-    PROCEDURE updateUserType(p_id_user NUMBER,p_new_type NUMBER)IS
+    PROCEDURE updateUserType(p_id_user NUMBER,p_new_type NUMBER,p_result OUT NUMBER)IS
     BEGIN
         UPDATE person_user
         SET id_user_type = p_new_type
         WHERE id_user = p_id_user;
 	COMMIT;
+    p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
 	    ROLLBACK;
+        p_result:=0;
     END;
     
-    PROCEDURE updateUserName(p_id_user NUMBER, p_new_name VARCHAR2)IS
+    PROCEDURE updateUserName(p_id_user NUMBER, p_new_name VARCHAR2,p_result OUT NUMBER)IS
     BEGIN
         UPDATE person_user
         SET user_name = p_new_name
         WHERE id_user = p_id_user;
 	COMMIT;
+    p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
 	    ROLLBACK;
+        p_result:=0;
     END;
     
     ------PROCEDURE DELETE------
@@ -1792,8 +1854,8 @@ END pkg_nationality_x_person;
 CREATE OR REPLACE PACKAGE pkg_parameter IS
     PROCEDURE insertParameter(pValue NUMBER, pName VARCHAR2);
     PROCEDURE deleteParameter(pid_parameter NUMBER);
-    PROCEDURE updateParameterValue(p_id_parameter NUMBER, p_new_value NUMBER);
-    PROCEDURE updateParameterName(p_id_parameter NUMBER, p_new_name VARCHAR2);
+    PROCEDURE updateParameterValue(p_id_parameter NUMBER, p_new_value NUMBER,p_result OUT NUMBER);
+    PROCEDURE updateParameterName(p_id_parameter NUMBER, p_new_name VARCHAR2,p_result OUT NUMBER);
 END pkg_parameter;
 
 CREATE OR REPLACE PACKAGE BODY pkg_parameter AS
@@ -1811,32 +1873,36 @@ CREATE OR REPLACE PACKAGE BODY pkg_parameter AS
             ROLLBACK;
     END;
     ------PROCEDURE UPDATE------
-    PROCEDURE updateParameterValue(p_id_parameter NUMBER, p_new_value NUMBER)IS
+    PROCEDURE updateParameterValue(p_id_parameter NUMBER, p_new_value NUMBER,p_result OUT NUMBER)IS
     BEGIN
         UPDATE parameter
         SET parameter_value = p_new_value
         WHERE id_parameter = p_id_parameter;
 	COMMIT;
+    p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
 	    ROLLBACK;
+        p_result:=0;
     END;
     
-    PROCEDURE updateParameterName(p_id_parameter NUMBER, p_new_name VARCHAR2)IS
+    PROCEDURE updateParameterName(p_id_parameter NUMBER, p_new_name VARCHAR2,p_result OUT NUMBER)IS
     BEGIN
         UPDATE parameter
         SET parameter_name = p_new_name
         WHERE id_parameter = p_id_parameter;
 	COMMIT;
+    p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error updating');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
 	    ROLLBACK;
+        p_result:=0;
     END;
     ------PROCEDURE DELETE------
     PROCEDURE deleteParameter(pid_parameter NUMBER) IS
