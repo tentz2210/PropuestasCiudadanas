@@ -267,40 +267,122 @@ public class ConnectDB implements IConstants
         Global.update_result = stmt.getInt(3);
     }
     
-    public static void updatePersonId(int p_id_number,int p_new_id)
+    public static void updatePersonId(int p_id_number,int p_new_id) throws SQLException
     {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_person.updatePersonId(?,?,?)}");
+        stmt.setInt(1,p_id_number);
+        stmt.setInt(2,p_new_id);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        stmt.execute();
         
+        Global.update_result = stmt.getInt(3);
     }
     
-    public static void updatePersonBirthDate(int p_id_number,String p_new_birth_date)
+    public static void updatePersonBirthDate(int p_id_number,String p_new_birth_date) throws SQLException
     {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_person.updatePersonBirthDate(?,?,?)}");
+        stmt.setInt(1,p_id_number);
+        stmt.setString(2,p_new_birth_date);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
         
+        stmt.execute();
+        
+        Global.update_result = stmt.getInt(3);
     }
     
-    public static void updatePersonUserType(int p_id_number,int p_new_userTypeId)
+    public static void updatePersonUserType(int p_id_number,int p_new_userTypeId) throws SQLException
     {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_person.updateUserType(?,?,?)}");
+        stmt.setInt(1,p_id_number);
+        stmt.setInt(2,p_new_userTypeId);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        stmt.execute();
         
+        Global.update_result = stmt.getInt(3);
     }
     
-    public static void updatePersonNationality(int p_id_number,String p_new_nationality)
+    public static void updatePersonNationality(int p_id_number,int p_new_nationality) throws SQLException
     {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_person.updateNationalityXPerson(?,?,?)}");
+        stmt.setInt(1,p_id_number);
+        stmt.setInt(2,p_new_nationality);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
         
+        stmt.execute();
+        
+        Global.update_result = stmt.getInt(3);
     }
     
-    public static void updatePersonLocation(int p_id_number,int p_new_idCommunity)
+    public static void updatePersonLocation(int p_id_number,int p_new_idCommunity) throws SQLException
     {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_person.updatePersonIdCommunity(?,?,?)}");
+        stmt.setInt(1,p_id_number);
+        stmt.setInt(2,p_new_idCommunity);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        stmt.execute();
         
+        Global.update_result = stmt.getInt(3);
     }
     
-    public static void updatePersonProfilePicture(int p_id_number,String p_new_photo)
+    public static void updatePersonProfilePicture(int p_id_number,String p_new_photo) throws SQLException
     {
-        
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_.updatePersonIdCommunity(?,?,?)}");
     }
     
-    public static void updatePersonPassword(int p_id_number,String p_new_password)
+    public static void updatePersonPassword(int p_id_number,String p_new_password) throws SQLException
     {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_user.updatePersonPhoto(?,?,?)}");
+        stmt.setInt(1,p_id_number);
+        stmt.setString(2,p_new_password);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        stmt.execute();
         
+        Global.update_result = stmt.getInt(3);
     }
     
-    //telefono y email
+    public static void insertEmail(String newMail, int idNumber)  throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_email.insertEmail(?,?,?)}");
+        stmt.setString(1,newMail);
+        stmt.setInt(2,idNumber);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        
+        stmt.execute();
+        
+        Global.insert_result = stmt.getInt(3);
+    }
+    
+    public static void deleteEmail(String mail, int pIdNumber) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_email.deleteEmail(?,?,?)}");
+        stmt.setString(1,mail);
+        stmt.setInt(2,pIdNumber);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.delete_result = stmt.getInt(3);
+    }
+    
+    public static void updateEmail(int pIdNumber, String old_mail, String new_mail) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_email.updateEmail(?,?,?,?)}");
+        stmt.setInt(1, pIdNumber);
+        stmt.setString(2,old_mail);
+        stmt.setString(3,new_mail);
+        stmt.registerOutParameter(4,OracleTypes.INTEGER);
+        
+        stmt.execute();
+        
+        Global.update_result = stmt.getInt(4);
+    }
 }

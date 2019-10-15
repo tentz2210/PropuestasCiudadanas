@@ -7,6 +7,7 @@ package citizenproposals;
 
 import Security.AES;
 import UI.loginWindow;
+import Utils.Global;
 import java.sql.SQLException;
 
 
