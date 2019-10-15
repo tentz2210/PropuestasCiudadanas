@@ -1590,7 +1590,7 @@ CREATE OR REPLACE PACKAGE pkg_user IS
     PROCEDURE checkLogin(p_username IN VARCHAR2, p_password IN VARCHAR2, pid_user OUT NUMBER, p_user_type OUT VARCHAR2, p_result IN OUT NUMBER);
     PROCEDURE registerUser(p_id NUMBER, pfirst_name VARCHAR2, pfirst_last_name VARCHAR2, psecond_last_name VARCHAR2, pdate_of_birth VARCHAR2,
                            pphoto VARCHAR2, pid_community NUMBER, puser_name VARCHAR2, puser_password VARCHAR2, pid_user_type NUMBER,
-                           p_email VARCHAR2, p_phone_number NUMBER, p_id_nationality NUMBER);
+                           p_email VARCHAR2, p_phone_number NUMBER, p_id_nationality NUMBER, p_register_result OUT NUMBER);
     PROCEDURE updateUserPassword(p_id_user NUMBER, p_new_password VARCHAR2);
     PROCEDURE updateUserType(p_id_user NUMBER,p_new_type NUMBER);
     PROCEDURE updateUserName(p_id_user NUMBER, p_new_name VARCHAR2);
@@ -1668,8 +1668,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_user AS
     ------PROCEDURE registerUser------
     PROCEDURE registerUser(p_id NUMBER, pfirst_name VARCHAR2, pfirst_last_name VARCHAR2, psecond_last_name VARCHAR2, pdate_of_birth VARCHAR2,
                            pphoto VARCHAR2, pid_community NUMBER, puser_name VARCHAR2, puser_password VARCHAR2, pid_user_type NUMBER,
-                           p_email VARCHAR2, p_phone_number NUMBER, p_id_nationality NUMBER) IS
-        vid_number NUMBER(20);                
+                           p_email VARCHAR2, p_phone_number NUMBER, p_id_nationality NUMBER, p_register_result OUT NUMBER) IS
+        vid_number NUMBER(20);   
     BEGIN
         vid_number := pc.s_person_id.nextval;
         INSERT INTO pc.person(id_number, id, first_name, first_last_name, second_last_name, date_of_birth, photo, id_community)
@@ -1688,12 +1688,14 @@ CREATE OR REPLACE PACKAGE BODY pkg_user AS
         INSERT INTO pc.nationality_x_person(id_number, id_nationality)
         VALUES (vid_number, p_id_nationality);
         COMMIT;
+	p_register_result:= 1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error signing up user');
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
             DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+	    p_register_result:= 0;
     END;
     ------PROCEDURE checkLogin------
     PROCEDURE checkLogin(p_username IN VARCHAR2, p_password IN VARCHAR2, pid_user OUT NUMBER, p_user_type OUT VARCHAR2, p_result IN OUT NUMBER) IS
