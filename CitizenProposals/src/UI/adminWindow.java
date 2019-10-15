@@ -100,6 +100,11 @@ public class adminWindow extends javax.swing.JFrame {
         settings.setText("Configuración");
         settings.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         settings.setPreferredSize(new java.awt.Dimension(132, 32));
+        settings.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                settingsMouseClicked(evt);
+            }
+        });
         jPanel1.add(settings, new org.netbeans.lib.awtextra.AbsoluteConstraints(-185, 180, -1, -1));
 
         logout.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -161,6 +166,11 @@ public class adminWindow extends javax.swing.JFrame {
         this.setVisible(false);
         loginWindow window = new loginWindow();
     }//GEN-LAST:event_logoutMouseClicked
+
+    private void settingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsMouseClicked
+        this.setVisible(false);
+        editProfile edit = new editProfile();
+    }//GEN-LAST:event_settingsMouseClicked
 
     /**
      * @param args the command line arguments

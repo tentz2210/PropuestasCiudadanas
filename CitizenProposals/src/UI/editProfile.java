@@ -131,6 +131,11 @@ public class editProfile extends javax.swing.JFrame {
         nameButton.setBackground(new java.awt.Color(255, 255, 255));
         nameButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/name.png"))); // NOI18N
         nameButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        nameButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                nameButtonMouseClicked(evt);
+            }
+        });
         jPanel2.add(nameButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 130, 130));
 
         usersButton.setBackground(new java.awt.Color(255, 255, 255));
@@ -186,6 +191,10 @@ public class editProfile extends javax.swing.JFrame {
     private void minimizeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeMouseClicked
         this.setState(loginWindow.ICONIFIED);
     }//GEN-LAST:event_minimizeMouseClicked
+
+    private void nameButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nameButtonMouseClicked
+        nameWindow name = new nameWindow();
+    }//GEN-LAST:event_nameButtonMouseClicked
 
     /**
      * @param args the command line arguments
