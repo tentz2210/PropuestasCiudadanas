@@ -6,6 +6,7 @@
 package UI;
 
 import AppPackage.AnimationClass;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -105,6 +106,11 @@ public class adminWindow extends javax.swing.JFrame {
         logout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/logout.png"))); // NOI18N
         logout.setText("Cerrar sesión");
         logout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        logout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutMouseClicked(evt);
+            }
+        });
         jPanel1.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(-185, 220, -1, -1));
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -113,8 +119,13 @@ public class adminWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void closeWindowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeWindowMouseClicked
-        this.setVisible(false);
-        loginWindow login = new loginWindow();
+        int dialog = JOptionPane.YES_NO_OPTION;
+        int result = JOptionPane.showConfirmDialog(this,"¿Seguro que desea salir?","Cerrar sesión",dialog);
+        if (result == 0)
+        {
+            this.setVisible(false);
+            loginWindow login = new loginWindow();
+        }
     }//GEN-LAST:event_closeWindowMouseClicked
 
     private void minimizeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeMouseClicked
@@ -145,6 +156,11 @@ public class adminWindow extends javax.swing.JFrame {
         AnimationClass logoutL = new AnimationClass();
         logoutL.jLabelXLeft(10,-185,10,5,logout);
     }//GEN-LAST:event_menuMouseClicked
+
+    private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
+        this.setVisible(false);
+        loginWindow window = new loginWindow();
+    }//GEN-LAST:event_logoutMouseClicked
 
     /**
      * @param args the command line arguments

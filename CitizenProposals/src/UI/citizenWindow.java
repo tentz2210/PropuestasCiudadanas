@@ -10,6 +10,7 @@ package UI;
  * @author mapac
  */
 import AppPackage.AnimationClass;
+import javax.swing.JOptionPane;
 public class citizenWindow extends javax.swing.JFrame {
 
     /**
@@ -110,6 +111,11 @@ public class citizenWindow extends javax.swing.JFrame {
         logout.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         logout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/logout.png"))); // NOI18N
         logout.setText("Cerrar sesión");
+        logout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutMouseClicked(evt);
+            }
+        });
         jPanel1.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(-140, 220, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 730));
@@ -122,8 +128,13 @@ public class citizenWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_minimizeMouseClicked
 
     private void closeWindowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeWindowMouseClicked
-        this.setVisible(false);
-        loginWindow login = new loginWindow();
+        int dialog = JOptionPane.YES_NO_OPTION;
+        int result = JOptionPane.showConfirmDialog(this,"¿Seguro que desea salir?","Cerrar sesión",dialog);
+        if (result == 0)
+        {
+            this.setVisible(false);
+            loginWindow login = new loginWindow();
+        }
     }//GEN-LAST:event_closeWindowMouseClicked
 
     private void menuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMouseClicked
@@ -154,6 +165,11 @@ public class citizenWindow extends javax.swing.JFrame {
         this.setVisible(false);
         editProfile edit = new editProfile();
     }//GEN-LAST:event_settingMouseClicked
+
+    private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
+        this.setVisible(false);
+        loginWindow window = new loginWindow();
+    }//GEN-LAST:event_logoutMouseClicked
 
     /**
      * @param args the command line arguments
