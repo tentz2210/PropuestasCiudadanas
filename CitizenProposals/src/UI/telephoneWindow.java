@@ -6,6 +6,13 @@
 
 package UI;
 
+import Connect.ConnectDB;
+import Utils.Global;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author mapac
@@ -78,6 +85,11 @@ public class telephoneWindow extends javax.swing.JFrame {
         addButton.setForeground(new java.awt.Color(255, 255, 255));
         addButton.setText("Agregar");
         addButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addButtonMouseClicked(evt);
+            }
+        });
         jPanel1.add(addButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, 90, -1));
 
         eliminateTitle.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
@@ -96,6 +108,11 @@ public class telephoneWindow extends javax.swing.JFrame {
         eliminateButton.setForeground(new java.awt.Color(255, 255, 255));
         eliminateButton.setText("Eliminar");
         eliminateButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        eliminateButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                eliminateButtonMouseClicked(evt);
+            }
+        });
         jPanel1.add(eliminateButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 190, 90, -1));
 
         modifyTitle.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
@@ -121,6 +138,11 @@ public class telephoneWindow extends javax.swing.JFrame {
         modifyButton.setForeground(new java.awt.Color(255, 255, 255));
         modifyButton.setText("Modificar");
         modifyButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        modifyButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                modifyButtonMouseClicked(evt);
+            }
+        });
         jPanel1.add(modifyButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 340, -1, -1));
 
         acceptButton.setBackground(new java.awt.Color(16, 123, 16));
@@ -150,6 +172,50 @@ public class telephoneWindow extends javax.swing.JFrame {
     private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
         this.setVisible(false);
     }//GEN-LAST:event_cancelButtonMouseClicked
+
+    private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
+        if (Global.isNumeric(addNewPhoneField.getText()) && !"".equals(addNewPhoneField.getText())){
+            try {
+                int newPhone = Integer.valueOf(addNewPhoneField.getText());
+                ConnectDB.insertPhoneNumber(newPhone,Global.id_person);
+                if (Global.insert_result == 1) JOptionPane.showMessageDialog(this,"Se ha insertado el nuevo número telefónico","Inserción exitosa",JOptionPane.INFORMATION_MESSAGE);
+                else JOptionPane.showMessageDialog(this,"Error al agregar el nuevo número de teléfono","Error de inserción",JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                Logger.getLogger(telephoneWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else JOptionPane.showMessageDialog(this,"Error al agregar el nuevo número de teléfono","Error de inserción",JOptionPane.ERROR_MESSAGE);
+    }//GEN-LAST:event_addButtonMouseClicked
+
+    private void eliminateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eliminateButtonMouseClicked
+        if (Global.isNumeric(eliminateField.getText()) && !"".equals(eliminateField.getText())){
+            try {
+                int phoneNumb = Integer.valueOf(eliminateField.getText());
+                ConnectDB.deletePhoneNumber(phoneNumb,Global.id_person);
+                if (Global.delete_result==1) JOptionPane.showMessageDialog(this,"Se ha eliminado el número telefónico","Borrado exitoso",JOptionPane.INFORMATION_MESSAGE);
+                else JOptionPane.showMessageDialog(this,"Error al eliminar el número telefónico","Error de borrado",JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                Logger.getLogger(telephoneWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else JOptionPane.showMessageDialog(this,"Error al eliminar el número telefónico","Error de borrado",JOptionPane.ERROR_MESSAGE);
+    }//GEN-LAST:event_eliminateButtonMouseClicked
+
+    private void modifyButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyButtonMouseClicked
+        if (!"".equals(oldPhoneField.getText()) && Global.isNumeric(oldPhoneField.getText()) && !"".equals(actualPhoneField.getText()) && Global.isNumeric(actualPhoneField.getText()))
+        {
+            try {
+                int oldPhone = Integer.valueOf(oldPhoneField.getText());
+                int newPhone = Integer.valueOf(actualPhoneField.getText());
+                ConnectDB.modifyPhoneNumber(Global.id_person,oldPhone,newPhone);
+                if (Global.update_result == 1) JOptionPane.showMessageDialog(this,"Número telefónico modificado correctamente","Modificación exitosa",JOptionPane.INFORMATION_MESSAGE);
+                else JOptionPane.showMessageDialog(this,"Error al modificar el número telefónico","Error de modificación",JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                Logger.getLogger(telephoneWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else JOptionPane.showMessageDialog(this,"Error al modificar el número telefónico","Error de modificación",JOptionPane.ERROR_MESSAGE);
+    }//GEN-LAST:event_modifyButtonMouseClicked
 
     /**
      * @param args the command line arguments

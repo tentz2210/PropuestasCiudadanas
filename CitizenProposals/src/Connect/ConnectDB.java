@@ -385,4 +385,44 @@ public class ConnectDB implements IConstants
         
         Global.update_result = stmt.getInt(4);
     }
+    
+    public static void insertPhoneNumber(int newPhoneNumber, int pIdUser) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_telephone.insertTelephone(?,?,?)}");
+        stmt.setInt(1,newPhoneNumber);
+        stmt.setInt(2,pIdUser);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        
+        stmt.execute();
+        
+        Global.insert_result = stmt.getInt(3);
+    }
+    
+    public static void deletePhoneNumber(int phoneNumb, int pIdUser) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_telephone.deleteTelephone(?,?,?)}");
+        stmt.setInt(1,phoneNumb);
+        stmt.setInt(2,pIdUser);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        
+        stmt.execute();
+        
+        Global.delete_result = stmt.getInt(3);
+    }
+    
+    public static void modifyPhoneNumber(int pIdNumber, int oldNum, int newNum) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_telephone.updateTelephoneNumber(?,?,?,?)}");
+        stmt.setInt(1,pIdNumber);
+        stmt.setInt(2,oldNum);
+        stmt.setInt(3,newNum);
+        stmt.registerOutParameter(4,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.update_result = stmt.getInt(4);
+    }
 }
+

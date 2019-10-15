@@ -5,6 +5,13 @@
  */
 package UI;
 
+import Connect.ConnectDB;
+import Utils.Global;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author mapac
@@ -57,6 +64,11 @@ public class idNumberWindow extends javax.swing.JFrame {
         acceptButton.setForeground(new java.awt.Color(255, 255, 255));
         acceptButton.setText("Aceptar");
         acceptButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        acceptButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                acceptButtonMouseClicked(evt);
+            }
+        });
         jPanel1.add(acceptButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 110, 90, -1));
 
         cancelButton.setBackground(new java.awt.Color(222, 4, 11));
@@ -88,6 +100,22 @@ public class idNumberWindow extends javax.swing.JFrame {
     private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
         this.setVisible(false);
     }//GEN-LAST:event_cancelButtonMouseClicked
+
+    private void acceptButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_acceptButtonMouseClicked
+        if(Global.isNumeric(idNumberField.getText()) && !"".equals(idNumberField.getText())){
+            try {
+                int new_id = Integer.valueOf(idNumberField.getText());
+                ConnectDB.updatePersonId(Global.id_person,new_id);
+                if (Global.update_result == 1) JOptionPane.showMessageDialog(this,"Cédula o pasaporte modificado con éxito","Modificación exitosa",JOptionPane.INFORMATION_MESSAGE);
+                else JOptionPane.showMessageDialog(this,"No es posible modificar la cédula o pasaporte.","Error de modificación.",JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                Logger.getLogger(idNumberWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else JOptionPane.showMessageDialog(this,"No es posible modificar la cédula o pasaporte.","Error de modificación.",JOptionPane.ERROR_MESSAGE);
+        idNumberField.setText("");
+        this.setVisible(false);
+    }//GEN-LAST:event_acceptButtonMouseClicked
 
     /**
      * @param args the command line arguments

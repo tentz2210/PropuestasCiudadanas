@@ -118,7 +118,8 @@ public class nameWindow extends javax.swing.JFrame {
        if(!"".equals(name) && !Global.hasNumbers(name)){
            try {
                ConnectDB.updatePersonName(Global.id_person,name);
-               JOptionPane.showMessageDialog(this, "El nombre ha sido actualizado","Actualización exitosa", JOptionPane.INFORMATION_MESSAGE);
+               if (Global.update_result==1) JOptionPane.showMessageDialog(this, "El nombre ha sido actualizado","Actualización exitosa", JOptionPane.INFORMATION_MESSAGE);
+               else JOptionPane.showMessageDialog(this, "No es posible modificar el nombre","Error de cambio", JOptionPane.ERROR_MESSAGE);
            } catch (SQLException ex) {
                Logger.getLogger(nameWindow.class.getName()).log(Level.SEVERE, null, ex);
            }
@@ -127,7 +128,8 @@ public class nameWindow extends javax.swing.JFrame {
        if (!"".equals(firstLName) && !Global.hasNumbers(firstLName)){
            try {
                ConnectDB.updatePersonFirstLastName(Global.id_person,firstLName);
-               JOptionPane.showMessageDialog(this, "El primer apellido ha sido actualizado","Actualización exitosa", JOptionPane.INFORMATION_MESSAGE);
+               if (Global.update_result==1) JOptionPane.showMessageDialog(this, "El primer apellido ha sido actualizado","Actualización exitosa", JOptionPane.INFORMATION_MESSAGE);
+               else JOptionPane.showMessageDialog(this, "No es posible modificar el primer apellido","Error de cambio", JOptionPane.ERROR_MESSAGE);
            } catch (SQLException ex) {
                Logger.getLogger(nameWindow.class.getName()).log(Level.SEVERE, null, ex);
            }
@@ -136,7 +138,8 @@ public class nameWindow extends javax.swing.JFrame {
        if (!"".equals(secLName) && !Global.hasNumbers(secLName)){
            try {
                ConnectDB.updatePersonSecLastName(Global.id_person,secLName);
-               JOptionPane.showMessageDialog(this, "El segundo apellido ha sido actualizado","Actualización exitosa", JOptionPane.INFORMATION_MESSAGE);
+               if (Global.update_result==1) JOptionPane.showMessageDialog(this, "El segundo apellido ha sido actualizado","Actualización exitosa", JOptionPane.INFORMATION_MESSAGE);
+               else JOptionPane.showMessageDialog(this, "No es posible modificar el segundo apellido","Error de cambio", JOptionPane.ERROR_MESSAGE);
            } catch (SQLException ex) {
                Logger.getLogger(nameWindow.class.getName()).log(Level.SEVERE, null, ex);
            }
