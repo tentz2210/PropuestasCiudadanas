@@ -8,10 +8,16 @@ package UI;
 import Connect.ConnectDB;
 import Utils.Global;
 import com.placeholder.PlaceHolder;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.filechooser.FileNameExtensionFilter;
 /**
  *
  * @author lin
@@ -22,13 +28,18 @@ public class registerWindow extends javax.swing.JFrame {
      * Creates new form registerWindow
      */
     public registerWindow() throws SQLException {
-        initComponents();
-        fillCountriesComboBox();
-        fillNationalitiesComboBox();
-        fillUserTypeComboBox();
-        this.setLocationRelativeTo(null);
-        this.holders();
-        this.setVisible(true);
+        try {
+            initComponents();
+            fillCountriesComboBox();
+            fillNationalitiesComboBox();
+            fillUserTypeComboBox();
+            this.setLocationRelativeTo(null);
+            this.holders();
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            this.setVisible(true);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(registerWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void holders(){
@@ -41,7 +52,7 @@ public class registerWindow extends javax.swing.JFrame {
         holder = new PlaceHolder(emailField,"Correo electrónico");
         holder = new PlaceHolder(userNameField,"Nombre de usuario");
         holder = new PlaceHolder(passwordField,"Contraseña");
-        holder = new PlaceHolder(cPasswordField,"Confirmar contraseña");
+        holder = new PlaceHolder(cPasswordField,"Contraseña");
     }
     
 
@@ -75,9 +86,7 @@ public class registerWindow extends javax.swing.JFrame {
         dayComboBox = new javax.swing.JComboBox<>();
         Day = new javax.swing.JLabel();
         dateOfBirthLabel = new javax.swing.JLabel();
-        passwordField = new javax.swing.JTextField();
         userNameField = new javax.swing.JTextField();
-        cPasswordField = new javax.swing.JTextField();
         userType = new javax.swing.JLabel();
         userTypeComboBox = new javax.swing.JComboBox<>();
         nationality = new javax.swing.JLabel();
@@ -95,6 +104,8 @@ public class registerWindow extends javax.swing.JFrame {
         photoButton = new javax.swing.JButton();
         register = new javax.swing.JButton();
         photoLabel = new javax.swing.JLabel();
+        cPasswordField = new javax.swing.JPasswordField();
+        passwordField = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -203,7 +214,6 @@ public class registerWindow extends javax.swing.JFrame {
 
         dayComboBox.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         dayComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
-        dayComboBox.setBorder(null);
         dayComboBox.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         dayComboBox.setMinimumSize(new java.awt.Dimension(38, 21));
         dateOfBirth.add(dayComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 6, -1, -1));
@@ -219,14 +229,8 @@ public class registerWindow extends javax.swing.JFrame {
         dateOfBirthLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jPanel1.add(dateOfBirthLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 200, 158, 29));
 
-        passwordField.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jPanel1.add(passwordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 320, 173, 35));
-
         userNameField.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jPanel1.add(userNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 280, 173, 35));
-
-        cPasswordField.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jPanel1.add(cPasswordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 320, 173, 35));
 
         userType.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         userType.setText("Tipo de usuario");
@@ -272,6 +276,7 @@ public class registerWindow extends javax.swing.JFrame {
         province.setToolTipText("");
         jPanel1.add(province, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 460, -1, -1));
 
+        provinceComboBox.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         provinceComboBox.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         provinceComboBox.setPreferredSize(new java.awt.Dimension(103, 22));
         provinceComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -322,6 +327,11 @@ public class registerWindow extends javax.swing.JFrame {
         photoButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         photoButton.setForeground(new java.awt.Color(255, 255, 255));
         photoButton.setText("Foto");
+        photoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                photoButtonActionPerformed(evt);
+            }
+        });
         jPanel1.add(photoButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 540, 110, -1));
 
         register.setBackground(new java.awt.Color(16, 123, 16));
@@ -330,8 +340,10 @@ public class registerWindow extends javax.swing.JFrame {
         register.setText("Registrarse");
         jPanel1.add(register, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 580, 110, -1));
 
-        photoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/user01.png"))); // NOI18N
-        jPanel1.add(photoLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 410, 120, 120));
+        photoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/camera.png"))); // NOI18N
+        jPanel1.add(photoLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 390, 128, 128));
+        jPanel1.add(cPasswordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 320, 173, 30));
+        jPanel1.add(passwordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 320, 173, 30));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 620));
 
@@ -396,6 +408,18 @@ public class registerWindow extends javax.swing.JFrame {
             Logger.getLogger(registerWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_districtComboBoxActionPerformed
+
+    private void photoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_photoButtonActionPerformed
+        JFileChooser photoChooser = new JFileChooser("C:\\Users\\lin\\OneDrive - Estudiantes ITCR\\TEC\\2019 - II\\BD I\\Proyectos\\P1\\Imágenes Usuarios");
+        photoChooser.setDialogTitle("Seleccionar foto de perfil");
+        photoChooser.setFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "png"));
+        if (photoChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+        {
+            System.out.println(photoChooser.getSelectedFile().toString());
+            
+            photoLabel.setIcon(new ImageIcon(photoChooser.getSelectedFile().toString())); 
+        }
+    }//GEN-LAST:event_photoButtonActionPerformed
 
     private void fillNationalitiesComboBox() throws SQLException
     {
@@ -468,7 +492,7 @@ public class registerWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Day;
     private javax.swing.JLabel appName;
-    private javax.swing.JTextField cPasswordField;
+    private javax.swing.JPasswordField cPasswordField;
     private javax.swing.JLabel canton;
     private javax.swing.JComboBox<String> cantonComboBox;
     private javax.swing.JLabel closeWndow;
@@ -494,7 +518,7 @@ public class registerWindow extends javax.swing.JFrame {
     private javax.swing.JLabel nationality;
     private javax.swing.JComboBox<String> nationalityComboBox;
     private javax.swing.JPanel panelMinimizeClose;
-    private javax.swing.JTextField passwordField;
+    private javax.swing.JPasswordField passwordField;
     private javax.swing.JTextField phoneField;
     private javax.swing.JButton photoButton;
     private javax.swing.JLabel photoLabel;
