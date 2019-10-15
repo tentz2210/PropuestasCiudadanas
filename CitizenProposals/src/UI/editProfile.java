@@ -121,6 +121,11 @@ public class editProfile extends javax.swing.JFrame {
         emailButton.setBackground(new java.awt.Color(255, 255, 255));
         emailButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/email.png"))); // NOI18N
         emailButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        emailButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                emailButtonMouseClicked(evt);
+            }
+        });
         jPanel2.add(emailButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 80, 130, 130));
 
         nameLabel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -222,6 +227,10 @@ public class editProfile extends javax.swing.JFrame {
     private void phoneButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_phoneButtonMouseClicked
         telephoneWindow telephone = new telephoneWindow();
     }//GEN-LAST:event_phoneButtonMouseClicked
+
+    private void emailButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_emailButtonMouseClicked
+        emailWindow email = new emailWindow();
+    }//GEN-LAST:event_emailButtonMouseClicked
 
     /**
      * @param args the command line arguments

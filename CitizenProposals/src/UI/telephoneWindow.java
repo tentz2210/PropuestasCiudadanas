@@ -56,7 +56,7 @@ public class telephoneWindow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(456, 425));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(445, 435));
+        setPreferredSize(new java.awt.Dimension(456, 434));
         setResizable(false);
         setSize(new java.awt.Dimension(445, 550));
 
