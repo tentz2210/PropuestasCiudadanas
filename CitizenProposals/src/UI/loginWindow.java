@@ -285,8 +285,12 @@ public class loginWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
-        this.setVisible(false);
-        registerWindow register = new registerWindow();
+        try {
+            this.setVisible(false);
+            registerWindow register = new registerWindow();
+        } catch (SQLException ex) {
+            Logger.getLogger(loginWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_registerButtonActionPerformed
 
     /**

@@ -5,7 +5,12 @@
  */
 package UI;
 
+import Connect.ConnectDB;
+import Utils.Global;
 import com.placeholder.PlaceHolder;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 /**
  *
@@ -16,8 +21,11 @@ public class registerWindow extends javax.swing.JFrame {
     /**
      * Creates new form registerWindow
      */
-    public registerWindow() {
+    public registerWindow() throws SQLException {
         initComponents();
+        fillCountriesComboBox();
+        fillNationalitiesComboBox();
+        fillUserTypeComboBox();
         this.setLocationRelativeTo(null);
         this.holders();
         this.setVisible(true);
@@ -161,6 +169,7 @@ public class registerWindow extends javax.swing.JFrame {
         jPanel1.add(identificationField, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 120, 173, 35));
 
         nameField.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        nameField.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         nameField.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         jPanel1.add(nameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 80, 173, 35));
 
@@ -197,11 +206,6 @@ public class registerWindow extends javax.swing.JFrame {
         dayComboBox.setBorder(null);
         dayComboBox.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         dayComboBox.setMinimumSize(new java.awt.Dimension(38, 21));
-        dayComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dayComboBoxActionPerformed(evt);
-            }
-        });
         dateOfBirth.add(dayComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 6, -1, -1));
 
         Day.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -212,25 +216,16 @@ public class registerWindow extends javax.swing.JFrame {
 
         dateOfBirthLabel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         dateOfBirthLabel.setText("Fecha de nacimiento");
+        dateOfBirthLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jPanel1.add(dateOfBirthLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 200, 158, 29));
 
         passwordField.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jPanel1.add(passwordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 320, 173, 35));
 
         userNameField.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        userNameField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                userNameFieldActionPerformed(evt);
-            }
-        });
         jPanel1.add(userNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 280, 173, 35));
 
         cPasswordField.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        cPasswordField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cPasswordFieldActionPerformed(evt);
-            }
-        });
         jPanel1.add(cPasswordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 320, 173, 35));
 
         userType.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -238,8 +233,9 @@ public class registerWindow extends javax.swing.JFrame {
         jPanel1.add(userType, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 370, -1, -1));
 
         userTypeComboBox.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        userTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ciudadano", "Administrador" }));
         userTypeComboBox.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        userTypeComboBox.setMinimumSize(new java.awt.Dimension(103, 21));
+        userTypeComboBox.setPreferredSize(new java.awt.Dimension(103, 21));
         userTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 userTypeComboBoxActionPerformed(evt);
@@ -253,6 +249,8 @@ public class registerWindow extends javax.swing.JFrame {
 
         nationalityComboBox.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         nationalityComboBox.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        nationalityComboBox.setMinimumSize(new java.awt.Dimension(103, 21));
+        nationalityComboBox.setPreferredSize(new java.awt.Dimension(103, 21));
         jPanel1.add(nationalityComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 397, -1, -1));
 
         country.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -261,6 +259,12 @@ public class registerWindow extends javax.swing.JFrame {
 
         countryComboBox.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         countryComboBox.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        countryComboBox.setPreferredSize(new java.awt.Dimension(103, 21));
+        countryComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                countryComboBoxActionPerformed(evt);
+            }
+        });
         jPanel1.add(countryComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 427, -1, -1));
 
         province.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -269,6 +273,12 @@ public class registerWindow extends javax.swing.JFrame {
         jPanel1.add(province, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 460, -1, -1));
 
         provinceComboBox.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        provinceComboBox.setPreferredSize(new java.awt.Dimension(103, 22));
+        provinceComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                provinceComboBoxActionPerformed(evt);
+            }
+        });
         jPanel1.add(provinceComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 457, -1, -1));
 
         canton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -277,6 +287,12 @@ public class registerWindow extends javax.swing.JFrame {
 
         cantonComboBox.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         cantonComboBox.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        cantonComboBox.setPreferredSize(new java.awt.Dimension(103, 21));
+        cantonComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cantonComboBoxActionPerformed(evt);
+            }
+        });
         jPanel1.add(cantonComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 487, -1, -1));
 
         district.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -285,6 +301,12 @@ public class registerWindow extends javax.swing.JFrame {
 
         districtComboBox.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         districtComboBox.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        districtComboBox.setPreferredSize(new java.awt.Dimension(103, 21));
+        districtComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                districtComboBoxActionPerformed(evt);
+            }
+        });
         jPanel1.add(districtComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 517, -1, -1));
 
         community.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -293,6 +315,7 @@ public class registerWindow extends javax.swing.JFrame {
 
         communityComboBox.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         communityComboBox.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        communityComboBox.setPreferredSize(new java.awt.Dimension(103, 21));
         jPanel1.add(communityComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 547, -1, -1));
 
         photoButton.setBackground(new java.awt.Color(222, 4, 11));
@@ -320,26 +343,18 @@ public class registerWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_minizarMouseClicked
 
     private void closeWndowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeWndowMouseClicked
-        System.exit(0);
+        this.setVisible(false);
+        loginWindow window = new loginWindow();
     }//GEN-LAST:event_closeWndowMouseClicked
 
-    private void dayComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dayComboBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_dayComboBoxActionPerformed
-
-    private void cPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cPasswordFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cPasswordFieldActionPerformed
-
-    private void userNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userNameFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_userNameFieldActionPerformed
-
     private void userTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userTypeComboBoxActionPerformed
-        if (userTypeComboBox.getSelectedItem() == "Administrador")
-        {
-            int code = Integer.valueOf(JOptionPane.showInputDialog(this,"Digite el código para registrar administrador"));
-            if (code != 151622)
+        System.out.println(userTypeComboBox.getSelectedItem());
+        
+        if ("Administrador".equals(Global.userTypesInfo.get(userTypeComboBox.getSelectedIndex()).getName()))
+        {   
+            String code = JOptionPane.showInputDialog(this,"Digite el código para registrar administrador","Código de acceso",JOptionPane.QUESTION_MESSAGE);
+            if (code == null) userTypeComboBox.setSelectedIndex(0);
+            else if (!"151622".equals(code))
             {
                 JOptionPane.showMessageDialog(this,"Código incorrecto.","Error",JOptionPane.INFORMATION_MESSAGE);
                 userTypeComboBox.setSelectedIndex(0);
@@ -347,39 +362,107 @@ public class registerWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_userTypeComboBoxActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+    private void countryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_countryComboBoxActionPerformed
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(registerWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(registerWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(registerWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(registerWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            fillProvincesComboBox(Global.countriesInfo.get(countryComboBox.getSelectedIndex()).getId());
+        } catch (SQLException ex) {
+            Logger.getLogger(registerWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //</editor-fold>
+    }//GEN-LAST:event_countryComboBoxActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new registerWindow().setVisible(true);
-            }
-        });
+    private void provinceComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_provinceComboBoxActionPerformed
+        try {
+            if (provinceComboBox.getSelectedItem() != null)
+                fillCantonsComboBox(Global.provincesInfo.get(provinceComboBox.getSelectedIndex()).getId());
+        } catch (SQLException ex) {
+            Logger.getLogger(registerWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_provinceComboBoxActionPerformed
+
+    private void cantonComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cantonComboBoxActionPerformed
+        try {
+            if (cantonComboBox.getSelectedItem() != null)
+                fillDistrictsComboBox(Global.cantonsInfo.get(cantonComboBox.getSelectedIndex()).getId());
+        } catch (SQLException ex) {
+            Logger.getLogger(registerWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_cantonComboBoxActionPerformed
+
+    private void districtComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_districtComboBoxActionPerformed
+        try {
+            if (districtComboBox.getSelectedItem() != null)
+                fillCommunitiesComboBox(Global.districtsInfo.get(districtComboBox.getSelectedIndex()).getId());
+        } catch (SQLException ex) {
+            Logger.getLogger(registerWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_districtComboBoxActionPerformed
+
+    private void fillNationalitiesComboBox() throws SQLException
+    {
+        ConnectDB.getNationalities();
+        for (int nationalityNumber = 0; nationalityNumber < Global.nationalitiesInfo.size(); nationalityNumber++)
+        {
+            nationalityComboBox.addItem(Global.nationalitiesInfo.get(nationalityNumber).getName());
+        }
+    }
+    
+    private void fillCountriesComboBox() throws SQLException
+    {
+        ConnectDB.getCountries();
+        for (int countryNumber = 0; countryNumber < Global.countriesInfo.size(); countryNumber++)
+        {
+            countryComboBox.addItem(Global.countriesInfo.get(countryNumber).getName());
+        }
+    }
+    
+    private void fillProvincesComboBox(int id_country) throws SQLException
+    {
+        ConnectDB.getProvincesFromCountry(id_country);
+        provinceComboBox.removeAllItems();
+        for (int provinceNumber = 0; provinceNumber < Global.provincesInfo.size(); provinceNumber++)
+        {
+            provinceComboBox.addItem(Global.provincesInfo.get(provinceNumber).getName());
+        }
+    }
+    
+    private void fillCantonsComboBox(int id_province) throws SQLException
+    {
+        ConnectDB.getCantonsFromProvince(id_province);
+        cantonComboBox.removeAllItems();
+        for (int cantonNumber = 0; cantonNumber < Global.cantonsInfo.size(); cantonNumber++)
+        {
+            cantonComboBox.addItem(Global.cantonsInfo.get(cantonNumber).getName());
+        }
+    }
+    
+    private void fillDistrictsComboBox(int id_canton) throws SQLException
+    {
+        ConnectDB.getDistrictsFromCanton(id_canton);
+        districtComboBox.removeAllItems();
+        for (int districtNumber = 0; districtNumber < Global.districtsInfo.size(); districtNumber++)
+        {
+            districtComboBox.addItem(Global.districtsInfo.get(districtNumber).getName());
+        }
+    }
+    
+    private void fillCommunitiesComboBox(int id_district) throws SQLException
+    {
+        ConnectDB.getCommunitiesFromDistrict(id_district);
+        communityComboBox.removeAllItems();
+        for (int commNumber = 0; commNumber < Global.communitiesInfo.size(); commNumber++)
+        {
+            communityComboBox.addItem(Global.communitiesInfo.get(commNumber).getName());
+        }
+    }
+    
+    private void fillUserTypeComboBox() throws SQLException
+    {
+        ConnectDB.getUserTypes();
+        userTypeComboBox.removeAllItems();
+        for (int uTypeNumber = 0; uTypeNumber < Global.userTypesInfo.size(); uTypeNumber++)
+        {
+            userTypeComboBox.addItem(Global.userTypesInfo.get(uTypeNumber).getName());
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

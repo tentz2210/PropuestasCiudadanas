@@ -5,6 +5,7 @@
  */
 package Connect;
 
+import Utils.CatalogueContainer;
 import Utils.Global;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -70,9 +71,11 @@ public class ConnectDB implements IConstants
         stmt.executeQuery();
         ResultSet r = (ResultSet) stmt.getObject(1);
         
+        Global.countriesInfo.clear();
         while (r.next())
         {
-            System.out.println(String.valueOf(r.getInt("id_country"))+" "+r.getString("country_name"));
+            CatalogueContainer cc = new CatalogueContainer(r.getInt("id_country"),r.getString("country_name"));
+            Global.countriesInfo.add(cc);
         }
         
     }
@@ -86,9 +89,11 @@ public class ConnectDB implements IConstants
         stmt.executeQuery();
         ResultSet r = (ResultSet) stmt.getObject(2);
         
+        Global.provincesInfo.clear();
         while (r.next())
         {
-            System.out.println(String.valueOf(r.getInt("id_province"))+" "+r.getString("province_name"));
+            CatalogueContainer cc = new CatalogueContainer(r.getInt("id_province"),r.getString("province_name"));
+            Global.provincesInfo.add(cc);
         }
     }
     
@@ -101,24 +106,28 @@ public class ConnectDB implements IConstants
         stmt.executeQuery();
         ResultSet r = (ResultSet) stmt.getObject(2);
         
+        Global.cantonsInfo.clear();
         while (r.next())
         {
-            System.out.println(String.valueOf(r.getInt("id_canton"))+" "+r.getString("canton_name"));
+            CatalogueContainer cc = new CatalogueContainer(r.getInt("id_canton"),r.getString("canton_name"));
+            Global.cantonsInfo.add(cc);
         }
     }
     
     public static void getDistrictsFromCanton(int pId_canton) throws SQLException
     {
         Connection con = DriverManager.getConnection(host, uName, uPass);
-        CallableStatement stmt = con.prepareCall("{call pkg_district.getDistricsFromCanton(?,?)}");
+        CallableStatement stmt = con.prepareCall("{call pkg_district.getDistrictsFromCanton(?,?)}");
         stmt.setInt(1,pId_canton);
         stmt.registerOutParameter(2, OracleTypes.CURSOR);
         stmt.executeQuery();
         ResultSet r = (ResultSet) stmt.getObject(2);
         
+        Global.districtsInfo.clear();
         while (r.next())
         {
-            System.out.println(String.valueOf(r.getInt("id_district"))+" "+r.getString("district_name"));
+            CatalogueContainer cc = new CatalogueContainer(r.getInt("id_district"),r.getString("district_name"));
+            Global.districtsInfo.add(cc);
         }
     }
     
@@ -131,9 +140,11 @@ public class ConnectDB implements IConstants
         stmt.executeQuery();
         ResultSet r = (ResultSet) stmt.getObject(2);
         
+        Global.communitiesInfo.clear();
         while (r.next())
         {
-            System.out.println(String.valueOf(r.getInt("id_community"))+" "+r.getString("community_name"));
+            CatalogueContainer cc = new CatalogueContainer(r.getInt("id_community"),r.getString("community_name"));
+            Global.communitiesInfo.add(cc);
         }
     }
     
@@ -145,9 +156,27 @@ public class ConnectDB implements IConstants
         stmt.executeQuery();
         ResultSet r = (ResultSet) stmt.getObject(1);
         
+        Global.nationalitiesInfo.clear();
         while (r.next())
         {
-            System.out.println(String.valueOf(r.getInt("id_nationality"))+" "+r.getString("nationality_name"));
+            CatalogueContainer cc = new CatalogueContainer(r.getInt("id_nationality"),r.getString("nationality_name"));
+            Global.nationalitiesInfo.add(cc);
+        }
+    }
+    
+    public static void getUserTypes () throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_user_type.getUserTypes(?)}");
+        stmt.registerOutParameter(1, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(1);
+        
+        Global.userTypesInfo.clear();
+        while (r.next())
+        {
+            CatalogueContainer cc = new CatalogueContainer(r.getInt("id_user_type"),r.getString("user_type_name"));
+            Global.userTypesInfo.add(cc);
         }
     }
 }
