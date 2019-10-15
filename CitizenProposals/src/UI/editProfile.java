@@ -86,6 +86,11 @@ public class editProfile extends javax.swing.JFrame {
         dateOfBithButton.setBackground(new java.awt.Color(255, 255, 255));
         dateOfBithButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/dateofbirth.png"))); // NOI18N
         dateOfBithButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        dateOfBithButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dateOfBithButtonMouseClicked(evt);
+            }
+        });
         jPanel2.add(dateOfBithButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 80, 130, 130));
 
         passwordButton.setBackground(new java.awt.Color(255, 255, 255));
@@ -231,6 +236,10 @@ public class editProfile extends javax.swing.JFrame {
     private void emailButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_emailButtonMouseClicked
         emailWindow email = new emailWindow();
     }//GEN-LAST:event_emailButtonMouseClicked
+
+    private void dateOfBithButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dateOfBithButtonMouseClicked
+        dateOfBirthWindow dateOfBirth = new dateOfBirthWindow();
+    }//GEN-LAST:event_dateOfBithButtonMouseClicked
 
     /**
      * @param args the command line arguments
