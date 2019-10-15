@@ -14,8 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import oracle.jdbc.internal.OracleTypes;
 import Utils.IConstants;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /**
@@ -184,4 +182,125 @@ public class ConnectDB implements IConstants
             Global.userTypesInfo.add(cc);
         }
     }
+    
+    public static void getIdCommunity(int pid_user) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{? = call pkg_user.getPersonsIdCommunity(?)}");
+        stmt.registerOutParameter(1, OracleTypes.INTEGER);
+        stmt.setInt(2, pid_user);
+        stmt.executeUpdate();
+        Global.user_id_community = stmt.getInt(1);
+    }
+    
+    public static void getPersonIdNumber(int p_id_user) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{? = call pkg_person.getPersonIdNumber(?)}");
+        stmt.registerOutParameter(1,OracleTypes.INTEGER);
+        stmt.setInt(2,p_id_user);
+        stmt.execute();
+        Global.id_person = stmt.getInt(1);
+    }
+    
+    public static void getProposals(int pid_number, int p_category_filter, int p_vote_filter, String p_after_date, String p_before_date) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_proposal.getProposals(?,?,?,?,?,?)}");
+        stmt.setInt(1,pid_number);
+        stmt.setInt(2,p_category_filter);
+        stmt.setInt(3, p_vote_filter);
+        stmt.setString(4,p_after_date);
+        stmt.setString(5,p_before_date);
+        stmt.registerOutParameter(6,OracleTypes.CURSOR); //cursor proposals
+        
+        stmt.executeQuery();
+        
+        //recorrer cursor
+    }
+    
+    public static void getProposalsByUser(int pid_number) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_proposal.getProposalsByUser(?,?,?)}");
+        stmt.setInt(1,pid_number);
+        stmt.registerOutParameter(2,OracleTypes.CURSOR); //cursor proposals
+        stmt.registerOutParameter(3,OracleTypes.INTEGER); //total proposals
+        stmt.executeQuery();
+        
+        //recorrer cursor
+    }
+    
+    public static void updatePersonName(int p_id_number,String p_new_name) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_person.updatePersonFirstName(?,?,?)}");
+        stmt.setInt(1,p_id_number);
+        stmt.setString(2,p_new_name);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.update_result = stmt.getInt(3);
+    }
+    
+    public static void updatePersonFirstLastName(int p_id_number,String p_new_f_last_name) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_person.updatePersonFirstLastName(?,?,?)}");
+        stmt.setInt(1,p_id_number);
+        stmt.setString(2,p_new_f_last_name);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.update_result = stmt.getInt(3);
+    }
+    
+    public static void updatePersonSecLastName(int p_id_number,String p_new_sec_last_name) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_person.updatePersonSecondLastName(?,?,?)}");
+        stmt.setInt(1,p_id_number);
+        stmt.setString(2,p_new_sec_last_name);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.update_result = stmt.getInt(3);
+    }
+    
+    public static void updatePersonId(int p_id_number,int p_new_id)
+    {
+        
+    }
+    
+    public static void updatePersonBirthDate(int p_id_number,String p_new_birth_date)
+    {
+        
+    }
+    
+    public static void updatePersonUserType(int p_id_number,int p_new_userTypeId)
+    {
+        
+    }
+    
+    public static void updatePersonNationality(int p_id_number,String p_new_nationality)
+    {
+        
+    }
+    
+    public static void updatePersonLocation(int p_id_number,int p_new_idCommunity)
+    {
+        
+    }
+    
+    public static void updatePersonProfilePicture(int p_id_number,String p_new_photo)
+    {
+        
+    }
+    
+    public static void updatePersonPassword(int p_id_number,String p_new_password)
+    {
+        
+    }
+    
+    //telefono y email
 }

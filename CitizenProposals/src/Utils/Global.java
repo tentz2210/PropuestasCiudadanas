@@ -17,6 +17,9 @@ public class Global {
     public static int id_user = -1;
     public static int login_result = -1;
     public static int insert_result = -1;
+    public static int update_result = -1;
+    public static int user_id_community = -1;
+    public static int id_person = -1;
     public static List<CatalogueContainer> countriesInfo = new ArrayList<>();
     public static List<CatalogueContainer> nationalitiesInfo = new ArrayList<>();
     public static List<CatalogueContainer> provincesInfo = new ArrayList<>();

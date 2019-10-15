@@ -254,7 +254,6 @@ public class loginWindow extends javax.swing.JFrame {
 
     private void closeWindowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeWindowMouseClicked
         System.exit(0);
-        //loginButton
     }//GEN-LAST:event_closeWindowMouseClicked
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
@@ -263,14 +262,17 @@ public class loginWindow extends javax.swing.JFrame {
             ConnectDB.checkLogin(userNameField.getText(),encryptedPassword);
             if (Global.login_result == 1)
             {
+                this.setVisible(false);
+                ConnectDB.getIdCommunity(Global.id_user);
+                ConnectDB.getPersonIdNumber(Global.id_user);
                 if ("Administrador".equals(Global.user_type))
                 {
-                    //abrir ventana admin
+                    adminWindow adminW = new adminWindow();
                 }
                 
                 else
                 {
-                    //abrir ventana ciudadano
+                    citizenWindow citizenW = new citizenWindow();
                 }
             }
             else
