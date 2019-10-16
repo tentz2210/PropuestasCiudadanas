@@ -5,6 +5,13 @@
  */
 package UI;
 
+import Connect.ConnectDB;
+import Utils.Global;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author mapac
@@ -14,10 +21,60 @@ public class locationWindow extends javax.swing.JFrame {
     /**
      * Creates new form locationWindow
      */
-    public locationWindow() {
+    public locationWindow() throws SQLException {
         initComponents();
+        fillCountriesComboBox();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+    }
+    
+    private void fillCountriesComboBox() throws SQLException
+    {
+        ConnectDB.getCountries();
+        for (int countryNumber = 0; countryNumber < Global.countriesInfo.size(); countryNumber++)
+        {
+            countryComboBox.addItem(Global.countriesInfo.get(countryNumber).getName());
+        }
+    }
+    
+    private void fillProvincesComboBox(int id_country) throws SQLException
+    {
+        ConnectDB.getProvincesFromCountry(id_country);
+        provinceComboBox.removeAllItems();
+        for (int provinceNumber = 0; provinceNumber < Global.provincesInfo.size(); provinceNumber++)
+        {
+            provinceComboBox.addItem(Global.provincesInfo.get(provinceNumber).getName());
+        }
+    }
+    
+    private void fillCantonsComboBox(int id_province) throws SQLException
+    {
+        ConnectDB.getCantonsFromProvince(id_province);
+        cantonComboBox.removeAllItems();
+        for (int cantonNumber = 0; cantonNumber < Global.cantonsInfo.size(); cantonNumber++)
+        {
+            cantonComboBox.addItem(Global.cantonsInfo.get(cantonNumber).getName());
+        }
+    }
+    
+    private void fillDistrictsComboBox(int id_canton) throws SQLException
+    {
+        ConnectDB.getDistrictsFromCanton(id_canton);
+        districtComboBox.removeAllItems();
+        for (int districtNumber = 0; districtNumber < Global.districtsInfo.size(); districtNumber++)
+        {
+            districtComboBox.addItem(Global.districtsInfo.get(districtNumber).getName());
+        }
+    }
+    
+    private void fillCommunitiesComboBox(int id_district) throws SQLException
+    {
+        ConnectDB.getCommunitiesFromDistrict(id_district);
+        communityComboBox.removeAllItems();
+        for (int commNumber = 0; commNumber < Global.communitiesInfo.size(); commNumber++)
+        {
+            communityComboBox.addItem(Global.communitiesInfo.get(commNumber).getName());
+        }
     }
 
     /**
@@ -80,15 +137,35 @@ public class locationWindow extends javax.swing.JFrame {
         jPanel1.add(communityLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, -1, -1));
 
         countryComboBox.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        countryComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                countryComboBoxActionPerformed(evt);
+            }
+        });
         jPanel1.add(countryComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 48, 110, -1));
 
         provinceComboBox.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        provinceComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                provinceComboBoxActionPerformed(evt);
+            }
+        });
         jPanel1.add(provinceComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 88, 110, -1));
 
         cantonComboBox.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        cantonComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cantonComboBoxActionPerformed(evt);
+            }
+        });
         jPanel1.add(cantonComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 128, 110, -1));
 
         districtComboBox.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        districtComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                districtComboBoxActionPerformed(evt);
+            }
+        });
         jPanel1.add(districtComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 168, 110, -1));
 
         communityComboBox.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -111,6 +188,11 @@ public class locationWindow extends javax.swing.JFrame {
         acceptButton.setForeground(new java.awt.Color(255, 255, 255));
         acceptButton.setText("Aceptar");
         acceptButton.setPreferredSize(new java.awt.Dimension(89, 25));
+        acceptButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                acceptButtonMouseClicked(evt);
+            }
+        });
         jPanel1.add(acceptButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 250, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 340, 290));
@@ -121,6 +203,53 @@ public class locationWindow extends javax.swing.JFrame {
     private void cancelButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButton1MouseClicked
         this.setVisible(false);
     }//GEN-LAST:event_cancelButton1MouseClicked
+
+    private void countryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_countryComboBoxActionPerformed
+        try {
+            fillProvincesComboBox(Global.countriesInfo.get(countryComboBox.getSelectedIndex()).getId());
+        } catch (SQLException ex) {
+            Logger.getLogger(registerWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_countryComboBoxActionPerformed
+
+    private void provinceComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_provinceComboBoxActionPerformed
+        try {
+            if (provinceComboBox.getSelectedItem() != null)
+                fillCantonsComboBox(Global.provincesInfo.get(provinceComboBox.getSelectedIndex()).getId());
+        } catch (SQLException ex) {
+            Logger.getLogger(registerWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_provinceComboBoxActionPerformed
+
+    private void cantonComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cantonComboBoxActionPerformed
+        try {
+            if (cantonComboBox.getSelectedItem() != null)
+                fillDistrictsComboBox(Global.cantonsInfo.get(cantonComboBox.getSelectedIndex()).getId());
+        } catch (SQLException ex) {
+            Logger.getLogger(registerWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_cantonComboBoxActionPerformed
+
+    private void districtComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_districtComboBoxActionPerformed
+        try {
+            if (districtComboBox.getSelectedItem() != null)
+                fillCommunitiesComboBox(Global.districtsInfo.get(districtComboBox.getSelectedIndex()).getId());
+        } catch (SQLException ex) {
+            Logger.getLogger(registerWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_districtComboBoxActionPerformed
+
+    private void acceptButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_acceptButtonMouseClicked
+        try {
+            int id_community = Global.communitiesInfo.get(communityComboBox.getSelectedIndex()).getId();
+            ConnectDB.updatePersonLocation(Global.id_person,id_community);
+            if (Global.update_result == 1) JOptionPane.showMessageDialog(this,"Se ha modificado la localización","Modificación exitosa",JOptionPane.INFORMATION_MESSAGE);
+            else JOptionPane.showMessageDialog(this,"No se ha podido modificar la localización","Error de modificación",JOptionPane.ERROR_MESSAGE);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(locationWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_acceptButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -152,7 +281,11 @@ public class locationWindow extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new locationWindow().setVisible(true);
+                try {
+                    new locationWindow().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(locationWindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

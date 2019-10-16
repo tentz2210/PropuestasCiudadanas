@@ -5,6 +5,10 @@
  */
 package UI;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author mapac
@@ -257,11 +261,19 @@ public class editProfile extends javax.swing.JFrame {
     }//GEN-LAST:event_dateOfBithButtonMouseClicked
 
     private void usersButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usersButtonMouseClicked
-        userTypeWindow userType = new userTypeWindow();
+        try {
+            userTypeWindow userType = new userTypeWindow();
+        } catch (SQLException ex) {
+            Logger.getLogger(editProfile.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_usersButtonMouseClicked
 
     private void nationalityButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nationalityButtonMouseClicked
-        nationalityWindow nationality = new nationalityWindow();
+        try {
+            nationalityWindow nationality = new nationalityWindow();
+        } catch (SQLException ex) {
+            Logger.getLogger(editProfile.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_nationalityButtonMouseClicked
 
     private void locationButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_locationButtonMouseClicked
