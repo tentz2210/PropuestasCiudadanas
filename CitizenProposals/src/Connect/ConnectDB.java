@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import oracle.jdbc.internal.OracleTypes;
 import Utils.IConstants;
+import java.sql.Types;
 
 
 /**

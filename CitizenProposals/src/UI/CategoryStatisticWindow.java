@@ -115,7 +115,6 @@ public class CategoryStatisticWindow extends javax.swing.JFrame {
 
     private void closeWindowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeWindowMouseClicked
         this.setVisible(false);
-        adminWindow mainWindow = new adminWindow();
     }//GEN-LAST:event_closeWindowMouseClicked
 
     private void queryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_queryButtonActionPerformed

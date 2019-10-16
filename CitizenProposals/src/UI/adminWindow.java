@@ -82,6 +82,11 @@ public class adminWindow extends javax.swing.JFrame {
         statistics.setText("Módulo Estadísticas");
         statistics.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         statistics.setPreferredSize(new java.awt.Dimension(132, 32));
+        statistics.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                statisticsMouseClicked(evt);
+            }
+        });
         jPanel1.add(statistics, new org.netbeans.lib.awtextra.AbsoluteConstraints(-185, 60, 170, -1));
 
         catalogues.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -172,6 +177,10 @@ public class adminWindow extends javax.swing.JFrame {
         this.setVisible(false);
         editProfile edit = new editProfile();
     }//GEN-LAST:event_settingsMouseClicked
+
+    private void statisticsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statisticsMouseClicked
+        mainStatistic statistic = new mainStatistic();
+    }//GEN-LAST:event_statisticsMouseClicked
 
     /**
      * @param args the command line arguments
