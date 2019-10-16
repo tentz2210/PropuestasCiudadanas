@@ -576,6 +576,59 @@ public class ConnectDB implements IConstants
         return r;
     }
     
+    public static ResultSet getTopVotedProposals() throws SQLException {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_proposal.getTopVotedProposals(?)}");
+        stmt.registerOutParameter(1, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(1);
+        
+        return r;
+    }
+    
+    public static ResultSet getProposalsByUser() throws SQLException {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_proposal.getProposalsByUser(?,?,?)}");
+        stmt.setInt(1, Global.id_person);
+        stmt.registerOutParameter(2, OracleTypes.CURSOR);
+        stmt.registerOutParameter(3, OracleTypes.INTEGER);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(2);
+        
+        return r;
+    }
+    
+    public static ResultSet getPasswordLogReport(String f_name, String f_middlename, String f_lastname,
+                                                 String f_username, int f_id) throws SQLException {
+        Connection con = DriverManager.getConnection(host, uAdminName, uAdminPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_password_log.getPasswordLogReport(?,?,?,?,?,?)}");
+        if(f_name.equals(""))
+            stmt.setString(1, f_name);
+        else
+            stmt.setNull(1, Types.VARCHAR);
+        if(f_middlename.equals(""))
+            stmt.setString(2, f_middlename);
+        else
+            stmt.setNull(2, Types.VARCHAR);
+        if(f_lastname.equals(""))
+            stmt.setString(3, f_lastname);
+        else
+            stmt.setNull(3, Types.VARCHAR);
+        if(f_username.equals(""))
+            stmt.setString(4, f_username);
+        else
+            stmt.setNull(4, Types.VARCHAR);
+        if(f_id != 0)
+            stmt.setInt(5, f_id);
+        else
+            stmt.setNull(5, Types.INTEGER);
+        stmt.setInt(5, f_id);
+        stmt.registerOutParameter(6, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(6);
+        return r;
+    }
+    
     public static void insertCountry(String name) throws SQLException
     {
         Connection con = DriverManager.getConnection(host, uName, uPass);
