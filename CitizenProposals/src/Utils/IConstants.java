@@ -12,5 +12,7 @@ package Utils;
 public interface IConstants {
     public static final String host = "jdbc:oracle:thin:@localhost:1521:orcl";
     public static final String uName = "PC";
-    public static final String uPass = "PC";   
+    public static final String uPass = "PC";  
+    public static final String uAdminName = "PCADMIN";
+    public static final String uAdminPass = "PCADMIN";
 }
