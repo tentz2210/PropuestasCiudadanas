@@ -15,16 +15,16 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
-public class TopCommunitiesWindow extends javax.swing.JFrame {
+public class UserProposalsWindow extends javax.swing.JFrame {
 
     /**
      * Creates new form citizenWindow
      */
-    public TopCommunitiesWindow() {
+    public UserProposalsWindow() {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        this.generateTopCommunityTable();
+        this.generateUserProposalsTable();
     }
 
     /**
@@ -41,7 +41,9 @@ public class TopCommunitiesWindow extends javax.swing.JFrame {
         closeWindow = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        communitiesTable = new javax.swing.JTable();
+        proposalsTable = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        numberLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -74,10 +76,10 @@ public class TopCommunitiesWindow extends javax.swing.JFrame {
         jPanel1.add(closeWindow, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 10, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel2.setText("Top comunidades con más propuestas");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 110, -1, -1));
+        jLabel2.setText("Propuestas del usuario");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, -1, -1));
 
-        communitiesTable.setModel(new javax.swing.table.DefaultTableModel(
+        proposalsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -88,9 +90,13 @@ public class TopCommunitiesWindow extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(communitiesTable);
+        jScrollPane1.setViewportView(proposalsTable);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 150, -1, 200));
+
+        jLabel1.setText("Total:");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 120, -1, -1));
+        jPanel1.add(numberLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(262, 122, 50, 10));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 580, 730));
 
@@ -123,13 +129,13 @@ public class TopCommunitiesWindow extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TopCommunitiesWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserProposalsWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TopCommunitiesWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserProposalsWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TopCommunitiesWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserProposalsWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TopCommunitiesWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserProposalsWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -137,7 +143,7 @@ public class TopCommunitiesWindow extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TopCommunitiesWindow().setVisible(true);
+                new UserProposalsWindow().setVisible(true);
             }
         });
     }
@@ -146,33 +152,39 @@ public class TopCommunitiesWindow extends javax.swing.JFrame {
     private void generateTable(ResultSet r) throws SQLException
     {
         DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("Comunidad"); 
-        model.addColumn("Cant. Propuestas");
-        model.addColumn("Puesto");
-        this.communitiesTable.setModel(model);
+        model.addColumn("Título"); 
+        model.addColumn("Descripción");
+        model.addColumn("Presupuesto");
+        model.addColumn("Categoría");
+        this.proposalsTable.setModel(model);
+        int counter = 0;
         while(r.next())
         {
-            model.addRow(new Object[]{r.getString(1), r.getInt(2), r.getInt(3)});
+            counter++;
+            model.addRow(new Object[]{r.getString(1), r.getString(2), r.getInt(3), r.getString(5)});
         } 
+        this.numberLabel.setText(String.valueOf(counter));
     }
     
-    private void generateTopCommunityTable()
+    private void generateUserProposalsTable()
     {
         try {
             ResultSet r;
-            r = ConnectDB.getTopCommunityProposals();
+            r = ConnectDB.getProposalsByUser();
             generateTable(r);
         } catch (SQLException ex) {
-            Logger.getLogger(TopCommunitiesWindow.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserProposalsWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel closeWindow;
-    private javax.swing.JTable communitiesTable;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel minimize;
+    private javax.swing.JLabel numberLabel;
+    private javax.swing.JTable proposalsTable;
     // End of variables declaration//GEN-END:variables
 }

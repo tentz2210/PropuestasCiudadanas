@@ -15,16 +15,16 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
-public class TopCommunitiesWindow extends javax.swing.JFrame {
+public class TopProposalsWindow extends javax.swing.JFrame {
 
     /**
      * Creates new form citizenWindow
      */
-    public TopCommunitiesWindow() {
+    public TopProposalsWindow() {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        this.generateTopCommunityTable();
+        this.generateTopProposalsTable();
     }
 
     /**
@@ -74,8 +74,8 @@ public class TopCommunitiesWindow extends javax.swing.JFrame {
         jPanel1.add(closeWindow, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 10, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel2.setText("Top comunidades con más propuestas");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 110, -1, -1));
+        jLabel2.setText("Top propuestas con más votos");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 100, -1, -1));
 
         communitiesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -123,21 +123,23 @@ public class TopCommunitiesWindow extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TopCommunitiesWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TopProposalsWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TopCommunitiesWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TopProposalsWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TopCommunitiesWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TopProposalsWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TopCommunitiesWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TopProposalsWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TopCommunitiesWindow().setVisible(true);
+                new TopProposalsWindow().setVisible(true);
             }
         });
     }
@@ -146,24 +148,25 @@ public class TopCommunitiesWindow extends javax.swing.JFrame {
     private void generateTable(ResultSet r) throws SQLException
     {
         DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("Comunidad"); 
-        model.addColumn("Cant. Propuestas");
+        model.addColumn("ID"); 
+        model.addColumn("Título");
+        model.addColumn("Votos");
         model.addColumn("Puesto");
         this.communitiesTable.setModel(model);
         while(r.next())
         {
-            model.addRow(new Object[]{r.getString(1), r.getInt(2), r.getInt(3)});
+            model.addRow(new Object[]{r.getInt(1), r.getString(2), r.getInt(3), r.getInt(4)});
         } 
     }
     
-    private void generateTopCommunityTable()
+    private void generateTopProposalsTable()
     {
         try {
             ResultSet r;
-            r = ConnectDB.getTopCommunityProposals();
+            r = ConnectDB.getTopVotedProposals();
             generateTable(r);
         } catch (SQLException ex) {
-            Logger.getLogger(TopCommunitiesWindow.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TopProposalsWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
