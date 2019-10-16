@@ -48,7 +48,7 @@ public class dateOfBirthWindow extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         iconDateOfBith.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/dateofbirth.png"))); // NOI18N
-        jPanel1.add(iconDateOfBith, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 0, -1, -1));
+        jPanel1.add(iconDateOfBith, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 0, -1, -1));
 
         dateOfBithLabel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         dateOfBithLabel.setText("Fecha de nacimiento");
@@ -88,7 +88,7 @@ public class dateOfBirthWindow extends javax.swing.JFrame {
                 cancelButton1MouseClicked(evt);
             }
         });
-        jPanel1.add(cancelButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 120, -1, -1));
+        jPanel1.add(cancelButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 120, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

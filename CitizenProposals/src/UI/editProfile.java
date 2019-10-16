@@ -166,6 +166,11 @@ public class editProfile extends javax.swing.JFrame {
         usersButton.setBackground(new java.awt.Color(255, 255, 255));
         usersButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/users.png"))); // NOI18N
         usersButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        usersButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                usersButtonMouseClicked(evt);
+            }
+        });
         jPanel2.add(usersButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, 130, 130));
 
         nationalityButton.setBackground(new java.awt.Color(255, 255, 255));
@@ -240,6 +245,10 @@ public class editProfile extends javax.swing.JFrame {
     private void dateOfBithButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dateOfBithButtonMouseClicked
         dateOfBirthWindow dateOfBirth = new dateOfBirthWindow();
     }//GEN-LAST:event_dateOfBithButtonMouseClicked
+
+    private void usersButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usersButtonMouseClicked
+        userTypeWindow userType = new userTypeWindow();
+    }//GEN-LAST:event_usersButtonMouseClicked
 
     /**
      * @param args the command line arguments
