@@ -99,6 +99,11 @@ public class adminWindow extends javax.swing.JFrame {
         query.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/query.png"))); // NOI18N
         query.setText("Consultas");
         query.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        query.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                queryMouseClicked(evt);
+            }
+        });
         jPanel1.add(query, new org.netbeans.lib.awtextra.AbsoluteConstraints(-185, 100, 100, -1));
 
         settings.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -181,6 +186,10 @@ public class adminWindow extends javax.swing.JFrame {
     private void statisticsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statisticsMouseClicked
         mainStatistic statistic = new mainStatistic();
     }//GEN-LAST:event_statisticsMouseClicked
+
+    private void queryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_queryMouseClicked
+        TopCommunitiesWindow topC = new TopCommunitiesWindow();
+    }//GEN-LAST:event_queryMouseClicked
 
     /**
      * @param args the command line arguments

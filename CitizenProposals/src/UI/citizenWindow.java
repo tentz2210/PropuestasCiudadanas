@@ -82,6 +82,11 @@ public class citizenWindow extends javax.swing.JFrame {
         myProposals.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/myProposals.png"))); // NOI18N
         myProposals.setText("Mis propuestas");
         myProposals.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        myProposals.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                myProposalsMouseClicked(evt);
+            }
+        });
         jPanel1.add(myProposals, new org.netbeans.lib.awtextra.AbsoluteConstraints(-140, 60, -1, -1));
 
         favorites.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -94,6 +99,11 @@ public class citizenWindow extends javax.swing.JFrame {
         query.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/query.png"))); // NOI18N
         query.setText("Consultas");
         query.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        query.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                queryMouseClicked(evt);
+            }
+        });
         jPanel1.add(query, new org.netbeans.lib.awtextra.AbsoluteConstraints(-140, 140, -1, -1));
 
         setting.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -171,6 +181,14 @@ public class citizenWindow extends javax.swing.JFrame {
         this.setVisible(false);
         loginWindow window = new loginWindow();
     }//GEN-LAST:event_logoutMouseClicked
+
+    private void myProposalsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myProposalsMouseClicked
+        UserProposalsWindow userP = new UserProposalsWindow();
+    }//GEN-LAST:event_myProposalsMouseClicked
+
+    private void queryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_queryMouseClicked
+        TopProposalsWindow topP = new TopProposalsWindow();
+    }//GEN-LAST:event_queryMouseClicked
 
     /**
      * @param args the command line arguments

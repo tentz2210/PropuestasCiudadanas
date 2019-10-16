@@ -103,7 +103,6 @@ public class TopProposalsWindow extends javax.swing.JFrame {
 
     private void closeWindowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeWindowMouseClicked
         this.setVisible(false);
-        citizenWindow mainWindow = new citizenWindow();
     }//GEN-LAST:event_closeWindowMouseClicked
 
     /**
