@@ -5,6 +5,13 @@
  */
 package UI;
 
+import Connect.ConnectDB;
+import Utils.Global;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author mapac
@@ -14,10 +21,21 @@ public class userTypeWindow extends javax.swing.JFrame {
     /**
      * Creates new form userType
      */
-    public userTypeWindow() {
+    public userTypeWindow() throws SQLException {
         initComponents();
+        fillUserTypeComboBox();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+    }
+    
+    private void fillUserTypeComboBox() throws SQLException
+    {
+        ConnectDB.getUserTypes();
+        userTypeComboBox.removeAllItems();
+        for (int uTypeNumber = 0; uTypeNumber < Global.userTypesInfo.size(); uTypeNumber++)
+        {
+            userTypeComboBox.addItem(Global.userTypesInfo.get(uTypeNumber).getName());
+        }
     }
 
     /**
@@ -50,6 +68,11 @@ public class userTypeWindow extends javax.swing.JFrame {
         jPanel1.add(userTypeTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 160, -1));
 
         userTypeComboBox.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        userTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userTypeComboBoxActionPerformed(evt);
+            }
+        });
         jPanel1.add(userTypeComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 100, -1));
 
         cancelButton1.setBackground(new java.awt.Color(222, 4, 11));
@@ -69,6 +92,11 @@ public class userTypeWindow extends javax.swing.JFrame {
         acceptButton.setForeground(new java.awt.Color(255, 255, 255));
         acceptButton.setText("Aceptar");
         acceptButton.setPreferredSize(new java.awt.Dimension(89, 25));
+        acceptButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                acceptButtonMouseClicked(evt);
+            }
+        });
         jPanel1.add(acceptButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 100, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -88,6 +116,31 @@ public class userTypeWindow extends javax.swing.JFrame {
     private void cancelButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButton1MouseClicked
         this.setVisible(false);
     }//GEN-LAST:event_cancelButton1MouseClicked
+
+    private void userTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userTypeComboBoxActionPerformed
+        if ("Administrador".equals(Global.userTypesInfo.get(userTypeComboBox.getSelectedIndex()).getName()))
+        {   
+            String code = JOptionPane.showInputDialog(this,"Digite el código para registrar administrador","Código de acceso",JOptionPane.QUESTION_MESSAGE);
+            if (code == null) userTypeComboBox.setSelectedIndex(0);
+            else if (!"151622".equals(code))
+            {
+                JOptionPane.showMessageDialog(this,"Código incorrecto.","Error",JOptionPane.INFORMATION_MESSAGE);
+                userTypeComboBox.setSelectedIndex(0);
+            }
+        }
+    }//GEN-LAST:event_userTypeComboBoxActionPerformed
+
+    private void acceptButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_acceptButtonMouseClicked
+        try {
+            int id_userType = Global.userTypesInfo.get(userTypeComboBox.getSelectedIndex()).getId();
+            ConnectDB.updatePersonUserType(Global.id_person,id_userType);
+            if (Global.update_result == 1) JOptionPane.showMessageDialog(this,"Tipo de usuario modificado correctamente","Modificación exitosa",JOptionPane.INFORMATION_MESSAGE);
+            else JOptionPane.showMessageDialog(this,"No se ha modificado el tipo de usuario","Error de modificación",JOptionPane.ERROR_MESSAGE);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(userTypeWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_acceptButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -120,7 +173,11 @@ public class userTypeWindow extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new userTypeWindow().setVisible(true);
+                try {
+                    new userTypeWindow().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(userTypeWindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
