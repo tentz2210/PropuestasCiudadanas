@@ -6,6 +6,13 @@
 
 package UI;
 
+import Connect.ConnectDB;
+import Utils.Global;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author mapac
@@ -72,6 +79,11 @@ public class emailWindow extends javax.swing.JFrame {
         addButton.setForeground(new java.awt.Color(255, 255, 255));
         addButton.setText("Agregar");
         addButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addButtonMouseClicked(evt);
+            }
+        });
         jPanel1.add(addButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, 90, -1));
 
         eliminateTitle.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
@@ -89,6 +101,11 @@ public class emailWindow extends javax.swing.JFrame {
         eliminateButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         eliminateButton.setForeground(new java.awt.Color(255, 255, 255));
         eliminateButton.setText("Eliminar");
+        eliminateButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                eliminateButtonMouseClicked(evt);
+            }
+        });
         eliminateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 eliminateButtonActionPerformed(evt);
@@ -116,6 +133,11 @@ public class emailWindow extends javax.swing.JFrame {
         modifyButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         modifyButton.setForeground(new java.awt.Color(255, 255, 255));
         modifyButton.setText("Modificar");
+        modifyButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                modifyButtonMouseClicked(evt);
+            }
+        });
         jPanel1.add(modifyButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 350, -1, -1));
 
         cancelButton.setBackground(new java.awt.Color(222, 4, 11));
@@ -151,6 +173,59 @@ public class emailWindow extends javax.swing.JFrame {
     private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
         this.setVisible(false);
     }//GEN-LAST:event_cancelButtonMouseClicked
+
+    private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
+        String newMail = addEmailField.getText();
+        if (!"".equals(newMail))
+        {
+            try {
+                ConnectDB.insertEmail(newMail,Global.id_person);
+                if (Global.insert_result == 1) JOptionPane.showMessageDialog(this,"Email añadido correctamente","Inserción exitosa",JOptionPane.INFORMATION_MESSAGE);
+                else JOptionPane.showMessageDialog(this,"No se ha podido añadir el email","Error en inserción",JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                Logger.getLogger(emailWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else JOptionPane.showMessageDialog(this,"No se ha podido añadir el email","Error en inserción",JOptionPane.ERROR_MESSAGE);
+        addEmailField.setText("");
+        this.setVisible(false);
+    }//GEN-LAST:event_addButtonMouseClicked
+
+    private void eliminateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eliminateButtonMouseClicked
+        String mail = eliminateField.getText();
+        if (!"".equals(mail))
+        {
+            try {
+                ConnectDB.deleteEmail(mail,Global.id_person);
+                if (Global.delete_result == 1) JOptionPane.showMessageDialog(this,"Email eliminado correctamente","Borrado exitoso",JOptionPane.INFORMATION_MESSAGE);
+                else JOptionPane.showMessageDialog(this,"No se ha podido borrar el email","Error en borrado",JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                Logger.getLogger(emailWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else JOptionPane.showMessageDialog(this,"No se ha podido borrar el email","Error en borrado",JOptionPane.ERROR_MESSAGE);
+        eliminateField.setText("");
+        this.setVisible(false);
+    }//GEN-LAST:event_eliminateButtonMouseClicked
+
+    private void modifyButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modifyButtonMouseClicked
+        String newMail = newEmailField.getText();
+        String oldMail = oldEmailField.getText();
+        if (!"".equals(newMail) && !"".equals(oldMail))
+        {
+            try {
+                ConnectDB.updateEmail(Global.id_person, oldMail, newMail);
+                if (Global.update_result == 1) JOptionPane.showMessageDialog(this,"Email modificado correctamente","Modificación exitosa",JOptionPane.INFORMATION_MESSAGE);
+                else JOptionPane.showMessageDialog(this,"No se ha podido modificar el email","Error en modificación",JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                Logger.getLogger(emailWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else JOptionPane.showMessageDialog(this,"No se ha podido modificar el email","Error en modificación",JOptionPane.ERROR_MESSAGE);
+        newEmailField.setText("");
+        oldEmailField.setText("");
+        this.setVisible(false);
+    }//GEN-LAST:event_modifyButtonMouseClicked
 
     /**
      * @param args the command line arguments
