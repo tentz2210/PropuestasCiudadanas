@@ -186,6 +186,11 @@ public class editProfile extends javax.swing.JFrame {
         locationButton.setBackground(new java.awt.Color(255, 255, 255));
         locationButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/location.png"))); // NOI18N
         locationButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        locationButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                locationButtonMouseClicked(evt);
+            }
+        });
         jPanel2.add(locationButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 280, 130, 130));
 
         photoButton.setBackground(new java.awt.Color(255, 255, 255));
@@ -258,6 +263,10 @@ public class editProfile extends javax.swing.JFrame {
     private void nationalityButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nationalityButtonMouseClicked
         nationalityWindow nationality = new nationalityWindow();
     }//GEN-LAST:event_nationalityButtonMouseClicked
+
+    private void locationButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_locationButtonMouseClicked
+        locationWindow location = new locationWindow();
+    }//GEN-LAST:event_locationButtonMouseClicked
 
     /**
      * @param args the command line arguments
