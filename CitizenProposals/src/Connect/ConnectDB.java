@@ -329,8 +329,17 @@ public class ConnectDB implements IConstants
         Global.update_result = stmt.getInt(3);
     }
     
-    public static void updatePersonProfilePicture(int p_id_number,String p_new_photo) throws SQLException
+     public static void updatePersonProfilePicture(int p_id_number,String p_new_photo) throws SQLException
     {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_person.updatePersonPhoto(?,?,?)}");
+        stmt.setInt(1,p_id_number);
+        stmt.setString(2,p_new_photo);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        
+        stmt.execute();
+        
+        Global.update_result = stmt.getInt(3);
         
     }
     
@@ -555,5 +564,270 @@ public class ConnectDB implements IConstants
         ResultSet r = (ResultSet) stmt.getObject(1);
         
         return r;
+    }
+    
+    public static void insertCountry(String name) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_country.createCountry(?,?)}");
+        stmt.setString(1,name);
+        stmt.registerOutParameter(2,OracleTypes.INTEGER);
+        stmt.execute();
+        Global.insert_result = stmt.getInt(2);
+    }
+    
+    public static void updateCountryName(int idCountry, String name) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_country.updateCountryName(?,?,?)}");
+        stmt.setInt(1,idCountry);
+        stmt.setString(2,name);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.update_result = stmt.getInt(3);
+    }
+    
+    public static void updateCountryEnable(int idCountry, int enabled) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_country.updateCountryIsEnabled(?,?,?)}");
+        stmt.setInt(1,idCountry);
+        stmt.setInt(2,enabled);
+        stmt.registerOutParameter(2,OracleTypes.INTEGER);
+        
+        stmt.execute();
+        Global.update_result = stmt.getInt(3); 
+    }
+    
+    public static void deleteCountry(int idCountry) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_country.deleteCountry(?,?)}");
+        stmt.setInt(1,idCountry);
+        stmt.registerOutParameter(2,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.delete_result = stmt.getInt(2);
+    }
+    
+    public static void insertProvince(String name,int idCountry) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_province.createProvince(?,?,?)}");
+        stmt.setString(1,name);
+        stmt.setInt(2,idCountry);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        
+        stmt.execute();
+        Global.insert_result = stmt.getInt(3);
+    }
+    
+    public static void updateProvinceName(int idProvince,String newName) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_province.updateProvinceName(?,?,?)}");
+        stmt.setInt(1, idProvince);
+        stmt.setString(2,newName);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.update_result = stmt.getInt(3);
+    }
+    
+    public static void updateProvinceEnable(int idProvince, int enabled) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_province.updateProvinceIsEnabled(?,?,?)}");
+        stmt.setInt(1,idProvince);
+        stmt.setInt(2,enabled);
+        stmt.registerOutParameter(2,OracleTypes.INTEGER);
+        
+        stmt.execute();
+        Global.update_result = stmt.getInt(3); 
+    }
+    
+    public static void deleteProvince(int idProvince) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_province.deleteProvince(?,?)}");
+        stmt.setInt(1,idProvince);
+        stmt.registerOutParameter(2,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.delete_result = stmt.getInt(2);
+    }
+    
+    public static void insertCanton(String name,int idProvince) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_canton.createCanton(?,?,?)}");
+        stmt.setString(1,name);
+        stmt.setInt(2,idProvince);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        
+        stmt.execute();
+        Global.insert_result = stmt.getInt(3);
+    }
+    
+    public static void updateCantonName(int idCanton,String newName) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_canton.updateCantonName(?,?,?)}");
+        stmt.setInt(1, idCanton);
+        stmt.setString(2,newName);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.update_result = stmt.getInt(3);
+    }
+    
+    public static void updateCantonEnable(int idCanton, int enabled) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_canton.updateCantonIsEnabled(?,?,?)}");
+        stmt.setInt(1,idCanton);
+        stmt.setInt(2,enabled);
+        stmt.registerOutParameter(2,OracleTypes.INTEGER);
+        
+        stmt.execute();
+        Global.update_result = stmt.getInt(3); 
+    }
+    
+    public static void deleteCanton(int idCanton) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_canton.deleteCanton(?,?)}");
+        stmt.setInt(1,idCanton);
+        stmt.registerOutParameter(2,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.delete_result = stmt.getInt(2);
+    }
+    
+    public static void insertDistrict(String name,int idCanton) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_district.createDistrict(?,?,?)}");
+        stmt.setString(1,name);
+        stmt.setInt(2,idCanton);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        
+        stmt.execute();
+        Global.insert_result = stmt.getInt(3);
+    }
+    
+    public static void updateDistrictName(int idDistrict,String newName) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_district.updateDistrictName(?,?,?)}");
+        stmt.setInt(1, idDistrict);
+        stmt.setString(2,newName);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.update_result = stmt.getInt(3);
+    }
+    
+    public static void updateDistrictEnable(int idDistrict, int enabled) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_district.updateDistrictIsEnabled(?,?,?)}");
+        stmt.setInt(1,idDistrict);
+        stmt.setInt(2,enabled);
+        stmt.registerOutParameter(2,OracleTypes.INTEGER);
+        
+        stmt.execute();
+        Global.update_result = stmt.getInt(3); 
+    }
+    
+    public static void deleteDistrict(int idDistrict) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_district.deleteDistrict(?,?)}");
+        stmt.setInt(1,idDistrict);
+        stmt.registerOutParameter(2,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.delete_result = stmt.getInt(2);
+    }
+    
+    public static void insertCommunity(String name,int idDistrict) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_community.createCommunity(?,?,?)}");
+        stmt.setString(1,name);
+        stmt.setInt(2,idDistrict);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        
+        stmt.execute();
+        Global.insert_result = stmt.getInt(3);
+    }
+    
+    public static void updateCommunityName(int idCommunity,String newName) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_community.updateCommunityName(?,?,?)}");
+        stmt.setInt(1, idCommunity);
+        stmt.setString(2,newName);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.update_result = stmt.getInt(3);
+    }
+    
+    public static void updateCommunityEnable(int idCommunity, int enabled) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_community.updateCommunityIsEnabled(?,?,?)}");
+        stmt.setInt(1,idCommunity);
+        stmt.setInt(2,enabled);
+        stmt.registerOutParameter(2,OracleTypes.INTEGER);
+        
+        stmt.execute();
+        Global.update_result = stmt.getInt(3); 
+    }
+    
+    public static void deleteCommunity(int idCommunity) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_community.deleteCommunity(?,?)}");
+        stmt.setInt(1,idCommunity);
+        stmt.registerOutParameter(2,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.delete_result = stmt.getInt(2);
+    }
+    
+    public static void insertNationality(String name) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_nationality.createNationality(?,?)}");
+        stmt.setString(1,name);
+        stmt.registerOutParameter(2,OracleTypes.INTEGER);
+        stmt.execute();
+        Global.insert_result = stmt.getInt(2);
+    }
+    
+    public static void deleteNationality(int idNationality) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_nationality.deleteNationality(?,?)}");
+        stmt.setInt(1,idNationality);
+        stmt.registerOutParameter(2,OracleTypes.INTEGER);
+        stmt.execute();
+        Global.delete_result = stmt.getInt(2);
+    }
+    
+    public static void updateNationalityName(String newName, int idNationality) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_nationality.updateNationalityName(?,?,?)}");
+        stmt.setInt(1,idNationality);
+        stmt.setString(2,newName);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.update_result = stmt.getInt(3);
     }
 }
