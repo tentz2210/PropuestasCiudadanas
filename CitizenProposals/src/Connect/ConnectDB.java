@@ -830,4 +830,100 @@ public class ConnectDB implements IConstants
         
         Global.update_result = stmt.getInt(3);
     }
+    
+    public static void updateNationalityIsEnabled(int idNationality, int enabled) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_nationality.updateNationalityIsEnabled(?,?,?)}");
+        stmt.setInt(1,idNationality);
+        stmt.setInt(2,enabled);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.update_result = stmt.getInt(3); 
+    }
+    
+    public static void insertCategory(String name) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_category.createCategory(?,?)}");
+        stmt.setString(1,name);
+        stmt.registerOutParameter(2,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.insert_result = stmt.getInt(2);
+        
+    }
+    
+    public static void deleteCategory(int catCode) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_category.deleteCategory(?,?)}");
+        stmt.setInt(1,catCode);
+        stmt.registerOutParameter(2,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.delete_result = stmt.getInt(2);
+        
+    }
+    
+    public void updateCategoryName(int catCode, String newName) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_category.updateCategoryName(?,?,?)}");
+        stmt.setInt(1,catCode);
+        stmt.setString(2,newName);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.update_result = stmt.getInt(3);
+        
+    }
+    
+    public void updateCategoryIsEnabled(int catCode, int enabled) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_category.updateCategoryIsEnabled(?,?,?)}");
+        stmt.setInt(1,catCode);
+        stmt.setInt(2,enabled);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        stmt.execute();
+        Global.update_result = stmt.getInt(3);
+    }
+    
+    public void insertUserType(String name) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_user_type.createUserType(?,?)}");
+        stmt.setString(1,name);
+        stmt.registerOutParameter(2,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.insert_result = stmt.getInt(2);
+        
+    }
+    
+    public void deleteUserType(int id) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_user_type.deleteUserType(?,?)}");
+        stmt.setInt(1, id);
+        stmt.registerOutParameter(2,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.delete_result = stmt.getInt(2);
+        
+    }
+    
+    public void updateUserTypeName(int id, String name) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_user_type.updateUserTypeName(?,?,?)}");
+        stmt.setInt(1,id);
+        stmt.setString(2,name);
+        stmt.registerOutParameter(3,OracleTypes.INTEGER);
+        stmt.execute();
+        
+        Global.update_result = stmt.getInt(3);
+    }
 }
