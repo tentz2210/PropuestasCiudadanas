@@ -436,5 +436,124 @@ public class ConnectDB implements IConstants
         
         Global.update_result = stmt.getInt(3);
     }
-}
 
+    public static ResultSet getStatisticsPerCountry() throws SQLException{
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_proposal.getStatisticsPerCountry(?)}");
+        stmt.registerOutParameter(1, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(1);
+        
+        return r;
+    }
+    
+    public static ResultSet getStatisticsPerProvince() throws SQLException{
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_proposal.getStatisticsPerProvince(?)}");
+        stmt.registerOutParameter(1, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(1);
+        
+        return r;
+    }
+    
+    public static ResultSet getStatisticsPerCanton() throws SQLException{
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_proposal.getStatisticsPerCanton(?)}");
+        stmt.registerOutParameter(1, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(1);
+        
+        return r;
+    }
+    
+    public static ResultSet getStatisticsPerDistrict() throws SQLException{
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_proposal.getStatisticsPerDistrict(?)}");
+        stmt.registerOutParameter(1, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(1);
+        
+        return r;
+    }
+    
+    public static ResultSet getStatisticsPerCommunity() throws SQLException{
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_proposal.getStatisticsPerCommunity(?)}");
+        stmt.registerOutParameter(1, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(1);
+        
+        return r;
+    }
+    
+    public static ResultSet getStatisticsPerCategory() throws SQLException{
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_proposal.getStatisticsPerCategory(?)}");
+        stmt.registerOutParameter(1, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(1);
+        
+        return r;
+    }
+    
+    public static ResultSet getStatisticsUsersAge() throws SQLException{
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_person.getStatisticsUsersAge(?)}");
+        stmt.registerOutParameter(1, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(1);
+        
+        return r;
+    }
+
+    public static ResultSet getStatisticsPerUserCountry() throws SQLException {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_person.getStatisticsPerCountry(?)}");
+        stmt.registerOutParameter(1, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(1);
+        
+        return r;
+    }
+    
+    public static ResultSet getStatisticsPerUserProvince() throws SQLException {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_person.getStatisticsPerProvince(?)}");
+        stmt.registerOutParameter(1, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(1);
+        
+        return r;
+    }
+    
+    public static ResultSet getStatisticsPerUserCanton() throws SQLException {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_person.getStatisticsPerCanton(?)}");
+        stmt.registerOutParameter(1, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(1);
+        
+        return r;
+    }
+    
+    public static ResultSet getStatisticsPerUserDistrict() throws SQLException {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_person.getStatisticsPerDistrict(?)}");
+        stmt.registerOutParameter(1, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(1);
+        
+        return r;
+    }
+    
+    public static ResultSet getStatisticsPerUserCommunity() throws SQLException {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_person.getStatisticsPerCommunity(?)}");
+        stmt.registerOutParameter(1, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(1);
+        
+        return r;
+    }
+}
