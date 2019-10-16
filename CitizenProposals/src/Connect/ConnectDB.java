@@ -566,6 +566,16 @@ public class ConnectDB implements IConstants
         return r;
     }
     
+    public static ResultSet getTopCommunityProposals() throws SQLException {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_proposal.getTopCommunityProposals(?)}");
+        stmt.registerOutParameter(1, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(1);
+        
+        return r;
+    }
+    
     public static void insertCountry(String name) throws SQLException
     {
         Connection con = DriverManager.getConnection(host, uName, uPass);
