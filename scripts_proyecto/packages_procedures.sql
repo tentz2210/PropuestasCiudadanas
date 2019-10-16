@@ -452,7 +452,7 @@ END pkg_community;
 ----------PACKAGE PROPOSAL----------
 CREATE OR REPLACE PACKAGE pkg_proposal IS
     PROCEDURE createProposal(pTitle VARCHAR2, pApproxBudget NUMBER,
-                             pDescription VARCHAR2, pCategoryCode NUMBER, pIdNumber NUMBER);
+                             pDescription VARCHAR2, pCategoryCode NUMBER, pIdNumber NUMBER, p_result OUT NUMBER);
     PROCEDURE deleteProposal(pid_proposal NUMBER);
     PROCEDURE getProposalInfo(pid_proposal IN NUMBER, pout_title OUT VARCHAR2, pout_category_name OUT VARCHAR2,
                               pout_description OUT VARCHAR2, pout_approximate_budget OUT NUMBER, pout_proposed_by OUT VARCHAR2, 
@@ -479,17 +479,19 @@ END pkg_proposal;
 CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
     ------PROCEDURE INSERT------
     PROCEDURE createProposal(pTitle VARCHAR2, pApproxBudget NUMBER,
-                         pDescription VARCHAR2, pCategoryCode NUMBER, pIdNumber NUMBER) IS
+                         pDescription VARCHAR2, pCategoryCode NUMBER, pIdNumber NUMBER, p_result OUT NUMBER) IS
     BEGIN
         INSERT INTO pc.proposal(id_proposal, category_code, id_number, description, approximate_budget, title, proposal_date)
         VALUES (pc.s_proposal.nextval, pCategoryCode, pIdNumber, pDescription, pApproxBudget, pTitle, SYSDATE); 
         COMMIT;
+        p_result:=1;
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE('Error inserting proposal');
 		    DBMS_OUTPUT.PUT_LINE(SQLERRM);
 		    DBMS_OUTPUT.PUT_LINE(SQLCODE);
             ROLLBACK;
+            p_result:=0;
     END;
     ------PROCEDURES UPDATE------
     PROCEDURE updateProposalDescription(p_id_proposal NUMBER, p_new_description VARCHAR2, p_result OUT NUMBER)IS
@@ -884,9 +886,26 @@ CREATE OR REPLACE PACKAGE pkg_category IS
     PROCEDURE deleteCategory(pcategory_code NUMBER,p_result OUT NUMBER);
     PROCEDURE updateCategoryName(p_category_code NUMBER, p_new_name VARCHAR2, p_result OUT NUMBER);
     PROCEDURE updateCategoryIsEnabled(p_category_code NUMBER,p_enabled NUMBER,p_result OUT NUMBER);
+    PROCEDURE getCategories(p_categories_cursor IN OUT SYS_REFCURSOR);
 END pkg_category;
 
 CREATE OR REPLACE PACKAGE BODY pkg_category AS
+
+    PROCEDURE getCategories(p_categories_cursor IN OUT SYS_REFCURSOR) IS
+    BEGIN
+        OPEN p_categories_cursor FOR
+            SELECT category_code, category_name
+            FROM pc.category
+            ORDER BY category_name;
+        EXCEPTION 
+            WHEN CURSOR_ALREADY_OPEN THEN
+                DBMS_OUTPUT.PUT_LINE('Cursor is already open');
+            WHEN OTHERS THEN
+                DBMS_OUTPUT.PUT_LINE('General Error');
+                DBMS_OUTPUT.PUT_LINE(SQLERRM);
+                DBMS_OUTPUT.PUT_LINE(SQLCODE);
+    END;
+    
     ------PROCEDURE INSERT------
     PROCEDURE createCategory(pCategoryName VARCHAR2,p_result OUT NUMBER) IS
     BEGIN
