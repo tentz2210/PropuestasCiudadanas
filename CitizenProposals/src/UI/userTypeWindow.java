@@ -133,8 +133,12 @@ public class userTypeWindow extends javax.swing.JFrame {
     private void acceptButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_acceptButtonMouseClicked
         try {
             int id_userType = Global.userTypesInfo.get(userTypeComboBox.getSelectedIndex()).getId();
-            ConnectDB.updatePersonUserType(Global.id_person,id_userType);
-            if (Global.update_result == 1) JOptionPane.showMessageDialog(this,"Tipo de usuario modificado correctamente","Modificación exitosa",JOptionPane.INFORMATION_MESSAGE);
+            ConnectDB.updatePersonUserType(Global.id_user,id_userType);
+            if (Global.update_result == 1) 
+            {
+                JOptionPane.showMessageDialog(this,"Tipo de usuario modificado correctamente","Modificación exitosa",JOptionPane.INFORMATION_MESSAGE);
+                Global.user_type = Global.userTypesInfo.get(userTypeComboBox.getSelectedIndex()).getName();
+            }
             else JOptionPane.showMessageDialog(this,"No se ha modificado el tipo de usuario","Error de modificación",JOptionPane.ERROR_MESSAGE);
             this.setVisible(false);
         } catch (SQLException ex) {

@@ -5,6 +5,7 @@
  */
 package UI;
 
+import Utils.Global;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -200,6 +201,11 @@ public class editProfile extends javax.swing.JFrame {
         photoButton.setBackground(new java.awt.Color(255, 255, 255));
         photoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/photo.png"))); // NOI18N
         photoButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        photoButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                photoButtonMouseClicked(evt);
+            }
+        });
         jPanel2.add(photoButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 280, 130, 130));
 
         userTypeLabel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -229,7 +235,12 @@ public class editProfile extends javax.swing.JFrame {
 
     private void closeWindowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeWindowMouseClicked
         this.setVisible(false);
-        citizenWindow login = new citizenWindow();
+        if ("Ciudadano".equals(Global.user_type)) {
+            citizenWindow citizen = new citizenWindow();
+        }
+        else {
+            adminWindow admin = new adminWindow();
+        }
     }//GEN-LAST:event_closeWindowMouseClicked
 
     private void minimizeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizeMouseClicked
@@ -277,8 +288,16 @@ public class editProfile extends javax.swing.JFrame {
     }//GEN-LAST:event_nationalityButtonMouseClicked
 
     private void locationButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_locationButtonMouseClicked
-        locationWindow location = new locationWindow();
+        try {
+            locationWindow location = new locationWindow();
+        } catch (SQLException ex) {
+            Logger.getLogger(editProfile.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_locationButtonMouseClicked
+
+    private void photoButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_photoButtonMouseClicked
+        photoChangeWindow photo = new photoChangeWindow();
+    }//GEN-LAST:event_photoButtonMouseClicked
 
     /**
      * @param args the command line arguments

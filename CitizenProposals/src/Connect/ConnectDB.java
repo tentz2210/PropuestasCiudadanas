@@ -295,7 +295,7 @@ public class ConnectDB implements IConstants
     public static void updatePersonUserType(int p_id_number,int p_new_userTypeId) throws SQLException
     {
         Connection con = DriverManager.getConnection(host, uName, uPass);
-        CallableStatement stmt = con.prepareCall("{call pkg_person.updateUserType(?,?,?)}");
+        CallableStatement stmt = con.prepareCall("{call pkg_user.updateUserType(?,?,?)}");
         stmt.setInt(1,p_id_number);
         stmt.setInt(2,p_new_userTypeId);
         stmt.registerOutParameter(3,OracleTypes.INTEGER);
@@ -307,7 +307,7 @@ public class ConnectDB implements IConstants
     public static void updatePersonNationality(int p_id_number,int p_new_nationality) throws SQLException
     {
         Connection con = DriverManager.getConnection(host, uName, uPass);
-        CallableStatement stmt = con.prepareCall("{call pkg_person.updateNationalityXPerson(?,?,?)}");
+        CallableStatement stmt = con.prepareCall("{call pkg_nationality_x_person.updateNationalityXPerson(?,?,?)}");
         stmt.setInt(1,p_id_number);
         stmt.setInt(2,p_new_nationality);
         stmt.registerOutParameter(3,OracleTypes.INTEGER);

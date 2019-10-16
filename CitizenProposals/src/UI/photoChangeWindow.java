@@ -26,6 +26,8 @@ public class photoChangeWindow extends javax.swing.JFrame {
      */
     public photoChangeWindow() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
 
     /**

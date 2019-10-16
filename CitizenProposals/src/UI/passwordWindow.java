@@ -134,7 +134,7 @@ public class passwordWindow extends javax.swing.JFrame {
        if (!Global.hasNumbers(newUserName) && !"".equals(newUserName))
        {
            try {
-               ConnectDB.modifyUserName(Global.id_person,newUserName);
+               ConnectDB.modifyUserName(Global.id_user,newUserName);
                if (Global.update_result == 1) JOptionPane.showMessageDialog(this,"Se ha modificado el nombre de usuario","Modificación exitosa",JOptionPane.INFORMATION_MESSAGE);
                else JOptionPane.showMessageDialog(this,"No se ha podido modificar el nombre de usuario","Error de modificación",JOptionPane.ERROR_MESSAGE);
            } catch (SQLException ex) {
@@ -158,7 +158,7 @@ public class passwordWindow extends javax.swing.JFrame {
             try {
                 String encryptedOldPass = AES.encrypt(oldPassword);
                 String encryptedPass = AES.encrypt(newPassword);
-                ConnectDB.updatePersonPassword(Global.id_person,encryptedOldPass,encryptedPass);
+                ConnectDB.updatePersonPassword(Global.id_user,encryptedOldPass,encryptedPass);
                 if (Global.update_result == 1) JOptionPane.showMessageDialog(this,"Contraseña actualizada correctamente","Modificación exitosa",JOptionPane.INFORMATION_MESSAGE);
                 else JOptionPane.showMessageDialog(this,"Error al modificar la contraseña","Error de modificación",JOptionPane.ERROR_MESSAGE);
             } catch (SQLException ex) {
