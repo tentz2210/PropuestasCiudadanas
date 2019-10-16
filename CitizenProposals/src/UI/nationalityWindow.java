@@ -9,12 +9,12 @@ package UI;
  *
  * @author mapac
  */
-public class userTypeWindow extends javax.swing.JFrame {
+public class nationalityWindow extends javax.swing.JFrame {
 
     /**
-     * Creates new form userType
+     * Creates new form nationalityWindow
      */
-    public userTypeWindow() {
+    public nationalityWindow() {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -30,38 +30,39 @@ public class userTypeWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        iconUserType = new javax.swing.JLabel();
-        userTypeTitle = new javax.swing.JLabel();
-        userTypeComboBox = new javax.swing.JComboBox<>();
-        cancelButton1 = new javax.swing.JButton();
+        iconNationality = new javax.swing.JLabel();
+        nationalityTitle = new javax.swing.JLabel();
+        nationalityComboBox = new javax.swing.JComboBox<>();
+        cancelButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setPreferredSize(new java.awt.Dimension(286, 150));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        iconUserType.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/users.png"))); // NOI18N
-        jPanel1.add(iconUserType, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 0, -1, -1));
+        iconNationality.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/nationality.png"))); // NOI18N
+        jPanel1.add(iconNationality, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, -1, -1));
 
-        userTypeTitle.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        userTypeTitle.setText("Elegir tipo de usuario");
-        jPanel1.add(userTypeTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 160, -1));
+        nationalityTitle.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        nationalityTitle.setText("Elegir nacionalidad");
+        jPanel1.add(nationalityTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
-        userTypeComboBox.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jPanel1.add(userTypeComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 100, -1));
+        nationalityComboBox.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jPanel1.add(nationalityComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 40, 110, -1));
 
-        cancelButton1.setBackground(new java.awt.Color(222, 4, 11));
-        cancelButton1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        cancelButton1.setForeground(new java.awt.Color(255, 255, 255));
-        cancelButton1.setText("Cancelar");
-        cancelButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        cancelButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        cancelButton.setBackground(new java.awt.Color(222, 4, 11));
+        cancelButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        cancelButton.setForeground(new java.awt.Color(255, 255, 255));
+        cancelButton.setText("Cancelar");
+        cancelButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        cancelButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                cancelButton1MouseClicked(evt);
+                cancelButtonMouseClicked(evt);
             }
         });
-        jPanel1.add(cancelButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 100, -1, -1));
+        jPanel1.add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 110, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -77,9 +78,9 @@ public class userTypeWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cancelButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButton1MouseClicked
+    private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
         this.setVisible(false);
-    }//GEN-LAST:event_cancelButton1MouseClicked
+    }//GEN-LAST:event_cancelButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -98,30 +99,29 @@ public class userTypeWindow extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(userTypeWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(nationalityWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(userTypeWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(nationalityWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(userTypeWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(nationalityWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(userTypeWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(nationalityWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new userTypeWindow().setVisible(true);
+                new nationalityWindow().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cancelButton1;
-    private javax.swing.JLabel iconUserType;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JLabel iconNationality;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JComboBox<String> userTypeComboBox;
-    private javax.swing.JLabel userTypeTitle;
+    private javax.swing.JComboBox<String> nationalityComboBox;
+    private javax.swing.JLabel nationalityTitle;
     // End of variables declaration//GEN-END:variables
 }
