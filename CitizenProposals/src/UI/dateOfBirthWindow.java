@@ -5,6 +5,13 @@
  */
 package UI;
 
+import Connect.ConnectDB;
+import Utils.Global;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author mapac
@@ -122,7 +129,17 @@ public class dateOfBirthWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelButton1MouseClicked
 
     private void acceptButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_acceptButtonMouseClicked
-        // TODO add your handling code here:
+        try {
+            int monthNumber = monthComboBox.getSelectedIndex()+1;
+            String birth_date = dayComboBox.getSelectedItem().toString() +"/" +monthNumber+"/" + yearComboBox.getSelectedItem().toString();
+            ConnectDB.updatePersonBirthDate(Global.id_person, birth_date);
+            if (Global.update_result == 1 ) JOptionPane.showMessageDialog(this,"Fecha de nacimiento ha sido cambiada","Modificación exitosa",JOptionPane.INFORMATION_MESSAGE);
+            else JOptionPane.showMessageDialog(this,"La fecha de nacimiento no ha sido modificada","Error de modificación",JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException ex) {
+            Logger.getLogger(dateOfBirthWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.setVisible(false);
+            
     }//GEN-LAST:event_acceptButtonMouseClicked
 
     /**
