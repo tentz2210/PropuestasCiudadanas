@@ -168,6 +168,22 @@ public class ConnectDB implements IConstants
         }
     }
     
+    public static void getCategories () throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_category.getCategories(?)}");
+        stmt.registerOutParameter(1, OracleTypes.CURSOR);
+        stmt.executeQuery();
+        ResultSet r = (ResultSet) stmt.getObject(1);
+        
+        Global.categoriesInfo.clear();
+        while (r.next())
+        {
+            CatalogueContainer cc = new CatalogueContainer(r.getInt("category_code"),r.getString("category_name"));
+            Global.categoriesInfo.add(cc);
+        }
+    }
+    
     public static void getUserTypes () throws SQLException
     {
         Connection con = DriverManager.getConnection(host, uName, uPass);
@@ -989,5 +1005,21 @@ public class ConnectDB implements IConstants
         stmt.execute();
         
         Global.update_result = stmt.getInt(3);
+    }
+    
+    public static void registerProposal(String title, int budget, String description, int pIdCategory, int pIdPerson) throws SQLException
+    {
+        Connection con = DriverManager.getConnection(host, uName, uPass);
+        CallableStatement stmt = con.prepareCall("{call pkg_proposal.createProposal(?,?,?,?,?,?)}");
+        stmt.setString(1,title);
+        stmt.setInt(2,budget);
+        stmt.setString(3,description);
+        stmt.setInt(4,pIdCategory);
+        stmt.setInt(5,pIdPerson);
+        stmt.registerOutParameter(6,OracleTypes.INTEGER);
+        
+        stmt.execute();
+        
+        Global.insert_result = stmt.getInt(6);
     }
 }

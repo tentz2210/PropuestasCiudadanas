@@ -159,12 +159,17 @@ public class registerWindow extends javax.swing.JFrame {
 
         jPanel1.add(panelMinimizeClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 939, 40));
 
-        appName.setFont(new java.awt.Font("Arial", 0, 40)); // NOI18N
-        appName.setText("Nombre app");
-        jPanel1.add(appName, new org.netbeans.lib.awtextra.AbsoluteConstraints(98, 55, 258, 71));
+        appName.setFont(new java.awt.Font("Magneto", 0, 48)); // NOI18N
+        appName.setForeground(new java.awt.Color(0, 204, 204));
+        appName.setText("VOMM");
+        jPanel1.add(appName, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 30, 210, 100));
 
-        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/user01.png"))); // NOI18N
-        jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(162, 144, 248, 246));
+        logo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/vomm.png"))); // NOI18N
+        logo.setDebugGraphicsOptions(javax.swing.DebugGraphics.BUFFERED_OPTION);
+        logo.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        logo.setIconTextGap(5);
+        jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 180, 300, 300));
 
         createAccount.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         createAccount.setText("Crea una cuenta");
