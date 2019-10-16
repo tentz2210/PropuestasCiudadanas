@@ -632,7 +632,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_proposal AS
 	WHERE id_number = pid_number;
     
         OPEN p_proposal_cursor FOR
-            SELECT c.category_name, p.title, p.description, p.approximate_budget, p.proposal_date,
+            SELECT c.category_name, p.title, p.description, p.approximate_budget, TO_CHAR(p.proposal_date),
                    pe.first_name||' '||pe.first_last_name name, fav
             FROM pc.proposal p INNER JOIN pc.person pe
             ON p.id_number = pe.id_number
