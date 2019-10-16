@@ -34,6 +34,7 @@ public class nationalityWindow extends javax.swing.JFrame {
         nationalityTitle = new javax.swing.JLabel();
         nationalityComboBox = new javax.swing.JComboBox<>();
         cancelButton = new javax.swing.JButton();
+        acceptButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -62,7 +63,20 @@ public class nationalityWindow extends javax.swing.JFrame {
                 cancelButtonMouseClicked(evt);
             }
         });
-        jPanel1.add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 110, -1, -1));
+        jPanel1.add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, -1, -1));
+
+        acceptButton.setBackground(new java.awt.Color(16, 123, 16));
+        acceptButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        acceptButton.setForeground(new java.awt.Color(255, 255, 255));
+        acceptButton.setText("Aceptar");
+        acceptButton.setMaximumSize(new java.awt.Dimension(89, 25));
+        acceptButton.setPreferredSize(new java.awt.Dimension(89, 25));
+        acceptButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                acceptButtonMouseClicked(evt);
+            }
+        });
+        jPanel1.add(acceptButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 110, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -81,6 +95,10 @@ public class nationalityWindow extends javax.swing.JFrame {
     private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
         this.setVisible(false);
     }//GEN-LAST:event_cancelButtonMouseClicked
+
+    private void acceptButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_acceptButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_acceptButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -118,6 +136,7 @@ public class nationalityWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton acceptButton;
     private javax.swing.JButton cancelButton;
     private javax.swing.JLabel iconNationality;
     private javax.swing.JPanel jPanel1;

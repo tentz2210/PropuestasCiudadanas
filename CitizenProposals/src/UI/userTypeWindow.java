@@ -34,6 +34,7 @@ public class userTypeWindow extends javax.swing.JFrame {
         userTypeTitle = new javax.swing.JLabel();
         userTypeComboBox = new javax.swing.JComboBox<>();
         cancelButton1 = new javax.swing.JButton();
+        acceptButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -61,7 +62,14 @@ public class userTypeWindow extends javax.swing.JFrame {
                 cancelButton1MouseClicked(evt);
             }
         });
-        jPanel1.add(cancelButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 100, -1, -1));
+        jPanel1.add(cancelButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, -1, -1));
+
+        acceptButton.setBackground(new java.awt.Color(16, 123, 16));
+        acceptButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        acceptButton.setForeground(new java.awt.Color(255, 255, 255));
+        acceptButton.setText("Aceptar");
+        acceptButton.setPreferredSize(new java.awt.Dimension(89, 25));
+        jPanel1.add(acceptButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 100, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -118,6 +126,7 @@ public class userTypeWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton acceptButton;
     private javax.swing.JButton cancelButton1;
     private javax.swing.JLabel iconUserType;
     private javax.swing.JPanel jPanel1;

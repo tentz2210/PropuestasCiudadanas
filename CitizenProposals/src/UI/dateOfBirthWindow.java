@@ -39,6 +39,7 @@ public class dateOfBirthWindow extends javax.swing.JFrame {
         monthComboBox = new javax.swing.JComboBox<>();
         yearComboBox = new javax.swing.JComboBox<>();
         cancelButton1 = new javax.swing.JButton();
+        acceptButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -88,7 +89,19 @@ public class dateOfBirthWindow extends javax.swing.JFrame {
                 cancelButton1MouseClicked(evt);
             }
         });
-        jPanel1.add(cancelButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 120, -1, -1));
+        jPanel1.add(cancelButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 120, -1, -1));
+
+        acceptButton.setBackground(new java.awt.Color(16, 123, 16));
+        acceptButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        acceptButton.setForeground(new java.awt.Color(255, 255, 255));
+        acceptButton.setText("Aceptar");
+        acceptButton.setPreferredSize(new java.awt.Dimension(89, 25));
+        acceptButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                acceptButtonMouseClicked(evt);
+            }
+        });
+        jPanel1.add(acceptButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 120, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -107,6 +120,10 @@ public class dateOfBirthWindow extends javax.swing.JFrame {
     private void cancelButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButton1MouseClicked
         this.setVisible(false);
     }//GEN-LAST:event_cancelButton1MouseClicked
+
+    private void acceptButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_acceptButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_acceptButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -145,6 +162,7 @@ public class dateOfBirthWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton acceptButton;
     private javax.swing.JButton cancelButton1;
     private javax.swing.JLabel dateOfBithLabel;
     private javax.swing.JComboBox<String> dayComboBox;
