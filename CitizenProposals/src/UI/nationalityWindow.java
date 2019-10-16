@@ -5,6 +5,13 @@
  */
 package UI;
 
+import Connect.ConnectDB;
+import Utils.Global;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author mapac
@@ -14,10 +21,20 @@ public class nationalityWindow extends javax.swing.JFrame {
     /**
      * Creates new form nationalityWindow
      */
-    public nationalityWindow() {
+    public nationalityWindow() throws SQLException {
         initComponents();
+        fillNationalitiesComboBox();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+    }
+    
+    private void fillNationalitiesComboBox() throws SQLException
+    {
+        ConnectDB.getNationalities();
+        for (int nationalityNumber = 0; nationalityNumber < Global.nationalitiesInfo.size(); nationalityNumber++)
+        {
+            nationalityComboBox.addItem(Global.nationalitiesInfo.get(nationalityNumber).getName());
+        }
     }
 
     /**
@@ -97,7 +114,15 @@ public class nationalityWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelButtonMouseClicked
 
     private void acceptButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_acceptButtonMouseClicked
-        // TODO add your handling code here:
+        try {
+            int id_nationality = Global.nationalitiesInfo.get(nationalityComboBox.getSelectedIndex()).getId();
+            ConnectDB.updatePersonNationality(Global.id_person,id_nationality);
+            if (Global.update_result == 1) JOptionPane.showMessageDialog(this,"Nacionalidad modificada correctamente","Modificación exitosa",JOptionPane.INFORMATION_MESSAGE);
+            else JOptionPane.showMessageDialog(this,"Error al modificar la nacionalidad","Error de modificación",JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException ex) {
+            Logger.getLogger(nationalityWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.setVisible(false);
     }//GEN-LAST:event_acceptButtonMouseClicked
 
     /**
@@ -130,7 +155,11 @@ public class nationalityWindow extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new nationalityWindow().setVisible(true);
+                try {
+                    new nationalityWindow().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(nationalityWindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
